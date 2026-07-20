@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Part Entry ERP</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- LOGIN -->
+
+<div class="login-box" id="loginBox">
+
+<h1>🏭 Part Entry ERP</h1>
+
+<p>Login to continue</p>
+
+<button id="googleLogin">
+🔐 Sign in with Google
+</button>
+
+</div>
+
+
+
+
+
+<!-- DASHBOARD -->
+
+<div id="dashboard" style="display:none;">
+
+
+
+<header>
+
+<h1>Part Entry Dashboard</h1>
+
+<button id="logout">
+Logout
+</button>
+
+</header>
+
+
+
+
+
+<!-- SUMMARY CARDS -->
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h3>Total Part</h3>
+
+<h2 id="totalPart">0</h2>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>Total Order Qty</h3>
+
+<h2 id="totalQty">0</h2>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>User</h3>
+
+<h2 id="userRole">Operator</h2>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ENTRY FORM -->
+
+
+<section class="entry">
+
+
+<h2>📋 Part Entry</h2>
+
+
+
+<input id="partName" placeholder="Part Name">
+
+
+<input id="buyerName" placeholder="Buyer Name">
+
+
+<input id="styleNo" placeholder="Style No">
+
+
+<input id="poNo" placeholder="PO No">
+
+
+<input id="orderQty" type="number" placeholder="Order Qty">
+
+
+<input id="color" placeholder="Color">
+
+
+<input id="print" placeholder="Print">
+
+
+<input id="embroidery" placeholder="Embroidery">
+
+
+<input id="deliveryDate" type="date">
+
+
+
+<br>
+
+
+<button id="savePart">
+
+💾 Save Part
+
+</button>
+
+
+<button id="cancelEdit" style="display:none;background:red;">
+
+Cancel Edit
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- SEARCH -->
+
+
+<section class="entry">
+
+
+<h2>🔍 Search</h2>
+
+
+<input 
+id="searchBox"
+placeholder="Search Part / Buyer / Style"
+>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- TABLE -->
+
+
+<section>
+
+
+<h2>📦 Part List</h2>
+
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+<th>Part</th>
+
+<th>Buyer</th>
+
+<th>Style</th>
+
+<th>Qty</th>
+
+<th>Color</th>
+
+<th>Print</th>
+
+<th>Embroidery</th>
+
+<th>Delivery</th>
+
+<th>PO No</th>
+
+<th>Action</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="partTable">
+
+
+</tbody>
+
+
+
+</table>
+
+
+</section>
+
+
+
+
+
+</div>
+
+
+
+
+<script type="module" src="app.js"></script>
+
+
+</body>
+
+</html>
