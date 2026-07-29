@@ -20,12 +20,12 @@
 
 <div class="login-box" id="loginBox">
 
-<h1>🏭 Part Entry ERP</h1>
+<h1> Part Entry ERP</h1>
 
 <p>Login to continue</p>
 
 <button id="googleLogin">
-🔐 Sign in with Google
+ Sign in with Google
 </button>
 
 </div>
@@ -167,7 +167,7 @@ Cancel Edit
 <section class="entry">
 
 
-<h2>🔍 Search</h2>
+<h2>Search</h2>
 
 
 <input 
@@ -191,7 +191,7 @@ placeholder="Search Part / Buyer / Style"
 <section>
 
 
-<h2>📦 Part List</h2>
+<h2>Part List</h2>
 
 
 
@@ -253,7 +253,8 @@ placeholder="Search Part / Buyer / Style"
 
 
 <script type="module" src="app.js"></script>
-
+document.body.insertAdjacentHTML('beforeend', '<button onclick="document.documentElement.style.filter = document.documentElement.style.filter ? \'\' : \'invert(1) hue-rotate(180deg)\'" style="position:fixed;bottom:20px;right:20px;padding:10px 15px;background:#333;color:#fff;border:none;border-radius:5px;cursor:pointer;z-index:9999;">Dark Mode</button>');
+Object.assign(document.getElementById("myBtn").style, { padding: "10px 20px", background: "#333", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" });
 
 </body>
 
