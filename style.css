@@ -1,30 +1,20 @@
 *{
     box-sizing:border-box;
 }
-body {
-    margin: 0;
-    display: grid;
-    place-items: center;     /* এক লাইনেই হরাইজোন্টাল ও ভার্টিক্যালি সেন্টার করে */
-    min-height: 100vh;
-    background:linear-gradient(
-        135deg,
-        #e4e5e6,
-        #001f54
-    );
-}
 
 
-/*body{
+body{
 
     margin:0;
 
     font-family:"Segoe UI", Arial, sans-serif;
 
-    background:#031324;
+    background:#f1f5f9;
 
     color:#222;
 
 }
+
 
 
 /* ================= LOGIN ================= */
@@ -40,7 +30,11 @@ body {
 
     align-items:center;
 
-
+    background:linear-gradient(
+        135deg,
+        #0d6efd,
+        #001f54
+    );
 
 }
 
@@ -50,11 +44,7 @@ body {
 
     width:380px;
 
-    background:linear-gradient(
-        135deg,
-        #e4e5e6,
-        #001f54
-    );
+    background:white;
 
     padding:40px;
 
@@ -70,9 +60,9 @@ body {
 
 .login-card h1{
 
-    color:#0f0ff5;
+    color:#0d6efd;
 
-    margin-bottom:5px;
+    margin-bottom:10px;
 
 }
 
@@ -90,17 +80,17 @@ body {
 
     width:100%;
 
-    padding:10px;
+    padding:15px;
 
-    margin-top:0px;
+    margin-top:25px;
 
     border:none;
 
     border-radius:10px;
 
-    background:#597ef8;
+    background:#0d6efd;
 
-    color:rgb(19, 2, 2);
+    color:white;
 
     font-size:16px;
 
@@ -112,7 +102,7 @@ body {
 
 #googleLogin:hover{
 
-    background:#7ba5f8;
+    background:#084298;
 
 }
 
@@ -120,7 +110,7 @@ body {
 
 #loginMsg{
 
-    margin-top:10px;
+    margin-top:15px;
 
     color:red;
 
