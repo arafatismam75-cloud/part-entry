@@ -1,9 +1,20 @@
 *{
     box-sizing:border-box;
 }
+body {
+    margin: 0;
+    display: grid;
+    place-items: center;     /* এক লাইনেই হরাইজোন্টাল ও ভার্টিক্যালি সেন্টার করে */
+    min-height: 100vh;
+    background:linear-gradient(
+        135deg,
+        #e4e5e6,
+        #001f54
+    );
+}
 
 
-body{
+/*body{
 
     margin:0;
 
@@ -14,7 +25,6 @@ body{
     color:#222;
 
 }
-
 
 
 /* ================= LOGIN ================= */
@@ -30,11 +40,7 @@ body{
 
     align-items:center;
 
-    background:linear-gradient(
-        135deg,
-        #e4e5e6,
-        #001f54
-    );
+
 
 }
 
