@@ -16,37 +16,19 @@
 <body>
 
 
-<!-- LOGIN PAGE -->
+<!-- LOGIN -->
 
-<div class="login-page" id="loginBox">
+<div class="login-box" id="loginBox">
 
+<h1>Part Entry ERP</h1>
 
-    <div class="login-card">
+<p>Login to continue</p>
 
-
-        <h1> Part Entry ERP</h1>
-
-
-         <input type="text" placeholder="Uer Name">
-        <p>Login to continue</p>
-
-
-        <button id="googleLogin">
-
-            Sign in with Google
-
-        </button>
-
-
-        <p id="loginMsg"></p>
-
-
-    </div>
-
+<button id="googleLogin">
+Sign in with Google
+</button>
 
 </div>
-
-
 
 
 
@@ -58,28 +40,13 @@
 
 
 
-<header class="topbar">
+<header>
 
-
-<h1>
-Part Entry Dashboard
-</h1>
-
-
-<div>
-
-<span id="userRole">
-Operator
-</span>
-
+<h1>Part Entry Dashboard</h1>
 
 <button id="logout">
 Logout
 </button>
-
-
-</div>
-
 
 </header>
 
@@ -87,9 +54,8 @@ Logout
 
 
 
+<!-- SUMMARY CARDS -->
 
-
-<!-- SUMMARY -->
 
 <div class="cards">
 
@@ -98,9 +64,7 @@ Logout
 
 <h3>Total Part</h3>
 
-<h2 id="totalPart">
-0
-</h2>
+<h2 id="totalPart">0</h2>
 
 </div>
 
@@ -110,9 +74,7 @@ Logout
 
 <h3>Total Order Qty</h3>
 
-<h2 id="totalQty">
-0
-</h2>
+<h2 id="totalQty">0</h2>
 
 </div>
 
@@ -120,20 +82,14 @@ Logout
 
 <div class="card">
 
-<h3>Status</h3>
+<h3>User</h3>
 
-<h2>
-Active
-</h2>
+<h2 id="userRole">Operator</h2>
 
 </div>
 
 
-
 </div>
-
-
-
 
 
 
@@ -144,16 +100,11 @@ Active
 <!-- ENTRY FORM -->
 
 
-<section class="box">
+<section class="entry">
 
 
-<h2>
-📋 Part Entry
-</h2>
+<h2>Part Entry</h2>
 
-
-
-<div class="form-grid">
 
 
 <input id="partName" placeholder="Part Name">
@@ -163,6 +114,9 @@ Active
 
 
 <input id="styleNo" placeholder="Style No">
+
+
+<input id="poNo" placeholder="PO No">
 
 
 <input id="orderQty" type="number" placeholder="Order Qty">
@@ -180,13 +134,6 @@ Active
 <input id="deliveryDate" type="date">
 
 
-<input id="poNo" placeholder="PO No">
-
-
-
-</div>
-
-
 
 <br>
 
@@ -198,8 +145,7 @@ Save Part
 </button>
 
 
-
-<button id="cancelEdit" style="display:none">
+<button id="cancelEdit" style="display:none;background:red;">
 
 Cancel Edit
 
@@ -215,16 +161,13 @@ Cancel Edit
 
 
 
-
-
 <!-- SEARCH -->
 
-<section class="box">
+
+<section class="entry">
 
 
-<h2>
-Search
-</h2>
+<h2>Search</h2>
 
 
 <input 
@@ -242,20 +185,14 @@ placeholder="Search Part / Buyer / Style"
 
 
 
-
 <!-- TABLE -->
 
 
-<section class="box">
+<section>
 
 
-<h2>
-Part List
-</h2>
+<h2>Part List</h2>
 
-
-
-<div class="table-area">
 
 
 <table>
@@ -304,18 +241,13 @@ Part List
 </table>
 
 
-</div>
-
-
 </section>
 
 
 
 
 
-
 </div>
-
 
 
 
@@ -324,6 +256,5 @@ Part List
 
 
 </body>
-
 
 </html>
