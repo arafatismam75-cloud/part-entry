@@ -1,4 +1,3 @@
-```css
 /* =========================================================
    RESET
 ========================================================= */
@@ -21,33 +20,30 @@ body {
     color: #ffffff;
 }
 
-button,
-input {
-    font-family: inherit;
-}
-
 
 /* =========================================================
-   LOGIN PAGE
+   LOGIN BODY — FIXED CENTER
 ========================================================= */
 
 .login-page {
-    position: fixed;
+    position: fixed !important;
 
-    inset: 0;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
 
-    width: 100vw;
-    height: 100vh;
+    width: 100vw !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
 
-    min-height: 100vh;
+    margin: 0 !important;
+    padding: 30px !important;
 
-    margin: 0;
-    padding: 30px;
+    display: flex !important;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+    justify-content: center !important;
 
     background:
         radial-gradient(
@@ -61,12 +57,16 @@ input {
 }
 
 
-.login-container {
-    width: 100%;
-    max-width: 430px;
+/* =========================================================
+   LOGIN CONTAINER
+========================================================= */
 
-    margin: 0;
-    padding: 0;
+.login-container {
+    width: 100% !important;
+    max-width: 430px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
 
     position: relative;
 }
@@ -86,7 +86,7 @@ input {
 
     gap: 12px;
 
-    margin: 0 0 45px;
+    margin: 0 0 45px 0;
 }
 
 
@@ -97,8 +97,6 @@ input {
     border: 3px solid #4f91f7;
 
     border-radius: 50%;
-
-    position: relative;
 
     flex-shrink: 0;
 }
@@ -116,8 +114,8 @@ input {
 
     border-radius: 50%;
 
-    left: 6px;
-    top: 6px;
+    margin-left: 6px;
+    margin-top: 6px;
 }
 
 
@@ -142,6 +140,10 @@ input {
     width: 100%;
 }
 
+
+/* =========================================================
+   INPUT
+========================================================= */
 
 .input-box {
     position: relative;
@@ -169,8 +171,6 @@ input {
     color: #ffffff;
 
     font-size: 14px;
-
-    transition: 0.2s;
 }
 
 
@@ -205,8 +205,6 @@ input {
     font-size: 13px;
 
     cursor: pointer;
-
-    user-select: none;
 }
 
 
@@ -233,7 +231,7 @@ input {
 
 
 /* =========================================================
-   LOGIN LINKS
+   LINKS
 ========================================================= */
 
 .login-links {
@@ -291,15 +289,6 @@ input {
     background: #5c9af0;
 
     transform: translateY(-1px);
-}
-
-
-.login-btn:disabled {
-    opacity: 0.65;
-
-    cursor: not-allowed;
-
-    transform: none;
 }
 
 
@@ -364,8 +353,6 @@ input {
 #dashboard {
     min-height: 100vh;
 
-    width: 100%;
-
     background: #101114;
 
     color: #ffffff;
@@ -373,256 +360,13 @@ input {
 
 
 /* =========================================================
-   SIDEBAR
-========================================================= */
-
-.sidebar {
-    position: fixed;
-
-    left: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 245px;
-
-    background: #15171c;
-
-    border-right: 1px solid #282b31;
-
-    display: flex;
-
-    flex-direction: column;
-
-    z-index: 1000;
-}
-
-
-/* =========================================================
-   SIDEBAR BRAND
-========================================================= */
-
-.sidebar-brand {
-    height: 78px;
-
-    padding: 0 22px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    border-bottom: 1px solid #282b31;
-}
-
-
-.sidebar-logo {
-    width: 31px;
-    height: 31px;
-
-    border: 3px solid #4e91f2;
-
-    border-radius: 50%;
-
-    position: relative;
-
-    flex-shrink: 0;
-}
-
-
-.sidebar-logo::after {
-    content: "";
-
-    position: absolute;
-
-    width: 8px;
-    height: 8px;
-
-    background: #15171c;
-
-    border-radius: 50%;
-
-    left: 7px;
-    top: 7px;
-}
-
-
-.sidebar-brand strong {
-    display: block;
-
-    color: #f2f4f7;
-
-    font-size: 15px;
-
-    font-weight: 700;
-}
-
-
-.sidebar-brand span {
-    display: block;
-
-    margin-top: 2px;
-
-    color: #656a74;
-
-    font-size: 9px;
-
-    letter-spacing: 1.2px;
-}
-
-
-/* =========================================================
-   SIDEBAR MENU
-========================================================= */
-
-.sidebar-menu {
-    flex: 1;
-
-    padding: 22px 13px;
-
-    overflow-y: auto;
-}
-
-
-.menu-title {
-    padding: 0 12px;
-
-    margin: 8px 0 10px;
-
-    color: #5f646e;
-
-    font-size: 9px;
-
-    font-weight: 700;
-
-    letter-spacing: 1.2px;
-}
-
-
-.menu-item {
-    width: 100%;
-
-    height: 45px;
-
-    margin-bottom: 5px;
-
-    padding: 0 13px;
-
-    border: 1px solid transparent;
-
-    border-radius: 8px;
-
-    background: transparent;
-
-    color: #858a94;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    font-size: 13px;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-
-.menu-item span:first-child {
-    width: 20px;
-
-    text-align: center;
-
-    font-size: 17px;
-}
-
-
-.menu-item:hover {
-    background: #1b1e24;
-
-    color: #dfe2e7;
-}
-
-
-.menu-item.active {
-    background: rgba(77, 143, 240, 0.12);
-
-    border-color: rgba(77, 143, 240, 0.16);
-
-    color: #5795ef;
-}
-
-
-/* =========================================================
-   SIDEBAR BOTTOM
-========================================================= */
-
-.sidebar-bottom {
-    padding: 15px 13px;
-
-    border-top: 1px solid #282b31;
-}
-
-
-.sidebar-logout {
-    width: 100%;
-
-    height: 42px;
-
-    border: 1px solid #30343b;
-
-    border-radius: 7px;
-
-    background: #1a1d22;
-
-    color: #9da1a9;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 9px;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-
-.sidebar-logout:hover {
-    border-color: #dc3545;
-
-    color: #dc3545;
-}
-
-
-/* =========================================================
-   DASHBOARD AREA
-========================================================= */
-
-.dashboard-area {
-    margin-left: 245px;
-
-    min-height: 100vh;
-
-    width: calc(100% - 245px);
-}
-
-
-/* =========================================================
-   TOP HEADER
+   HEADER
 ========================================================= */
 
 .top-header {
     min-height: 78px;
 
-    padding: 0 32px;
+    padding: 0 35px;
 
     background: #15171c;
 
@@ -645,43 +389,29 @@ input {
 }
 
 
+.small-logo {
+    width: 28px;
+    height: 28px;
+
+    border: 3px solid #4e91f2;
+
+    border-radius: 50%;
+}
+
+
 .header-left h1 {
     margin: 0;
 
     color: #ffffff;
 
     font-size: 18px;
-
-    font-weight: 600;
 }
 
 
 .header-left span {
-    display: block;
-
-    margin-top: 2px;
-
     color: #737780;
 
-    font-size: 10px;
-}
-
-
-.menu-toggle {
-    display: none;
-
-    width: 38px;
-    height: 38px;
-
-    border: 1px solid #30343b;
-
-    border-radius: 7px;
-
-    background: #1b1e24;
-
-    color: #dce0e7;
-
-    cursor: pointer;
+    font-size: 11px;
 }
 
 
@@ -706,7 +436,7 @@ input {
 .user-label {
     color: #70747c;
 
-    font-size: 10px;
+    font-size: 11px;
 }
 
 
@@ -714,14 +444,6 @@ input {
     color: #e7e9ed;
 
     font-size: 13px;
-
-    max-width: 220px;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
 }
 
 
@@ -737,8 +459,6 @@ input {
     color: #dce0e7;
 
     cursor: pointer;
-
-    transition: 0.2s;
 }
 
 
@@ -764,24 +484,6 @@ input {
 }
 
 
-/* =========================================================
-   CONTENT PAGES
-========================================================= */
-
-.content-page {
-    display: none;
-}
-
-
-.content-page.active-page {
-    display: block;
-}
-
-
-/* =========================================================
-   PAGE HEADING
-========================================================= */
-
 .page-heading {
     margin-bottom: 25px;
 }
@@ -793,8 +495,6 @@ input {
     color: #f4f5f7;
 
     font-size: 25px;
-
-    font-weight: 600;
 }
 
 
@@ -814,8 +514,7 @@ input {
 .cards {
     display: grid;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 1fr);
 
     gap: 18px;
 
@@ -839,15 +538,6 @@ input {
     align-items: center;
 
     gap: 16px;
-
-    transition: 0.2s;
-}
-
-
-.card:hover {
-    border-color: #353941;
-
-    transform: translateY(-1px);
 }
 
 
@@ -863,8 +553,6 @@ input {
     justify-content: center;
 
     font-size: 21px;
-
-    flex-shrink: 0;
 }
 
 
@@ -896,8 +584,6 @@ input {
     color: #f5f6f8;
 
     font-size: 25px;
-
-    font-weight: 600;
 }
 
 
@@ -935,8 +621,6 @@ input {
     color: #f0f2f5;
 
     font-size: 18px;
-
-    font-weight: 600;
 }
 
 
@@ -951,66 +635,13 @@ input {
 
 
 /* =========================================================
-   QUICK ACTIONS
-========================================================= */
-
-.quick-actions {
-    display: flex;
-
-    gap: 12px;
-
-    flex-wrap: wrap;
-}
-
-
-.quick-btn {
-    min-width: 170px;
-
-    padding: 12px 17px;
-
-    border: 1px solid #30343b;
-
-    border-radius: 7px;
-
-    background: #1b1e24;
-
-    color: #dfe2e7;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 8px;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-
-.quick-btn:hover {
-    border-color: #4d8ff0;
-
-    color: #4d8ff0;
-}
-
-
-.quick-btn span {
-    font-size: 17px;
-}
-
-
-/* =========================================================
    ENTRY FORM
 ========================================================= */
 
 .entry-grid {
     display: grid;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 1fr);
 
     gap: 17px;
 }
@@ -1047,10 +678,6 @@ input {
     background: #111317;
 
     color: #ffffff;
-
-    font-size: 13px;
-
-    transition: 0.2s;
 }
 
 
@@ -1061,9 +688,6 @@ input {
 
 .field input:focus {
     border-color: #4d8ff0;
-
-    box-shadow:
-        0 0 0 2px rgba(77, 143, 240, .06);
 }
 
 
@@ -1091,8 +715,6 @@ input {
     cursor: pointer;
 
     font-weight: 600;
-
-    transition: 0.2s;
 }
 
 
@@ -1103,27 +725,10 @@ input {
 }
 
 
-.save-btn:hover {
-    background: #5b99ef;
-}
-
-
-.save-btn:disabled {
-    opacity: .65;
-
-    cursor: not-allowed;
-}
-
-
 .cancel-btn {
     background: #dc3545;
 
     color: #ffffff;
-}
-
-
-.cancel-btn:hover {
-    background: #c92f3e;
 }
 
 
@@ -1165,8 +770,6 @@ input {
 
     align-items: center;
     justify-content: center;
-
-    flex-shrink: 0;
 }
 
 
@@ -1187,20 +790,6 @@ input {
     align-items: center;
 
     gap: 8px;
-
-    transition: 0.2s;
-}
-
-
-.search-box:focus-within {
-    border-color: #4d8ff0;
-}
-
-
-.search-box span {
-    color: #70747c;
-
-    font-size: 13px;
 }
 
 
@@ -1215,13 +804,6 @@ input {
     background: transparent;
 
     color: #ffffff;
-
-    font-size: 13px;
-}
-
-
-.search-box input::placeholder {
-    color: #646871;
 }
 
 
@@ -1264,8 +846,6 @@ th {
 
     font-size: 11px;
 
-    font-weight: 600;
-
     white-space: nowrap;
 }
 
@@ -1285,23 +865,13 @@ td {
 }
 
 
-tbody tr {
-    transition: 0.15s;
-}
-
-
 tbody tr:hover {
     background: #1b1e24;
 }
 
 
-tbody tr:last-child td {
-    border-bottom: none;
-}
-
-
 /* =========================================================
-   ACTION BUTTONS
+   ACTION BUTTON
 ========================================================= */
 
 .edit-btn,
@@ -1315,10 +885,6 @@ tbody tr:last-child td {
     cursor: pointer;
 
     font-size: 11px;
-
-    margin: 2px;
-
-    transition: 0.2s;
 }
 
 
@@ -1329,11 +895,6 @@ tbody tr:last-child td {
 }
 
 
-.edit-btn:hover {
-    background: #d98b05;
-}
-
-
 .delete-btn {
     background: #dc3545;
 
@@ -1341,319 +902,91 @@ tbody tr:last-child td {
 }
 
 
-.delete-btn:hover {
-    background: #c92f3e;
-}
-
-
-.edit-btn:disabled,
-.delete-btn:disabled {
-    opacity: .55;
-
-    cursor: not-allowed;
-}
-
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-.settings-info {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 15px;
-}
-
-
-.settings-info > div {
-    padding: 17px;
-
-    border: 1px solid #2b2e35;
-
-    border-radius: 8px;
-
-    background: #111317;
-}
-
-
-.settings-info span {
-    display: block;
-
-    margin-bottom: 7px;
-
-    color: #70747c;
-
-    font-size: 11px;
-}
-
-
-.settings-info strong {
-    color: #e5e7eb;
-
-    font-size: 14px;
-
-    word-break: break-word;
-}
-
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-}
-
-
-::-webkit-scrollbar-track {
-    background: #111317;
-}
-
-
-::-webkit-scrollbar-thumb {
-    background: #343840;
-
-    border-radius: 10px;
-}
-
-
-::-webkit-scrollbar-thumb:hover {
-    background: #454a54;
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 1100px) {
-
-    .sidebar {
-        width: 220px;
-    }
-
-    .dashboard-area {
-        margin-left: 220px;
-
-        width: calc(100% - 220px);
-    }
-
-    .dashboard-main {
-        padding: 25px;
-    }
-
-    .entry-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-}
-
-
 /* =========================================================
    MOBILE
 ========================================================= */
 
+@media (max-width: 1000px) {
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .entry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
 @media (max-width: 700px) {
 
     .login-page {
-        padding: 20px;
+        padding: 20px !important;
     }
 
-
-    .brand {
-        margin-bottom: 35px;
+    .login-container {
+        max-width: 430px !important;
     }
-
 
     .brand h1 {
         font-size: 22px;
     }
 
-
-    /* Sidebar */
-
-    .sidebar {
-        width: 245px;
-
-        transform: translateX(-100%);
-
-        transition: transform 0.25s ease;
-
-        box-shadow:
-            10px 0 30px rgba(0, 0, 0, .25);
-    }
-
-
-    .sidebar.mobile-open {
-        transform: translateX(0);
-    }
-
-
-    /* Dashboard area */
-
-    .dashboard-area {
-        margin-left: 0;
-
-        width: 100%;
-    }
-
-
-    /* Header */
-
     .top-header {
         padding: 15px;
 
-        min-height: 70px;
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
     }
-
-
-    .menu-toggle {
-        display: block;
-    }
-
-
-    .header-left h1 {
-        font-size: 16px;
-    }
-
-
-    .header-left span {
-        font-size: 9px;
-    }
-
 
     .header-right {
-        gap: 8px;
+        width: 100%;
+
+        justify-content: space-between;
     }
-
-
-    .user-info {
-        display: none;
-    }
-
-
-    .logout-btn {
-        padding: 8px 12px;
-
-        font-size: 11px;
-    }
-
-
-    /* Main */
 
     .dashboard-main {
         padding: 18px;
     }
 
-
-    /* Cards */
-
     .cards {
         grid-template-columns: 1fr;
-
-        gap: 12px;
     }
-
-
-    /* Entry */
 
     .entry-grid {
         grid-template-columns: 1fr;
     }
 
-
-    .panel {
-        padding: 18px;
-    }
-
-
-    /* Search */
-
     .search-panel {
         flex-direction: column;
 
         align-items: stretch;
-
-        padding: 18px;
     }
-
 
     .search-box {
         width: 100%;
     }
-
-
-    /* Settings */
-
-    .settings-info {
-        grid-template-columns: 1fr;
-    }
-
-
-    /* Quick buttons */
-
-    .quick-actions {
-        flex-direction: column;
-    }
-
-
-    .quick-btn {
-        width: 100%;
-    }
-
 }
 
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
 
 @media (max-width: 450px) {
 
     .login-page {
-        padding: 18px;
+        padding: 18px !important;
     }
 
+    .brand {
+        margin-bottom: 35px;
+    }
 
     .brand h1 {
         font-size: 20px;
     }
 
-
-    .login-links {
-        font-size: 12px;
-    }
-
-
     .social-login {
         gap: 7px;
     }
-
-
-    .page-heading h2 {
-        font-size: 21px;
-    }
-
-
-    .page-heading p {
-        font-size: 11px;
-    }
-
-
-    .form-actions {
-        flex-direction: column;
-    }
-
-
-    .save-btn,
-    .cancel-btn {
-        width: 100%;
-    }
-
 }
-```
