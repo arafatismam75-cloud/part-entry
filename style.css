@@ -1128,17 +1128,5 @@ tbody tr:hover {
         max-width: 100%;
     }
 
-}
-/* ===== LOGIN CENTER FIX ===== */
-.login-page {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    min-height: 100vh;
-}
 
-.login-container {
-    margin-top: 0 !important;
-    width: 100%;
-    max-width: 430px;
-}
+
