@@ -1,11 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Style Wise Part</title>
+    <title>Part Entry ERP</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,134 +16,104 @@
      LOGIN PAGE
 ===================================================== -->
 
-<div class="login-page" id="loginBox">
+<section id="loginPage" class="login-page">
 
     <div class="login-container">
 
-        <!-- LOGO / TITLE -->
         <div class="brand">
-
             <div class="brand-icon"></div>
-
-            <h1>STYLE WISE PART</h1>
-
+            <h1>Part Entry ERP</h1>
         </div>
 
-
-        <!-- LOGIN FORM -->
-        <div class="login-form">
+        <form id="loginForm" class="login-form">
 
             <div class="input-box">
-
                 <input
                     type="email"
-                    id="email"
+                    id="loginEmail"
                     placeholder="Email address"
-                    autocomplete="email"
+                    required
                 >
-
             </div>
-
 
             <div class="input-box password-box">
 
                 <input
                     type="password"
-                    id="password"
+                    id="loginPassword"
                     placeholder="Password"
-                    autocomplete="current-password"
+                    required
                 >
 
-                <span class="eye-icon">◉</span>
+                <span
+                    id="togglePassword"
+                    class="eye-icon"
+                >👁</span>
 
             </div>
 
-
-            <!-- TERMS -->
-            <p class="terms">
-
-                By signing up or logging in, you consent to
-                GMS Textiles's
-
-                <a href="#" onclick="return false;">Terms of Use</a>
-
+            <div class="terms">
+                By continuing, you agree to our
+                <a href="#">Terms</a>
                 and
+                <a href="#">Privacy Policy</a>.
+            </div>
 
-                <a href="#" onclick="return false;">Privacy Policy</a>.
-
-            </p>
-
-
-            <!-- LINKS -->
             <div class="login-links">
 
-                <a href="#" onclick="return false;">
-                    Forgot password?
+                <a href="#" id="forgotPassword">
+                    Forgot Password?
                 </a>
 
-                <a href="#" onclick="return false;">
-                    Sign up
+                <a href="#" id="signupLink">
+                    Create Account
                 </a>
 
             </div>
 
-
-            <!-- LOGIN BUTTON -->
             <button
-                type="button"
+                type="submit"
                 class="login-btn"
                 id="loginBtn"
             >
-                Log in
+                Login
             </button>
 
-
-            <!-- GOOGLE LOGIN -->
             <div class="social-login">
 
                 <button
                     type="button"
-                    id="googleLogin"
                     class="social-btn"
+                    id="googleLogin"
                 >
-
                     <span class="google-icon">G</span>
-
-                    Log in with Google
-
+                    Continue with Google
                 </button>
 
-
                 <span class="divider">|</span>
-
 
                 <button
                     type="button"
                     class="apple-btn"
-                    onclick="return false;"
+                    id="appleLogin"
                 >
-
-                     Log in with Apple
-
+                    Apple
                 </button>
 
             </div>
 
-        </div>
+        </form>
 
     </div>
 
-</div>
-
-
-
+</section>
 
 
 <!-- =====================================================
      DASHBOARD
 ===================================================== -->
 
-<div id="dashboard" style="display:none;">
+<section id="dashboard" style="display:none;">
 
     <!-- HEADER -->
 
@@ -154,11 +124,8 @@
             <div class="small-logo"></div>
 
             <div>
-
-                <h1>STYLE WISE PART</h1>
-
-                <span>Part Entry Management System</span>
-
+                <h1>Part Entry ERP</h1>
+                <span>Style Wise Part Management</span>
             </div>
 
         </div>
@@ -168,17 +135,21 @@
 
             <div class="user-info">
 
-                <span class="user-label">Logged in as</span>
+                <span class="user-label">
+                    Logged in as
+                </span>
 
-                <strong id="userRole">Operator</strong>
+                <strong id="userRole">
+                    Operator
+                </strong>
 
             </div>
 
-
-            <button id="logout" class="logout-btn">
-
+            <button
+                id="logoutBtn"
+                class="logout-btn"
+            >
                 Logout
-
             </button>
 
         </div>
@@ -186,32 +157,31 @@
     </header>
 
 
-
-    <!-- MAIN -->
+    <!-- MAIN DASHBOARD -->
 
     <main class="dashboard-main">
 
 
-        <!-- PAGE TITLE -->
+        <!-- PAGE HEADING -->
 
         <div class="page-heading">
 
-            <div>
+            <h2>
+                Dashboard
+            </h2>
 
-                <h2>Part Entry Dashboard</h2>
-
-                <p>Manage your style wise part information</p>
-
-            </div>
+            <p>
+                Manage your part entry data from one place.
+            </p>
 
         </div>
 
 
-
-        <!-- SUMMARY CARDS -->
+        <!-- =================================================
+             CARDS
+        ================================================== -->
 
         <div class="cards">
-
 
             <div class="card">
 
@@ -221,32 +191,38 @@
 
                 <div class="card-content">
 
-                    <span>Total Part</span>
+                    <span>
+                        Total Parts
+                    </span>
 
-                    <h2 id="totalPart">0</h2>
+                    <h2 id="totalPart">
+                        0
+                    </h2>
 
                 </div>
 
             </div>
-
 
 
             <div class="card">
 
                 <div class="card-icon green-icon">
-                    🔢
+                    📊
                 </div>
 
                 <div class="card-content">
 
-                    <span>Total Order Qty</span>
+                    <span>
+                        Total Order Qty
+                    </span>
 
-                    <h2 id="totalQty">0</h2>
+                    <h2 id="totalQty">
+                        0
+                    </h2>
 
                 </div>
 
             </div>
-
 
 
             <div class="card">
@@ -257,177 +233,236 @@
 
                 <div class="card-content">
 
-                    <span>User</span>
+                    <span>
+                        Current User
+                    </span>
 
-                    <h2 id="userRole">Operator</h2>
+                    <h2
+                        id="currentUser"
+                        style="font-size:16px;"
+                    >
+                        Operator
+                    </h2>
 
                 </div>
 
             </div>
 
-
         </div>
 
 
-
-        <!-- ENTRY SECTION -->
+        <!-- =================================================
+             ENTRY FORM
+        ================================================== -->
 
         <section class="panel">
 
             <div class="panel-header">
 
-                <div>
+                <h2>
+                    Part Entry
+                </h2>
 
-                    <h2>Part Entry</h2>
-
-                    <p>Enter new part information</p>
-
-                </div>
-
-            </div>
-
-
-            <div class="entry-grid">
-
-
-                <div class="field">
-
-                    <label>Part Name</label>
-
-                    <input
-                        id="partName"
-                        placeholder="Enter part name"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>Buyer Name</label>
-
-                    <input
-                        id="buyerName"
-                        placeholder="Enter buyer name"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>Style No</label>
-
-                    <input
-                        id="styleNo"
-                        placeholder="Enter style number"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>PO No</label>
-
-                    <input
-                        id="poNo"
-                        placeholder="Enter PO number"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>Order Qty</label>
-
-                    <input
-                        id="orderQty"
-                        type="number"
-                        placeholder="Enter quantity"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>Color</label>
-
-                    <input
-                        id="color"
-                        placeholder="Enter color"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>Print</label>
-
-                    <input
-                        id="print"
-                        placeholder="Enter print"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>Embroidery</label>
-
-                    <input
-                        id="embroidery"
-                        placeholder="Enter embroidery"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label>Delivery Date</label>
-
-                    <input
-                        id="deliveryDate"
-                        type="date"
-                    >
-
-                </div>
-
+                <p>
+                    Enter new part information below.
+                </p>
 
             </div>
 
 
-            <div class="form-actions">
+            <form id="entryForm">
 
-                <button
-                    id="savePart"
-                    class="save-btn"
-                >
-                    💾 Save Part
-                </button>
+                <div class="entry-grid">
 
 
-                <button
-                    id="cancelEdit"
-                    class="cancel-btn"
-                    style="display:none;"
-                >
-                    ✕ Cancel Edit
-                </button>
+                    <!-- PART NAME -->
 
-            </div>
+                    <div class="field">
+
+                        <label for="partName">
+                            Part Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="partName"
+                            placeholder="Enter part name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- BUYER -->
+
+                    <div class="field">
+
+                        <label for="buyerName">
+                            Buyer Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="buyerName"
+                            placeholder="Enter buyer name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- STYLE -->
+
+                    <div class="field">
+
+                        <label for="styleNo">
+                            Style No
+                        </label>
+
+                        <input
+                            type="text"
+                            id="styleNo"
+                            placeholder="Enter style no"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ORDER QTY -->
+
+                    <div class="field">
+
+                        <label for="orderQty">
+                            Order Qty
+                        </label>
+
+                        <input
+                            type="number"
+                            id="orderQty"
+                            placeholder="Enter order quantity"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- COLOR -->
+
+                    <div class="field">
+
+                        <label for="color">
+                            Color
+                        </label>
+
+                        <input
+                            type="text"
+                            id="color"
+                            placeholder="Enter color"
+                        >
+
+                    </div>
+
+
+                    <!-- PRINT -->
+
+                    <div class="field">
+
+                        <label for="print">
+                            Print
+                        </label>
+
+                        <input
+                            type="text"
+                            id="print"
+                            placeholder="Print information"
+                        >
+
+                    </div>
+
+
+                    <!-- EMBROIDERY -->
+
+                    <div class="field">
+
+                        <label for="embroidery">
+                            Embroidery
+                        </label>
+
+                        <input
+                            type="text"
+                            id="embroidery"
+                            placeholder="Embroidery information"
+                        >
+
+                    </div>
+
+
+                    <!-- DELIVERY DATE -->
+
+                    <div class="field">
+
+                        <label for="deliveryDate">
+                            Delivery Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="deliveryDate"
+                        >
+
+                    </div>
+
+
+                    <!-- PO NO -->
+
+                    <div class="field">
+
+                        <label for="poNo">
+                            PO No
+                        </label>
+
+                        <input
+                            type="text"
+                            id="poNo"
+                            placeholder="Enter PO number"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                        id="saveBtn"
+                    >
+                        Save Part
+                    </button>
+
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        id="cancelBtn"
+                        style="display:none;"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
 
         </section>
 
 
-
-
-        <!-- SEARCH -->
+        <!-- =================================================
+             SEARCH
+        ================================================== -->
 
         <section class="search-panel">
 
@@ -439,9 +474,13 @@
 
                 <div>
 
-                    <h2>Part List</h2>
+                    <h2>
+                        Search Parts
+                    </h2>
 
-                    <p>Search and manage your parts</p>
+                    <p>
+                        Search by part, buyer, style or PO.
+                    </p>
 
                 </div>
 
@@ -450,11 +489,14 @@
 
             <div class="search-box">
 
-                <span>🔍</span>
+                <span>
+                    🔍
+                </span>
 
                 <input
-                    id="searchBox"
-                    placeholder="Search Part / Buyer / Style / PO..."
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search..."
                 >
 
             </div>
@@ -462,9 +504,9 @@
         </section>
 
 
-
-
-        <!-- TABLE -->
+        <!-- =================================================
+             TABLE
+        ================================================== -->
 
         <section class="table-panel">
 
@@ -476,32 +518,58 @@
 
                         <tr>
 
-                            <th>Part</th>
+                            <th>
+                                #
+                            </th>
 
-                            <th>Buyer</th>
+                            <th>
+                                Part Name
+                            </th>
 
-                            <th>Style</th>
+                            <th>
+                                Buyer Name
+                            </th>
 
-                            <th>Qty</th>
+                            <th>
+                                Style No
+                            </th>
 
-                            <th>Color</th>
+                            <th>
+                                Order Qty
+                            </th>
 
-                            <th>Print</th>
+                            <th>
+                                Color
+                            </th>
 
-                            <th>Embroidery</th>
+                            <th>
+                                Print
+                            </th>
 
-                            <th>Delivery</th>
+                            <th>
+                                Embroidery
+                            </th>
 
-                            <th>PO No</th>
+                            <th>
+                                Delivery Date
+                            </th>
 
-                            <th>Action</th>
+                            <th>
+                                PO No
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
 
                         </tr>
 
                     </thead>
 
 
-                    <tbody id="partTable">
+                    <tbody id="partsTableBody">
+
+                        <!-- Firebase data will appear here -->
 
                     </tbody>
 
@@ -514,12 +582,1006 @@
 
     </main>
 
-</div>
+</section>
 
 
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
-<script type="module" src="app.js"></script>
+<script type="module">
+
+import {
+    auth,
+    provider,
+    db
+} from "./firebase.js";
+
+
+import {
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    sendPasswordResetEmail,
+    signOut,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+
+import {
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    updateDoc,
+    doc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const loginPage =
+    document.getElementById("loginPage");
+
+const dashboard =
+    document.getElementById("dashboard");
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const loginEmail =
+    document.getElementById("loginEmail");
+
+const loginPassword =
+    document.getElementById("loginPassword");
+
+const loginBtn =
+    document.getElementById("loginBtn");
+
+const googleLogin =
+    document.getElementById("googleLogin");
+
+const forgotPassword =
+    document.getElementById("forgotPassword");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const togglePassword =
+    document.getElementById("togglePassword");
+
+const entryForm =
+    document.getElementById("entryForm");
+
+const cancelBtn =
+    document.getElementById("cancelBtn");
+
+const saveBtn =
+    document.getElementById("saveBtn");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const partsTableBody =
+    document.getElementById("partsTableBody");
+
+const totalPart =
+    document.getElementById("totalPart");
+
+const totalQty =
+    document.getElementById("totalQty");
+
+const currentUser =
+    document.getElementById("currentUser");
+
+const userRole =
+    document.getElementById("userRole");
+
+
+/* =====================================================
+   EDIT ID
+===================================================== */
+
+let editingId = null;
+
+let allParts = [];
+
+
+/* =====================================================
+   PASSWORD SHOW / HIDE
+===================================================== */
+
+togglePassword.addEventListener(
+    "click",
+    () => {
+
+        if (
+            loginPassword.type === "password"
+        ) {
+
+            loginPassword.type = "text";
+
+            togglePassword.textContent = "🙈";
+
+        } else {
+
+            loginPassword.type = "password";
+
+            togglePassword.textContent = "👁";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   EMAIL LOGIN
+===================================================== */
+
+loginForm.addEventListener(
+    "submit",
+    async (e) => {
+
+        e.preventDefault();
+
+        const email =
+            loginEmail.value.trim();
+
+        const password =
+            loginPassword.value;
+
+
+        if (!email || !password) {
+
+            alert(
+                "Please enter email and password."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            loginBtn.disabled = true;
+
+            loginBtn.textContent =
+                "Logging in...";
+
+
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Login failed: " +
+                error.message
+            );
+
+
+        } finally {
+
+            loginBtn.disabled = false;
+
+            loginBtn.textContent =
+                "Login";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   GOOGLE LOGIN
+===================================================== */
+
+googleLogin.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            await signInWithPopup(
+                auth,
+                provider
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Google Login failed: " +
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
+
+forgotPassword.addEventListener(
+    "click",
+    async (e) => {
+
+        e.preventDefault();
+
+        const email =
+            loginEmail.value.trim();
+
+
+        if (!email) {
+
+            alert(
+                "Please enter your email first."
+            );
+
+            loginEmail.focus();
+
+            return;
+
+        }
+
+
+        try {
+
+            await sendPasswordResetEmail(
+                auth,
+                email
+            );
+
+            alert(
+                "Password reset email sent."
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to send reset email: " +
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            await signOut(auth);
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (user) {
+
+            loginPage.style.display =
+                "none";
+
+            dashboard.style.display =
+                "block";
+
+
+            const name =
+                user.displayName ||
+                user.email ||
+                "Operator";
+
+
+            userRole.textContent =
+                name;
+
+            currentUser.textContent =
+                name;
+
+
+            await loadParts();
+
+
+        } else {
+
+            loginPage.style.display =
+                "flex";
+
+            dashboard.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ENTRY FORM
+===================================================== */
+
+entryForm.addEventListener(
+    "submit",
+    async (e) => {
+
+        e.preventDefault();
+
+
+        const data = {
+
+            partName:
+                document.getElementById(
+                    "partName"
+                ).value.trim(),
+
+            buyerName:
+                document.getElementById(
+                    "buyerName"
+                ).value.trim(),
+
+            styleNo:
+                document.getElementById(
+                    "styleNo"
+                ).value.trim(),
+
+            orderQty:
+                Number(
+                    document.getElementById(
+                        "orderQty"
+                    ).value
+                ),
+
+            color:
+                document.getElementById(
+                    "color"
+                ).value.trim(),
+
+            print:
+                document.getElementById(
+                    "print"
+                ).value.trim(),
+
+            embroidery:
+                document.getElementById(
+                    "embroidery"
+                ).value.trim(),
+
+            deliveryDate:
+                document.getElementById(
+                    "deliveryDate"
+                ).value,
+
+            poNo:
+                document.getElementById(
+                    "poNo"
+                ).value.trim(),
+
+            updatedAt:
+                serverTimestamp()
+
+        };
+
+
+        try {
+
+            saveBtn.disabled = true;
+
+            saveBtn.textContent =
+                "Saving...";
+
+
+            if (editingId) {
+
+                await updateDoc(
+                    doc(
+                        db,
+                        "parts",
+                        editingId
+                    ),
+                    data
+                );
+
+                alert(
+                    "Part updated successfully."
+                );
+
+
+            } else {
+
+                await addDoc(
+                    collection(
+                        db,
+                        "parts"
+                    ),
+                    {
+                        ...data,
+                        createdAt:
+                            serverTimestamp()
+                    }
+                );
+
+                alert(
+                    "Part saved successfully."
+                );
+
+            }
+
+
+            resetForm();
+
+            await loadParts();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Save failed: " +
+                error.message
+            );
+
+
+        } finally {
+
+            saveBtn.disabled = false;
+
+            saveBtn.textContent =
+                editingId
+                ? "Update Part"
+                : "Save Part";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   LOAD PARTS
+===================================================== */
+
+async function loadParts() {
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "parts"
+                )
+            );
+
+
+        allParts = [];
+
+
+        snapshot.forEach(
+            (item) => {
+
+                allParts.push({
+
+                    id: item.id,
+
+                    ...item.data()
+
+                });
+
+            }
+        );
+
+
+        renderParts(allParts);
+
+        updateTotals(allParts);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to load parts: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER TABLE
+===================================================== */
+
+function renderParts(parts) {
+
+    partsTableBody.innerHTML = "";
+
+
+    if (parts.length === 0) {
+
+        partsTableBody.innerHTML = `
+
+            <tr>
+
+                <td colspan="11"
+                    style="
+                    padding:30px;
+                    color:#777c85;
+                    ">
+
+                    No part data found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    parts.forEach(
+        (part, index) => {
+
+            const tr =
+                document.createElement("tr");
+
+
+            tr.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    ${safe(part.partName)}
+                </td>
+
+                <td>
+                    ${safe(part.buyerName)}
+                </td>
+
+                <td>
+                    ${safe(part.styleNo)}
+                </td>
+
+                <td>
+                    ${Number(part.orderQty || 0)}
+                </td>
+
+                <td>
+                    ${safe(part.color)}
+                </td>
+
+                <td>
+                    ${safe(part.print)}
+                </td>
+
+                <td>
+                    ${safe(part.embroidery)}
+                </td>
+
+                <td>
+                    ${safe(part.deliveryDate)}
+                </td>
+
+                <td>
+                    ${safe(part.poNo)}
+                </td>
+
+                <td>
+
+                    <button
+                        class="edit-btn"
+                        data-id="${part.id}"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="delete-btn"
+                        data-id="${part.id}"
+                    >
+                        Delete
+                    </button>
+
+                </td>
+
+            `;
+
+
+            partsTableBody.appendChild(tr);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   EDIT / DELETE
+===================================================== */
+
+partsTableBody.addEventListener(
+    "click",
+    async (e) => {
+
+        const id =
+            e.target.dataset.id;
+
+
+        if (!id) return;
+
+
+        if (
+            e.target.classList.contains(
+                "edit-btn"
+            )
+        ) {
+
+            const part =
+                allParts.find(
+                    item =>
+                        item.id === id
+                );
+
+
+            if (part) {
+
+                fillForm(part);
+
+            }
+
+        }
+
+
+        if (
+            e.target.classList.contains(
+                "delete-btn"
+            )
+        ) {
+
+            const confirmDelete =
+                confirm(
+                    "Are you sure you want to delete this part?"
+                );
+
+
+            if (!confirmDelete) return;
+
+
+            try {
+
+                await deleteDoc(
+                    doc(
+                        db,
+                        "parts",
+                        id
+                    )
+                );
+
+
+                alert(
+                    "Part deleted successfully."
+                );
+
+
+                await loadParts();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Delete failed: " +
+                    error.message
+                );
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   FILL FORM FOR EDIT
+===================================================== */
+
+function fillForm(part) {
+
+    document.getElementById(
+        "partName"
+    ).value =
+        part.partName || "";
+
+
+    document.getElementById(
+        "buyerName"
+    ).value =
+        part.buyerName || "";
+
+
+    document.getElementById(
+        "styleNo"
+    ).value =
+        part.styleNo || "";
+
+
+    document.getElementById(
+        "orderQty"
+    ).value =
+        part.orderQty || "";
+
+
+    document.getElementById(
+        "color"
+    ).value =
+        part.color || "";
+
+
+    document.getElementById(
+        "print"
+    ).value =
+        part.print || "";
+
+
+    document.getElementById(
+        "embroidery"
+    ).value =
+        part.embroidery || "";
+
+
+    document.getElementById(
+        "deliveryDate"
+    ).value =
+        part.deliveryDate || "";
+
+
+    document.getElementById(
+        "poNo"
+    ).value =
+        part.poNo || "";
+
+
+    editingId =
+        part.id;
+
+
+    saveBtn.textContent =
+        "Update Part";
+
+
+    cancelBtn.style.display =
+        "block";
+
+
+    window.scrollTo({
+        top: 300,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =====================================================
+   CANCEL EDIT
+===================================================== */
+
+cancelBtn.addEventListener(
+    "click",
+    () => {
+
+        resetForm();
+
+    }
+);
+
+
+/* =====================================================
+   RESET FORM
+===================================================== */
+
+function resetForm() {
+
+    entryForm.reset();
+
+    editingId = null;
+
+    saveBtn.textContent =
+        "Save Part";
+
+    cancelBtn.style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+searchInput.addEventListener(
+    "input",
+    () => {
+
+        const keyword =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+
+        if (!keyword) {
+
+            renderParts(allParts);
+
+            return;
+
+        }
+
+
+        const filtered =
+            allParts.filter(
+                part => {
+
+                    return (
+
+                        String(
+                            part.partName || ""
+                        )
+                        .toLowerCase()
+                        .includes(keyword)
+
+                        ||
+
+                        String(
+                            part.buyerName || ""
+                        )
+                        .toLowerCase()
+                        .includes(keyword)
+
+                        ||
+
+                        String(
+                            part.styleNo || ""
+                        )
+                        .toLowerCase()
+                        .includes(keyword)
+
+                        ||
+
+                        String(
+                            part.poNo || ""
+                        )
+                        .toLowerCase()
+                        .includes(keyword)
+
+                        ||
+
+                        String(
+                            part.color || ""
+                        )
+                        .toLowerCase()
+                        .includes(keyword)
+
+                    );
+
+                }
+            );
+
+
+        renderParts(filtered);
+
+    }
+);
+
+
+/* =====================================================
+   TOTALS
+===================================================== */
+
+function updateTotals(parts) {
+
+    totalPart.textContent =
+        parts.length;
+
+
+    const qty =
+        parts.reduce(
+            (sum, part) => {
+
+                return (
+                    sum +
+                    Number(
+                        part.orderQty || 0
+                    )
+                );
+
+            },
+            0
+        );
+
+
+    totalQty.textContent =
+        qty.toLocaleString();
+
+}
+
+
+/* =====================================================
+   SAFE TEXT
+===================================================== */
+
+function safe(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+</script>
 
 </body>
-
 </html>
+```
