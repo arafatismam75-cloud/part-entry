@@ -2,13 +2,20 @@
 // ======================================================
 // PART ENTRY ERP
 // app.js
+// Firebase + Login + Dashboard + Part Entry + CRUD
 // ======================================================
 
-import {
-    auth,
-    provider,
-    db
-} from "./firebase.js";
+
+// ======================================================
+// Firebase
+// ======================================================
+
+import { auth, provider, db } from "./firebase.js";
+
+
+// ======================================================
+// Firebase Authentication
+// ======================================================
 
 import {
     signInWithEmailAndPassword,
@@ -17,6 +24,11 @@ import {
     signOut,
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+
+// ======================================================
+// Firebase Firestore
+// ======================================================
 
 import {
     collection,
@@ -30,101 +42,223 @@ import {
 
 
 // ======================================================
-// ELEMENTS
+// DOM Helper
 // ======================================================
 
-const loginPage = document.getElementById("loginPage");
-const dashboard = document.getElementById("dashboard");
-
-const loginForm = document.getElementById("loginForm");
-const loginEmail = document.getElementById("loginEmail");
-const loginPassword = document.getElementById("loginPassword");
-const loginBtn = document.getElementById("loginBtn");
-
-const googleLogin = document.getElementById("googleLogin");
-const forgotPassword = document.getElementById("forgotPassword");
-
-const logoutBtn = document.getElementById("logoutBtn");
-const sidebarLogout = document.getElementById("sidebarLogout");
-
-const togglePassword = document.getElementById("togglePassword");
-
-const entryForm = document.getElementById("entryForm");
-const cancelBtn = document.getElementById("cancelBtn");
-const saveBtn = document.getElementById("saveBtn");
-
-const searchInput = document.getElementById("searchInput");
-const partsTableBody = document.getElementById("partsTableBody");
-
-const totalPart = document.getElementById("totalPart");
-const totalQty = document.getElementById("totalQty");
-
-const currentUser = document.getElementById("currentUser");
-const userRole = document.getElementById("userRole");
-
-const settingsEmail = document.getElementById("settingsEmail");
-const settingsRole = document.getElementById("settingsRole");
-
-const headerTitle = document.getElementById("headerTitle");
-
-const sidebar = document.getElementById("sidebar");
-const menuToggle = document.getElementById("menuToggle");
+const $ = (id) => document.getElementById(id);
 
 
 // ======================================================
-// VARIABLES
+// Login Elements
 // ======================================================
 
-let editingId = null;
+const loginPage = $("loginPage");
+const dashboard = $("dashboard");
+
+const loginForm = $("loginForm");
+const loginEmail = $("loginEmail");
+const loginPassword = $("loginPassword");
+
+const loginBtn = $("loginBtn");
+const googleLogin = $("googleLogin");
+const forgotPassword = $("forgotPassword");
+const signupLink = $("signupLink");
+const togglePassword = $("togglePassword");
+
+
+// ======================================================
+// Dashboard Elements
+// ======================================================
+
+const totalPart = $("totalPart");
+const totalQty = $("totalQty");
+
+const currentUser = $("currentUser");
+const userRole = $("userRole");
+
+const settingsEmail = $("settingsEmail");
+const settingsRole = $("settingsRole");
+
+const headerTitle = $("headerTitle");
+
+
+// ======================================================
+// Sidebar / Navigation
+// ======================================================
+
+const menuToggle = $("menuToggle");
+const sidebarLogout = $("sidebarLogout");
+const logoutBtn = $("logoutBtn");
+
+const navItems = document.querySelectorAll("[data-page]");
+
+
+// ======================================================
+// Part Entry
+// ======================================================
+
+const entryForm = $("entryForm");
+
+const partName = $("partName");
+const buyerName = $("buyerName");
+const styleNo = $("styleNo");
+const orderQty = $("orderQty");
+const color = $("color");
+const print = $("print");
+const embroidery = $("embroidery");
+const deliveryDate = $("deliveryDate");
+const poNo = $("poNo");
+
+const saveBtn = $("saveBtn");
+const cancelBtn = $("cancelBtn");
+
+
+// ======================================================
+// Parts Table
+// ======================================================
+
+const searchInput = $("searchInput");
+const partsTableBody = $("partsTableBody");
+
+
+// ======================================================
+// Application State
+// ======================================================
 
 let allParts = [];
+let editingPartId = null;
 
 
 // ======================================================
-// PAGE NAVIGATION
+// Utility
 // ======================================================
 
-const menuItems = document.querySelectorAll(".menu-item");
+function escapeHTML(value) {
 
-const contentPages = document.querySelectorAll(".content-page");
+    if (value === null || value === undefined) {
+        return "";
+    }
 
-const pageButtons = document.querySelectorAll("[data-page]");
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
+
+// ======================================================
+// Firebase Error Message
+// ======================================================
+
+function firebaseError(error) {
+
+    console.error("Firebase Error:", error);
+
+    const code = error?.code || "";
+
+    const messages = {
+
+        "auth/invalid-credential":
+            "Email অথবা Password সঠিক নয়।",
+
+        "auth/invalid-email":
+            "সঠিক Email Address দিন।",
+
+        "auth/user-not-found":
+            "এই Email দিয়ে কোনো Account পাওয়া যায়নি।",
+
+        "auth/wrong-password":
+            "Password ভুল হয়েছে।",
+
+        "auth/popup-closed-by-user":
+            "Google Login window বন্ধ করা হয়েছে।",
+
+        "auth/popup-blocked":
+            "Browser Popup Block করেছে। Popup Allow করুন।",
+
+        "auth/cancelled-popup-request":
+            "Google Login বাতিল হয়েছে।",
+
+        "auth/unauthorized-domain":
+            "এই Website Firebase Authentication-এ Authorized করা হয়নি।",
+
+        "auth/network-request-failed":
+            "Internet connection পরীক্ষা করুন।",
+
+        "auth/too-many-requests":
+            "অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।",
+
+        "permission-denied":
+            "Firestore permission denied।",
+
+        "unavailable":
+            "Firebase Server বর্তমানে পাওয়া যাচ্ছে না।"
+
+    };
+
+    return messages[code] || error?.message || "একটি সমস্যা হয়েছে।";
+}
+
+
+// ======================================================
+// Loading Button
+// ======================================================
+
+function buttonLoading(button, loading, normalText) {
+
+    if (!button) return;
+
+    button.disabled = loading;
+
+    if (loading) {
+
+        button.dataset.oldText =
+            button.innerHTML;
+
+        button.innerHTML = "Please wait...";
+
+    } else {
+
+        button.innerHTML =
+            button.dataset.oldText || normalText;
+    }
+}
+
+
+// ======================================================
+// Show Page
+// ======================================================
 
 function showPage(pageId) {
 
-    contentPages.forEach(page => {
+    const pages = document.querySelectorAll(".page");
 
-        page.classList.remove("active-page");
-
+    pages.forEach(page => {
+        page.classList.remove("active");
     });
 
-
-    const selectedPage =
-        document.getElementById(pageId);
-
+    const selectedPage = $(pageId);
 
     if (selectedPage) {
-
-        selectedPage.classList.add("active-page");
-
+        selectedPage.classList.add("active");
     }
 
 
-    menuItems.forEach(item => {
+    // Sidebar active state
+
+    navItems.forEach(item => {
 
         item.classList.remove("active");
 
-        if (
-            item.dataset.page === pageId
-        ) {
-
+        if (item.dataset.page === pageId) {
             item.classList.add("active");
-
         }
-
     });
 
+
+    // Header title
 
     const titles = {
 
@@ -138,138 +272,121 @@ function showPage(pageId) {
 
     };
 
-
-    headerTitle.textContent =
-        titles[pageId] || "Dashboard";
+    if (headerTitle) {
+        headerTitle.textContent =
+            titles[pageId] || "Dashboard";
+    }
 
 
     // Mobile sidebar close
 
-    if (
-        window.innerWidth <= 700
-    ) {
+    const sidebar =
+        document.querySelector(".sidebar");
 
+    if (sidebar) {
         sidebar.classList.remove("mobile-open");
-
     }
-
 }
 
 
-pageButtons.forEach(button => {
+// ======================================================
+// Sidebar Navigation
+// ======================================================
 
-    button.addEventListener(
-        "click",
-        () => {
+navItems.forEach(item => {
 
-            const page =
-                button.dataset.page;
+    item.addEventListener("click", () => {
 
-            if (page) {
+        const pageId =
+            item.dataset.page;
 
-                showPage(page);
+        if (!pageId) return;
 
-            }
-
-        }
-    );
+        showPage(pageId);
+    });
 
 });
 
 
 // ======================================================
-// MOBILE MENU
+// Mobile Menu
 // ======================================================
 
 if (menuToggle) {
 
-    menuToggle.addEventListener(
-        "click",
-        () => {
+    menuToggle.addEventListener("click", () => {
 
-            sidebar.classList.toggle(
-                "mobile-open"
-            );
+        const sidebar =
+            document.querySelector(".sidebar");
 
+        if (sidebar) {
+            sidebar.classList.toggle("mobile-open");
         }
-    );
+
+    });
 
 }
 
 
 // ======================================================
-// PASSWORD SHOW / HIDE
+// Password Show / Hide
 // ======================================================
 
-if (togglePassword) {
+if (togglePassword && loginPassword) {
 
-    togglePassword.addEventListener(
-        "click",
-        () => {
+    togglePassword.addEventListener("click", () => {
 
-            if (
-                loginPassword.type ===
-                "password"
-            ) {
+        if (loginPassword.type === "password") {
 
-                loginPassword.type =
-                    "text";
+            loginPassword.type = "text";
 
-                togglePassword.textContent =
-                    "🙈";
+            togglePassword.textContent = "🙈";
 
-            } else {
+        } else {
 
-                loginPassword.type =
-                    "password";
+            loginPassword.type = "password";
 
-                togglePassword.textContent =
-                    "👁";
-
-            }
-
+            togglePassword.textContent = "👁";
         }
-    );
+
+    });
 
 }
 
 
 // ======================================================
-// EMAIL LOGIN
+// Email Login
 // ======================================================
 
-loginForm.addEventListener(
-    "submit",
-    async (event) => {
+if (loginForm) {
+
+    loginForm.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
-
         const email =
-            loginEmail.value.trim();
+            loginEmail?.value.trim();
 
         const password =
-            loginPassword.value;
+            loginPassword?.value;
 
 
         if (!email || !password) {
 
-            alert(
-                "Please enter email and password."
-            );
+            alert("Email এবং Password দিন।");
 
             return;
-
         }
 
 
+        buttonLoading(
+            loginBtn,
+            true,
+            "Login"
+        );
+
+
         try {
-
-            loginBtn.disabled = true;
-
-            loginBtn.textContent =
-                "Logging in...";
-
 
             await signInWithEmailAndPassword(
                 auth,
@@ -277,33 +394,25 @@ loginForm.addEventListener(
                 password
             );
 
+            // onAuthStateChanged automatically
+            // dashboard দেখাবে
 
         } catch (error) {
 
-            console.error(
-                "Login Error:",
-                error
-            );
-
-
-            alert(
-                getFirebaseErrorMessage(
-                    error
-                )
-            );
-
+            alert(firebaseError(error));
 
         } finally {
 
-            loginBtn.disabled = false;
-
-            loginBtn.textContent =
-                "Login";
-
+            buttonLoading(
+                loginBtn,
+                false,
+                "Login"
+            );
         }
 
-    }
-);
+    });
+
+}
 
 
 // ======================================================
@@ -312,107 +421,135 @@ loginForm.addEventListener(
 
 if (googleLogin) {
 
-    googleLogin.addEventListener(
-        "click",
-        async () => {
+    googleLogin.addEventListener("click", async (event) => {
 
-            try {
+        event.preventDefault();
 
+
+        buttonLoading(
+            googleLogin,
+            true,
+            "Continue with Google"
+        );
+
+
+        try {
+
+            // IMPORTANT:
+            // firebase.js থেকে provider নেওয়া হয়েছে
+
+            const result =
                 await signInWithPopup(
                     auth,
                     provider
                 );
 
 
-            } catch (error) {
-
-                console.error(
-                    "Google Login Error:",
-                    error
-                );
+            console.log(
+                "Google Login Successful:",
+                result.user
+            );
 
 
-                alert(
-                    getFirebaseErrorMessage(
-                        error
-                    )
-                );
+            // onAuthStateChanged automatically
+            // dashboard দেখাবে
 
-            }
 
+        } catch (error) {
+
+            console.error(
+                "Google Login Error:",
+                error
+            );
+
+            alert(
+                "Google Login হয়নি:\n\n" +
+                firebaseError(error)
+            );
+
+        } finally {
+
+            buttonLoading(
+                googleLogin,
+                false,
+                "Continue with Google"
+            );
         }
-    );
+
+    });
 
 }
 
 
 // ======================================================
-// FORGOT PASSWORD
+// Forgot Password
 // ======================================================
 
 if (forgotPassword) {
 
-    forgotPassword.addEventListener(
-        "click",
-        async (event) => {
+    forgotPassword.addEventListener("click", async (event) => {
 
-            event.preventDefault();
+        event.preventDefault();
 
-
-            const email =
-                loginEmail.value.trim();
+        const email =
+            loginEmail?.value.trim();
 
 
-            if (!email) {
+        if (!email) {
 
-                alert(
-                    "Please enter your email first."
-                );
+            alert(
+                "প্রথমে Email Address লিখুন।"
+            );
 
-                loginEmail.focus();
+            loginEmail?.focus();
 
-                return;
-
-            }
-
-
-            try {
-
-                await sendPasswordResetEmail(
-                    auth,
-                    email
-                );
-
-
-                alert(
-                    "Password reset email sent successfully."
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Password Reset Error:",
-                    error
-                );
-
-
-                alert(
-                    getFirebaseErrorMessage(
-                        error
-                    )
-                );
-
-            }
-
+            return;
         }
-    );
+
+
+        try {
+
+            await sendPasswordResetEmail(
+                auth,
+                email
+            );
+
+            alert(
+                "Password reset link আপনার Email-এ পাঠানো হয়েছে।"
+            );
+
+        } catch (error) {
+
+            alert(firebaseError(error));
+        }
+
+    });
 
 }
 
 
 // ======================================================
-// LOGOUT
+// Signup Link
+// ======================================================
+
+if (signupLink) {
+
+    signupLink.addEventListener("click", (event) => {
+
+        event.preventDefault();
+
+        // signup.html এখনো থাকলে সেখানে যাবে
+
+        window.location.href =
+            "signup.html";
+
+    });
+
+}
+
+
+// ======================================================
+// Logout Function
 // ======================================================
 
 async function logoutUser() {
@@ -421,6 +558,8 @@ async function logoutUser() {
 
         await signOut(auth);
 
+        console.log("Logged out");
+
     } catch (error) {
 
         console.error(
@@ -428,10 +567,15 @@ async function logoutUser() {
             error
         );
 
+        alert(firebaseError(error));
     }
 
 }
 
+
+// ======================================================
+// Logout Buttons
+// ======================================================
 
 if (logoutBtn) {
 
@@ -454,240 +598,136 @@ if (sidebarLogout) {
 
 
 // ======================================================
+// Current User Information
+// ======================================================
+
+function updateUserInformation(user) {
+
+    if (!user) return;
+
+
+    const name =
+        user.displayName ||
+        user.email?.split("@")[0] ||
+        "User";
+
+
+    if (currentUser) {
+        currentUser.textContent = name;
+    }
+
+
+    if (userRole) {
+        userRole.textContent = "Operator";
+    }
+
+
+    if (settingsEmail) {
+        settingsEmail.textContent =
+            user.email || "-";
+    }
+
+
+    if (settingsRole) {
+        settingsRole.textContent =
+            "Operator";
+    }
+
+}
+
+
+// ======================================================
 // AUTH STATE
 // ======================================================
 
-onAuthStateChanged(
-    auth,
-    async (user) => {
+onAuthStateChanged(auth, async (user) => {
 
-        if (user) {
+    if (user) {
 
-            loginPage.style.display =
-                "none";
-
-            dashboard.style.display =
-                "block";
+        console.log(
+            "User Logged In:",
+            user.email
+        );
 
 
-            const name =
-                user.displayName ||
-                user.email ||
-                "Operator";
+        // Login hide
+
+        if (loginPage) {
+            loginPage.style.display = "none";
+        }
 
 
-            userRole.textContent =
-                name;
+        // Dashboard show
 
-            currentUser.textContent =
-                name;
-
-
-            if (settingsEmail) {
-
-                settingsEmail.textContent =
-                    user.email || "-";
-
-            }
+        if (dashboard) {
+            dashboard.style.display = "flex";
+        }
 
 
-            if (settingsRole) {
-
-                settingsRole.textContent =
-                    "Operator";
-
-            }
+        updateUserInformation(user);
 
 
-            await loadParts();
+        // Default page
+
+        showPage("dashboardPage");
 
 
-            showPage("dashboardPage");
+        // Firestore data load
+
+        await loadParts();
 
 
-        } else {
+    } else {
 
-            loginPage.style.display =
-                "flex";
+        console.log("No user logged in");
 
-            dashboard.style.display =
-                "none";
 
+        // Dashboard hide
+
+        if (dashboard) {
+            dashboard.style.display = "none";
+        }
+
+
+        // Login show
+
+        if (loginPage) {
+            loginPage.style.display = "flex";
         }
 
     }
-);
+
+});
 
 
 // ======================================================
-// ENTRY FORM
-// ======================================================
-
-entryForm.addEventListener(
-    "submit",
-    async (event) => {
-
-        event.preventDefault();
-
-
-        const data = {
-
-            partName:
-                getValue("partName"),
-
-            buyerName:
-                getValue("buyerName"),
-
-            styleNo:
-                getValue("styleNo"),
-
-            orderQty:
-                Number(
-                    document.getElementById(
-                        "orderQty"
-                    ).value
-                ) || 0,
-
-            color:
-                getValue("color"),
-
-            print:
-                getValue("print"),
-
-            embroidery:
-                getValue("embroidery"),
-
-            deliveryDate:
-                getValue("deliveryDate"),
-
-            poNo:
-                getValue("poNo"),
-
-            updatedAt:
-                serverTimestamp()
-
-        };
-
-
-        try {
-
-            saveBtn.disabled = true;
-
-            saveBtn.textContent =
-                editingId
-                ? "Updating..."
-                : "Saving...";
-
-
-            if (editingId) {
-
-                await updateDoc(
-                    doc(
-                        db,
-                        "parts",
-                        editingId
-                    ),
-                    data
-                );
-
-
-                alert(
-                    "Part updated successfully."
-                );
-
-
-            } else {
-
-                await addDoc(
-                    collection(
-                        db,
-                        "parts"
-                    ),
-                    {
-                        ...data,
-
-                        createdAt:
-                            serverTimestamp()
-                    }
-                );
-
-
-                alert(
-                    "Part saved successfully."
-                );
-
-            }
-
-
-            resetForm();
-
-            await loadParts();
-
-            showPage("partsPage");
-
-
-        } catch (error) {
-
-            console.error(
-                "Firestore Save Error:",
-                error
-            );
-
-
-            alert(
-                "Operation failed:\n\n" +
-                getFirebaseErrorMessage(
-                    error
-                )
-            );
-
-
-        } finally {
-
-            saveBtn.disabled = false;
-
-            saveBtn.textContent =
-                "Save Part";
-
-        }
-
-    }
-);
-
-
-// ======================================================
-// LOAD PARTS
+// LOAD PARTS FROM FIRESTORE
 // ======================================================
 
 async function loadParts() {
 
     try {
 
-        const snapshot =
+        const querySnapshot =
             await getDocs(
-                collection(
-                    db,
-                    "parts"
-                )
+                collection(db, "parts")
             );
 
 
         allParts = [];
 
 
-        snapshot.forEach(
-            item => {
+        querySnapshot.forEach((document) => {
 
-                allParts.push({
+            allParts.push({
 
-                    id: item.id,
+                id: document.id,
 
-                    ...item.data()
+                ...document.data()
 
-                });
+            });
 
-            }
-        );
+        });
 
 
         // Newest first
@@ -695,12 +735,9 @@ async function loadParts() {
         allParts.reverse();
 
 
-        renderParts(
-            allParts
-        );
+        updateDashboardTotals();
 
-
-        updateTotals(
+        renderPartsTable(
             allParts
         );
 
@@ -712,26 +749,9 @@ async function loadParts() {
             error
         );
 
-
-        partsTableBody.innerHTML = `
-
-            <tr>
-                <td colspan="11"
-                    style="padding:30px;color:#dc3545;">
-
-                    Unable to load data.
-
-                </td>
-            </tr>
-
-        `;
-
-
         alert(
-            "Unable to load parts:\n\n" +
-            getFirebaseErrorMessage(
-                error
-            )
+            "Parts data load হয়নি:\n\n" +
+            firebaseError(error)
         );
 
     }
@@ -740,30 +760,61 @@ async function loadParts() {
 
 
 // ======================================================
-// RENDER TABLE
+// DASHBOARD TOTALS
 // ======================================================
 
-function renderParts(parts) {
+function updateDashboardTotals() {
 
-    partsTableBody.innerHTML = "";
+    let totalPartCount =
+        allParts.length;
+
+    let totalQuantity = 0;
 
 
-    if (parts.length === 0) {
+    allParts.forEach(part => {
+
+        const qty =
+            Number(part.orderQty) || 0;
+
+        totalQuantity += qty;
+
+    });
+
+
+    if (totalPart) {
+        totalPart.textContent =
+            totalPartCount;
+    }
+
+
+    if (totalQty) {
+        totalQty.textContent =
+            totalQuantity.toLocaleString();
+    }
+
+}
+
+
+// ======================================================
+// RENDER PARTS TABLE
+// ======================================================
+
+function renderPartsTable(parts) {
+
+    if (!partsTableBody) return;
+
+
+    if (!parts.length) {
 
         partsTableBody.innerHTML = `
 
             <tr>
 
                 <td
-                    colspan="11"
-                    style="
-                        padding:35px;
-                        color:#777c85;
-                    "
+                    colspan="10"
+                    class="empty-state"
                 >
-
-                    No part data found.
-
+                    No Part Data Found
                 </td>
 
             </tr>
@@ -771,87 +822,309 @@ function renderParts(parts) {
         `;
 
         return;
-
     }
 
 
-    parts.forEach(
-        (part, index) => {
+    partsTableBody.innerHTML =
+        parts.map((part, index) => {
 
-            const row =
-                document.createElement(
-                    "tr"
-                );
+            return `
 
+                <tr>
 
-            row.innerHTML = `
+                    <td>
+                        ${index + 1}
+                    </td>
 
-                <td>
-                    ${index + 1}
-                </td>
+                    <td>
+                        ${escapeHTML(part.partName)}
+                    </td>
 
-                <td>
-                    ${safe(part.partName)}
-                </td>
+                    <td>
+                        ${escapeHTML(part.buyerName)}
+                    </td>
 
-                <td>
-                    ${safe(part.buyerName)}
-                </td>
+                    <td>
+                        ${escapeHTML(part.styleNo)}
+                    </td>
 
-                <td>
-                    ${safe(part.styleNo)}
-                </td>
+                    <td>
+                        ${escapeHTML(part.orderQty)}
+                    </td>
 
-                <td>
-                    ${Number(
-                        part.orderQty || 0
-                    ).toLocaleString()}
-                </td>
+                    <td>
+                        ${escapeHTML(part.color)}
+                    </td>
 
-                <td>
-                    ${safe(part.color)}
-                </td>
+                    <td>
+                        ${escapeHTML(part.print)}
+                    </td>
 
-                <td>
-                    ${safe(part.print)}
-                </td>
+                    <td>
+                        ${escapeHTML(part.embroidery)}
+                    </td>
 
-                <td>
-                    ${safe(part.embroidery)}
-                </td>
+                    <td>
+                        ${escapeHTML(part.deliveryDate)}
+                    </td>
 
-                <td>
-                    ${safe(part.deliveryDate)}
-                </td>
+                    <td>
+                        ${escapeHTML(part.poNo)}
+                    </td>
 
-                <td>
-                    ${safe(part.poNo)}
-                </td>
+                    <td>
 
-                <td>
+                        <button
+                            class="table-btn edit-btn"
+                            data-id="${part.id}"
+                            type="button"
+                        >
+                            Edit
+                        </button>
 
-                    <button
-                        class="edit-btn"
-                        data-id="${part.id}"
-                    >
-                        Edit
-                    </button>
+                        <button
+                            class="table-btn delete-btn"
+                            data-id="${part.id}"
+                            type="button"
+                        >
+                            Delete
+                        </button>
 
-                    <button
-                        class="delete-btn"
-                        data-id="${part.id}"
-                    >
-                        Delete
-                    </button>
+                    </td>
 
-                </td>
+                </tr>
 
             `;
 
+        }).join("");
 
-            partsTableBody.appendChild(
-                row
+
+    // Edit buttons
+
+    document
+        .querySelectorAll(".edit-btn")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    editPart(
+                        button.dataset.id
+                    );
+
+                }
             );
+
+        });
+
+
+    // Delete buttons
+
+    document
+        .querySelectorAll(".delete-btn")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    deletePart(
+                        button.dataset.id
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+// ======================================================
+// PART ENTRY SAVE
+// ======================================================
+
+if (entryForm) {
+
+    entryForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            const data = {
+
+                partName:
+                    partName?.value.trim() || "",
+
+                buyerName:
+                    buyerName?.value.trim() || "",
+
+                styleNo:
+                    styleNo?.value.trim() || "",
+
+                orderQty:
+                    Number(orderQty?.value) || 0,
+
+                color:
+                    color?.value.trim() || "",
+
+                print:
+                    print?.value.trim() || "",
+
+                embroidery:
+                    embroidery?.value.trim() || "",
+
+                deliveryDate:
+                    deliveryDate?.value || "",
+
+                poNo:
+                    poNo?.value.trim() || "",
+
+                updatedAt:
+                    serverTimestamp()
+
+            };
+
+
+            // Basic validation
+
+            if (!data.partName) {
+
+                alert("Part Name দিন.");
+
+                partName?.focus();
+
+                return;
+            }
+
+
+            if (!data.buyerName) {
+
+                alert("Buyer Name দিন.");
+
+                buyerName?.focus();
+
+                return;
+            }
+
+
+            if (!data.styleNo) {
+
+                alert("Style No দিন.");
+
+                styleNo?.focus();
+
+                return;
+            }
+
+
+            if (data.orderQty <= 0) {
+
+                alert("Order Qty সঠিকভাবে দিন.");
+
+                orderQty?.focus();
+
+                return;
+            }
+
+
+            buttonLoading(
+                saveBtn,
+                true,
+                "Save Part"
+            );
+
+
+            try {
+
+                // EDIT
+
+                if (editingPartId) {
+
+                    await updateDoc(
+                        doc(
+                            db,
+                            "parts",
+                            editingPartId
+                        ),
+                        data
+                    );
+
+
+                    alert(
+                        "Part successfully updated."
+                    );
+
+                }
+
+                // NEW ENTRY
+
+                else {
+
+                    await addDoc(
+                        collection(
+                            db,
+                            "parts"
+                        ),
+                        {
+
+                            ...data,
+
+                            createdAt:
+                                serverTimestamp()
+
+                        }
+                    );
+
+
+                    alert(
+                        "Part successfully saved."
+                    );
+
+                }
+
+
+                // Reset
+
+                resetEntryForm();
+
+
+                // Reload
+
+                await loadParts();
+
+
+                // Go All Parts
+
+                showPage(
+                    "partsPage"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Save Error:",
+                    error
+                );
+
+                alert(
+                    "Part save হয়নি:\n\n" +
+                    firebaseError(error)
+                );
+
+            } finally {
+
+                buttonLoading(
+                    saveBtn,
+                    false,
+                    "Save Part"
+                );
+
+            }
 
         }
     );
@@ -860,185 +1133,31 @@ function renderParts(parts) {
 
 
 // ======================================================
-// EDIT / DELETE
+// RESET ENTRY FORM
 // ======================================================
 
-partsTableBody.addEventListener(
-    "click",
-    async (event) => {
+function resetEntryForm() {
 
-        const target =
-            event.target;
+    editingPartId = null;
 
 
-        const id =
-            target.dataset.id;
-
-
-        if (!id) return;
-
-
-        // EDIT
-
-        if (
-            target.classList.contains(
-                "edit-btn"
-            )
-        ) {
-
-            const part =
-                allParts.find(
-                    item =>
-                        item.id === id
-                );
-
-
-            if (!part) return;
-
-
-            fillForm(part);
-
-            showPage(
-                "entryPage"
-            );
-
-        }
-
-
-        // DELETE
-
-        if (
-            target.classList.contains(
-                "delete-btn"
-            )
-        ) {
-
-            const confirmed =
-                confirm(
-                    "Are you sure you want to delete this part?"
-                );
-
-
-            if (!confirmed) return;
-
-
-            try {
-
-                target.disabled = true;
-
-                target.textContent =
-                    "Deleting...";
-
-
-                await deleteDoc(
-                    doc(
-                        db,
-                        "parts",
-                        id
-                    )
-                );
-
-
-                alert(
-                    "Part deleted successfully."
-                );
-
-
-                await loadParts();
-
-
-            } catch (error) {
-
-                console.error(
-                    "Delete Error:",
-                    error
-                );
-
-
-                alert(
-                    "Delete failed:\n\n" +
-                    getFirebaseErrorMessage(
-                        error
-                    )
-                );
-
-
-            }
-
-        }
-
+    if (entryForm) {
+        entryForm.reset();
     }
-);
 
 
-// ======================================================
-// FILL FORM
-// ======================================================
+    if (saveBtn) {
 
-function fillForm(part) {
-
-    setValue(
-        "partName",
-        part.partName
-    );
-
-    setValue(
-        "buyerName",
-        part.buyerName
-    );
-
-    setValue(
-        "styleNo",
-        part.styleNo
-    );
-
-    setValue(
-        "orderQty",
-        part.orderQty
-    );
-
-    setValue(
-        "color",
-        part.color
-    );
-
-    setValue(
-        "print",
-        part.print
-    );
-
-    setValue(
-        "embroidery",
-        part.embroidery
-    );
-
-    setValue(
-        "deliveryDate",
-        part.deliveryDate
-    );
-
-    setValue(
-        "poNo",
-        part.poNo
-    );
+        saveBtn.textContent =
+            "Save Part";
+    }
 
 
-    editingId =
-        part.id;
+    if (cancelBtn) {
 
-
-    saveBtn.textContent =
-        "Update Part";
-
-
-    cancelBtn.style.display =
-        "block";
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+        cancelBtn.style.display =
+            "none";
+    }
 
 }
 
@@ -1047,31 +1166,165 @@ function fillForm(part) {
 // CANCEL EDIT
 // ======================================================
 
-cancelBtn.addEventListener(
-    "click",
-    () => {
+if (cancelBtn) {
 
-        resetForm();
+    cancelBtn.addEventListener(
+        "click",
+        () => {
+
+            resetEntryForm();
+
+            showPage(
+                "partsPage"
+            );
+
+        }
+    );
+
+}
+
+
+// ======================================================
+// EDIT PART
+// ======================================================
+
+function editPart(id) {
+
+    const part =
+        allParts.find(
+            item => item.id === id
+        );
+
+
+    if (!part) {
+
+        alert(
+            "Part data পাওয়া যায়নি।"
+        );
+
+        return;
+    }
+
+
+    editingPartId = id;
+
+
+    if (partName)
+        partName.value =
+            part.partName || "";
+
+    if (buyerName)
+        buyerName.value =
+            part.buyerName || "";
+
+    if (styleNo)
+        styleNo.value =
+            part.styleNo || "";
+
+    if (orderQty)
+        orderQty.value =
+            part.orderQty || "";
+
+    if (color)
+        color.value =
+            part.color || "";
+
+    if (print)
+        print.value =
+            part.print || "";
+
+    if (embroidery)
+        embroidery.value =
+            part.embroidery || "";
+
+    if (deliveryDate)
+        deliveryDate.value =
+            part.deliveryDate || "";
+
+    if (poNo)
+        poNo.value =
+            part.poNo || "";
+
+
+    if (saveBtn) {
+
+        saveBtn.textContent =
+            "Update Part";
 
     }
-);
+
+
+    if (cancelBtn) {
+
+        cancelBtn.style.display =
+            "inline-flex";
+
+    }
+
+
+    showPage(
+        "entryPage"
+    );
+
+}
 
 
 // ======================================================
-// RESET FORM
+// DELETE PART
 // ======================================================
 
-function resetForm() {
+async function deletePart(id) {
 
-    entryForm.reset();
+    const part =
+        allParts.find(
+            item => item.id === id
+        );
 
-    editingId = null;
 
-    saveBtn.textContent =
-        "Save Part";
+    if (!part) return;
 
-    cancelBtn.style.display =
-        "none";
+
+    const confirmed =
+        confirm(
+            `আপনি কি "${part.partName || "এই Part"}" Delete করতে চান?`
+        );
+
+
+    if (!confirmed) return;
+
+
+    try {
+
+        await deleteDoc(
+            doc(
+                db,
+                "parts",
+                id
+            )
+        );
+
+
+        alert(
+            "Part successfully deleted."
+        );
+
+
+        await loadParts();
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete Error:",
+            error
+        );
+
+        alert(
+            "Part delete হয়নি:\n\n" +
+            firebaseError(error)
+        );
+
+    }
 
 }
 
@@ -1080,32 +1333,32 @@ function resetForm() {
 // SEARCH
 // ======================================================
 
-searchInput.addEventListener(
-    "input",
-    () => {
+if (searchInput) {
 
-        const keyword =
-            searchInput.value
-                .trim()
-                .toLowerCase();
+    searchInput.addEventListener(
+        "input",
+        () => {
 
-
-        if (!keyword) {
-
-            renderParts(
-                allParts
-            );
-
-            return;
-
-        }
+            const keyword =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
 
 
-        const filtered =
-            allParts.filter(
-                part => {
+            if (!keyword) {
 
-                    const searchable = [
+                renderPartsTable(
+                    allParts
+                );
+
+                return;
+            }
+
+
+            const filtered =
+                allParts.filter(part => {
+
+                    const searchableText = [
 
                         part.partName,
 
@@ -1130,196 +1383,76 @@ searchInput.addEventListener(
                     .toLowerCase();
 
 
-                    return searchable.includes(
-                        keyword
-                    );
+                    return searchableText
+                        .includes(keyword);
 
-                }
+                });
+
+
+            renderPartsTable(
+                filtered
             );
 
-
-        renderParts(
-            filtered
-        );
-
-    }
-);
-
-
-// ======================================================
-// TOTALS
-// ======================================================
-
-function updateTotals(parts) {
-
-    totalPart.textContent =
-        parts.length;
-
-
-    const quantity =
-        parts.reduce(
-            (total, part) => {
-
-                return (
-                    total +
-                    Number(
-                        part.orderQty || 0
-                    )
-                );
-
-            },
-            0
-        );
-
-
-    totalQty.textContent =
-        quantity.toLocaleString();
-
-}
-
-
-// ======================================================
-// HELPER: GET VALUE
-// ======================================================
-
-function getValue(id) {
-
-    const element =
-        document.getElementById(id);
-
-
-    if (!element) return "";
-
-
-    return element.value.trim();
-
-}
-
-
-// ======================================================
-// HELPER: SET VALUE
-// ======================================================
-
-function setValue(id, value) {
-
-    const element =
-        document.getElementById(id);
-
-
-    if (!element) return;
-
-
-    element.value =
-        value ?? "";
-
-}
-
-
-// ======================================================
-// SAFE HTML
-// ======================================================
-
-function safe(value) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-
-    return String(value)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
-}
-
-
-// ======================================================
-// FIREBASE ERROR MESSAGE
-// ======================================================
-
-function getFirebaseErrorMessage(error) {
-
-    const code =
-        error?.code || "";
-
-
-    const messages = {
-
-        "auth/invalid-credential":
-            "Email or password is incorrect.",
-
-        "auth/invalid-email":
-            "Invalid email address.",
-
-        "auth/user-not-found":
-            "No account found with this email.",
-
-        "auth/wrong-password":
-            "Incorrect password.",
-
-        "auth/too-many-requests":
-            "Too many attempts. Please try again later.",
-
-        "auth/popup-closed-by-user":
-            "Google login popup was closed.",
-
-        "auth/popup-blocked":
-            "The browser blocked the login popup.",
-
-        "auth/unauthorized-domain":
-            "This website domain is not authorized in Firebase.",
-
-        "permission-denied":
-            "Firebase permission denied. Check Firestore Rules.",
-
-        "unavailable":
-            "Firebase service is temporarily unavailable."
-
-    };
-
-
-    return (
-        messages[code] ||
-        error?.message ||
-        "An unknown error occurred."
+        }
     );
 
 }
 
 
 // ======================================================
-// INITIAL PAGE
+// QUICK ACTION SUPPORT
 // ======================================================
 
-showPage(
-    "dashboardPage"
+// যদি Dashboard-এর কোনো button-এ
+// data-page="entryPage" থাকে,
+// সেটাও automatically কাজ করবে।
+
+document
+    .querySelectorAll("[data-page]")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const page =
+                    button.dataset.page;
+
+                if (page) {
+                    showPage(page);
+                }
+
+            }
+        );
+
+    });
+
+
+// ======================================================
+// INITIAL STATE
+// ======================================================
+
+if (dashboard) {
+
+    dashboard.style.display =
+        "none";
+
+}
+
+
+if (loginPage) {
+
+    loginPage.style.display =
+        "flex";
+
+}
+
+
+// ======================================================
+// APP READY
+// ======================================================
+
+console.log(
+    "Part Entry ERP App Loaded Successfully."
 );
 ```
