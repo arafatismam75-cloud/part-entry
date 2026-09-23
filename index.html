@@ -1,11 +1,11 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Part Entry ERP</title>
+    <title>Style Wise Part</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,714 +13,513 @@
 <body>
 
 <!-- =====================================================
-     LOGIN
+     LOGIN PAGE
 ===================================================== -->
 
-<section id="loginPage" class="login-page">
+<div class="login-page" id="loginBox">
 
     <div class="login-container">
 
+        <!-- LOGO / TITLE -->
         <div class="brand">
+
             <div class="brand-icon"></div>
-            <h1>Part Entry ERP</h1>
+
+            <h1>STYLE WISE PART</h1>
+
         </div>
 
-        <form id="loginForm" class="login-form">
+
+        <!-- LOGIN FORM -->
+        <div class="login-form">
 
             <div class="input-box">
+
                 <input
                     type="email"
-                    id="loginEmail"
+                    id="email"
                     placeholder="Email address"
-                    required
+                    autocomplete="email"
                 >
+
             </div>
+
 
             <div class="input-box password-box">
 
                 <input
                     type="password"
-                    id="loginPassword"
+                    id="password"
                     placeholder="Password"
-                    required
+                    autocomplete="current-password"
                 >
 
-                <span id="togglePassword" class="eye-icon">
-                    👁
-                </span>
+                <span class="eye-icon">◉</span>
 
             </div>
 
-            <div class="terms">
-                By continuing, you agree to our
-                <a href="#">Terms</a>
+
+            <!-- TERMS -->
+            <p class="terms">
+
+                By signing up or logging in, you consent to
+                GMS Textiles's
+
+                <a href="#" onclick="return false;">Terms of Use</a>
+
                 and
-                <a href="#">Privacy Policy</a>.
-            </div>
 
+                <a href="#" onclick="return false;">Privacy Policy</a>.
+
+            </p>
+
+
+            <!-- LINKS -->
             <div class="login-links">
 
-                <a href="#" id="forgotPassword">
-                    Forgot Password?
+                <a href="#" onclick="return false;">
+                    Forgot password?
                 </a>
 
-                <a href="#" id="signupLink">
-                    Create Account
+                <a href="#" onclick="return false;">
+                    Sign up
                 </a>
 
             </div>
 
+
+            <!-- LOGIN BUTTON -->
             <button
-                type="submit"
+                type="button"
                 class="login-btn"
                 id="loginBtn"
             >
-                Login
+                Log in
             </button>
 
+
+            <!-- GOOGLE LOGIN -->
             <div class="social-login">
 
                 <button
                     type="button"
-                    class="social-btn"
                     id="googleLogin"
+                    class="social-btn"
                 >
+
                     <span class="google-icon">G</span>
-                    Continue with Google
+
+                    Log in with Google
+
                 </button>
 
+
                 <span class="divider">|</span>
+
 
                 <button
                     type="button"
                     class="apple-btn"
+                    onclick="return false;"
                 >
-                    Apple
+
+                     Log in with Apple
+
                 </button>
 
             </div>
 
-        </form>
+        </div>
 
     </div>
 
-</section>
+</div>
+
+
+
 
 
 <!-- =====================================================
      DASHBOARD
 ===================================================== -->
 
-<section id="dashboard" style="display:none;">
+<div id="dashboard" style="display:none;">
 
-    <!-- SIDEBAR -->
+    <!-- HEADER -->
 
-    <aside class="sidebar" id="sidebar">
+    <header class="top-header">
 
-        <div class="sidebar-brand">
+        <div class="header-left">
 
-            <div class="sidebar-logo"></div>
+            <div class="small-logo"></div>
 
             <div>
-                <strong>Part Entry</strong>
-                <span>ERP SYSTEM</span>
+
+                <h1>STYLE WISE PART</h1>
+
+                <span>Part Entry Management System</span>
+
             </div>
 
         </div>
 
 
-        <nav class="sidebar-menu">
+        <div class="header-right">
 
-            <div class="menu-title">
-                MAIN MENU
-            </div>
+            <div class="user-info">
 
-            <button
-                class="menu-item active"
-                data-page="dashboardPage"
-            >
-                <span>▣</span>
-                <span>Dashboard</span>
-            </button>
+                <span class="user-label">Logged in as</span>
 
+                <strong id="userRole">Operator</strong>
 
-            <button
-                class="menu-item"
-                data-page="entryPage"
-            >
-                <span>＋</span>
-                <span>Part Entry</span>
-            </button>
-
-
-            <button
-                class="menu-item"
-                data-page="partsPage"
-            >
-                <span>▤</span>
-                <span>All Parts</span>
-            </button>
-
-
-            <div class="menu-title">
-                SYSTEM
             </div>
 
 
-            <button
-                class="menu-item"
-                data-page="settingsPage"
-            >
-                <span>⚙</span>
-                <span>Settings</span>
-            </button>
+            <button id="logout" class="logout-btn">
 
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <button
-                id="sidebarLogout"
-                class="sidebar-logout"
-            >
-                <span>⇥</span>
                 Logout
+
             </button>
 
         </div>
 
-    </aside>
+    </header>
 
 
-    <!-- MAIN AREA -->
 
-    <div class="dashboard-area">
+    <!-- MAIN -->
 
-        <!-- TOP HEADER -->
+    <main class="dashboard-main">
 
-        <header class="top-header">
 
-            <div class="header-left">
+        <!-- PAGE TITLE -->
 
-                <button
-                    id="menuToggle"
-                    class="menu-toggle"
-                >
-                    ☰
-                </button>
+        <div class="page-heading">
+
+            <div>
+
+                <h2>Part Entry Dashboard</h2>
+
+                <p>Manage your style wise part information</p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="cards">
+
+
+            <div class="card">
+
+                <div class="card-icon blue-icon">
+                    
+                </div>
+
+                <div class="card-content">
+
+                    <span>Total Part</span>
+
+                    <h2 id="totalPart">0</h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="card-icon green-icon">
+                    🔢
+                </div>
+
+                <div class="card-content">
+
+                    <span>Total Order Qty</span>
+
+                    <h2 id="totalQty">0</h2>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="card-icon purple-icon">
+                    👤
+                </div>
+
+                <div class="card-content">
+
+                    <span>User</span>
+
+                    <h2 id="userRole">Operator</h2>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ENTRY SECTION -->
+
+        <section class="panel">
+
+            <div class="panel-header">
 
                 <div>
 
-                    <h1 id="headerTitle">
-                        Dashboard
-                    </h1>
+                    <h2>Part Entry</h2>
 
-                    <span>
-                        Style Wise Part Management
-                    </span>
+                    <p>Enter new part information</p>
 
                 </div>
 
             </div>
 
 
-            <div class="header-right">
+            <div class="entry-grid">
 
-                <div class="user-info">
 
-                    <span class="user-label">
-                        Logged in as
-                    </span>
+                <div class="field">
 
-                    <strong id="userRole">
-                        Operator
-                    </strong>
+                    <label>Part Name</label>
+
+                    <input
+                        id="partName"
+                        placeholder="Enter part name"
+                    >
 
                 </div>
 
+
+                <div class="field">
+
+                    <label>Buyer Name</label>
+
+                    <input
+                        id="buyerName"
+                        placeholder="Enter buyer name"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Style No</label>
+
+                    <input
+                        id="styleNo"
+                        placeholder="Enter style number"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>PO No</label>
+
+                    <input
+                        id="poNo"
+                        placeholder="Enter PO number"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Order Qty</label>
+
+                    <input
+                        id="orderQty"
+                        type="number"
+                        placeholder="Enter quantity"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Color</label>
+
+                    <input
+                        id="color"
+                        placeholder="Enter color"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Print</label>
+
+                    <input
+                        id="print"
+                        placeholder="Enter print"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Embroidery</label>
+
+                    <input
+                        id="embroidery"
+                        placeholder="Enter embroidery"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Delivery Date</label>
+
+                    <input
+                        id="deliveryDate"
+                        type="date"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-actions">
+
                 <button
-                    id="logoutBtn"
-                    class="logout-btn"
+                    id="savePart"
+                    class="save-btn"
                 >
-                    Logout
+                    Save Part
+                </button>
+
+
+                <button
+                    id="cancelEdit"
+                    class="cancel-btn"
+                    style="display:none;"
+                >
+                    ✕ Cancel Edit
                 </button>
 
             </div>
 
-        </header>
+        </section>
 
 
-        <!-- CONTENT -->
-
-        <main class="dashboard-main">
 
 
-            <!-- =================================================
-                 DASHBOARD PAGE
-            ================================================== -->
+        <!-- SEARCH -->
 
-            <section
-                id="dashboardPage"
-                class="content-page active-page"
-            >
+        <section class="search-panel">
 
-                <div class="page-heading">
+            <div class="search-title">
 
-                    <h2>
-                        Dashboard
-                    </h2>
+                <div class="search-icon">
+                    🔍
+                </div>
 
-                    <p>
-                        Manage your part entry data from one place.
-                    </p>
+                <div>
+
+                    <h2>Part List</h2>
+
+                    <p>Search and manage your parts</p>
 
                 </div>
 
+            </div>
 
-                <div class="cards">
 
-                    <div class="card">
+            <div class="search-box">
 
-                        <div class="card-icon blue-icon">
-                            📦
-                        </div>
+                <span>🔍</span>
 
-                        <div class="card-content">
+                <input
+                    id="searchBox"
+                    placeholder="Search Part / Buyer / Style / PO..."
+                >
 
-                            <span>
-                                Total Parts
-                            </span>
+            </div>
 
-                            <h2 id="totalPart">
-                                0
-                            </h2>
+        </section>
 
-                        </div>
 
-                    </div>
 
 
-                    <div class="card">
+        <!-- TABLE -->
 
-                        <div class="card-icon green-icon">
-                            📊
-                        </div>
+        <section class="table-panel">
 
-                        <div class="card-content">
+            <div class="table-wrapper">
 
-                            <span>
-                                Total Order Qty
-                            </span>
+                <table>
 
-                            <h2 id="totalQty">
-                                0
-                            </h2>
+                    <thead>
 
-                        </div>
+                        <tr>
 
-                    </div>
+                            <th>Part</th>
 
+                            <th>Buyer</th>
 
-                    <div class="card">
+                            <th>Style</th>
 
-                        <div class="card-icon purple-icon">
-                            👤
-                        </div>
+                            <th>Qty</th>
 
-                        <div class="card-content">
+                            <th>Color</th>
 
-                            <span>
-                                Current User
-                            </span>
+                            <th>Print</th>
 
-                            <h2
-                                id="currentUser"
-                                style="font-size:16px;"
-                            >
-                                Operator
-                            </h2>
+                            <th>Embroidery</th>
 
-                        </div>
+                            <th>Delivery</th>
 
-                    </div>
+                            <th>PO No</th>
 
-                </div>
+                            <th>Action</th>
 
+                        </tr>
 
-                <section class="panel">
+                    </thead>
 
-                    <div class="panel-header">
 
-                        <h2>
-                            Welcome to Part Entry ERP
-                        </h2>
+                    <tbody id="partTable">
 
-                        <p>
-                            Use the sidebar to manage your part information.
-                        </p>
+                    </tbody>
 
-                    </div>
+                </table>
 
-                    <div class="quick-actions">
+            </div>
 
-                        <button
-                            class="quick-btn"
-                            data-page="entryPage"
-                        >
-                            <span>＋</span>
-                            New Part Entry
-                        </button>
+        </section>
 
-                        <button
-                            class="quick-btn"
-                            data-page="partsPage"
-                        >
-                            <span>▤</span>
-                            View All Parts
-                        </button>
 
-                    </div>
+    </main>
 
-                </section>
+</div>
 
-            </section>
-
-
-            <!-- =================================================
-                 ENTRY PAGE
-            ================================================== -->
-
-            <section
-                id="entryPage"
-                class="content-page"
-            >
-
-                <div class="page-heading">
-
-                    <h2>
-                        Part Entry
-                    </h2>
-
-                    <p>
-                        Enter new part information below.
-                    </p>
-
-                </div>
-
-
-                <section class="panel">
-
-                    <div class="panel-header">
-
-                        <h2>
-                            Part Information
-                        </h2>
-
-                        <p>
-                            Fill in the required information.
-                        </p>
-
-                    </div>
-
-
-                    <form id="entryForm">
-
-                        <div class="entry-grid">
-
-                            <div class="field">
-                                <label>Part Name</label>
-                                <input
-                                    type="text"
-                                    id="partName"
-                                    placeholder="Enter part name"
-                                    required
-                                >
-                            </div>
-
-
-                            <div class="field">
-                                <label>Buyer Name</label>
-                                <input
-                                    type="text"
-                                    id="buyerName"
-                                    placeholder="Enter buyer name"
-                                    required
-                                >
-                            </div>
-
-
-                            <div class="field">
-                                <label>Style No</label>
-                                <input
-                                    type="text"
-                                    id="styleNo"
-                                    placeholder="Enter style no"
-                                    required
-                                >
-                            </div>
-
-
-                            <div class="field">
-                                <label>Order Qty</label>
-                                <input
-                                    type="number"
-                                    id="orderQty"
-                                    placeholder="Enter order quantity"
-                                    min="0"
-                                    required
-                                >
-                            </div>
-
-
-                            <div class="field">
-                                <label>Color</label>
-                                <input
-                                    type="text"
-                                    id="color"
-                                    placeholder="Enter color"
-                                >
-                            </div>
-
-
-                            <div class="field">
-                                <label>Print</label>
-                                <input
-                                    type="text"
-                                    id="print"
-                                    placeholder="Print information"
-                                >
-                            </div>
-
-
-                            <div class="field">
-                                <label>Embroidery</label>
-                                <input
-                                    type="text"
-                                    id="embroidery"
-                                    placeholder="Embroidery information"
-                                >
-                            </div>
-
-
-                            <div class="field">
-                                <label>Delivery Date</label>
-                                <input
-                                    type="date"
-                                    id="deliveryDate"
-                                >
-                            </div>
-
-
-                            <div class="field">
-                                <label>PO No</label>
-                                <input
-                                    type="text"
-                                    id="poNo"
-                                    placeholder="Enter PO number"
-                                >
-                            </div>
-
-                        </div>
-
-
-                        <div class="form-actions">
-
-                            <button
-                                type="submit"
-                                class="save-btn"
-                                id="saveBtn"
-                            >
-                                Save Part
-                            </button>
-
-                            <button
-                                type="button"
-                                class="cancel-btn"
-                                id="cancelBtn"
-                                style="display:none;"
-                            >
-                                Cancel
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </section>
-
-            </section>
-
-
-            <!-- =================================================
-                 ALL PARTS PAGE
-            ================================================== -->
-
-            <section
-                id="partsPage"
-                class="content-page"
-            >
-
-                <div class="page-heading">
-
-                    <h2>
-                        All Parts
-                    </h2>
-
-                    <p>
-                        View, search, edit and delete part records.
-                    </p>
-
-                </div>
-
-
-                <section class="search-panel">
-
-                    <div class="search-title">
-
-                        <div class="search-icon">
-                            🔍
-                        </div>
-
-                        <div>
-
-                            <h2>
-                                Search Parts
-                            </h2>
-
-                            <p>
-                                Search by part, buyer, style or PO.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="search-box">
-
-                        <span>🔍</span>
-
-                        <input
-                            type="text"
-                            id="searchInput"
-                            placeholder="Search..."
-                        >
-
-                    </div>
-
-                </section>
-
-
-                <section class="table-panel">
-
-                    <div class="table-wrapper">
-
-                        <table>
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>#</th>
-                                    <th>Part Name</th>
-                                    <th>Buyer Name</th>
-                                    <th>Style No</th>
-                                    <th>Order Qty</th>
-                                    <th>Color</th>
-                                    <th>Print</th>
-                                    <th>Embroidery</th>
-                                    <th>Delivery Date</th>
-                                    <th>PO No</th>
-                                    <th>Action</th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody id="partsTableBody">
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </section>
-
-            </section>
-
-
-            <!-- =================================================
-                 SETTINGS
-            ================================================== -->
-
-            <section
-                id="settingsPage"
-                class="content-page"
-            >
-
-                <div class="page-heading">
-
-                    <h2>
-                        Settings
-                    </h2>
-
-                    <p>
-                        System settings and account information.
-                    </p>
-
-                </div>
-
-
-                <section class="panel">
-
-                    <div class="panel-header">
-
-                        <h2>
-                            Account
-                        </h2>
-
-                        <p>
-                            Current Firebase account information.
-                        </p>
-
-                    </div>
-
-
-                    <div class="settings-info">
-
-                        <div>
-                            <span>Email</span>
-                            <strong id="settingsEmail">
-                                -
-                            </strong>
-                        </div>
-
-                        <div>
-                            <span>Role</span>
-                            <strong id="settingsRole">
-                                Operator
-                            </strong>
-                        </div>
-
-                    </div>
-
-                </section>
-
-            </section>
-
-
-        </main>
-
-    </div>
-
-</section>
 
 
 <script type="module" src="app.js"></script>
 
 </body>
+
 </html>
-```
