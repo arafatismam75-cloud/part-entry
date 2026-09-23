@@ -1,125 +1,113 @@
-/* =========================================================
-   RESET
-========================================================= */
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 * {
     box-sizing: border-box;
 }
 
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
+html {
+    scroll-behavior: smooth;
 }
 
 body {
+    margin: 0;
     font-family: "Segoe UI", Arial, sans-serif;
-    background: #101114;
+    background: #0f1115;
     color: #ffffff;
 }
 
 
-/* =========================================================
-   LOGIN BODY — FIXED CENTER
-========================================================= */
+/* =====================================================
+   LOGIN PAGE
+===================================================== */
 
 .login-page {
-    position: fixed !important;
 
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-
-    width: 100vw !important;
-    height: 100vh !important;
-    min-height: 100vh !important;
-
-    margin: 0 !important;
-    padding: 30px !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-    justify-content: center !important;
+    min-height: 100vh;
 
     background:
         radial-gradient(
-            circle at center,
-            rgba(55, 105, 190, 0.08),
+            circle at 50% 35%,
+            rgba(61, 128, 255, 0.07),
             transparent 35%
         ),
         #101114;
 
-    overflow: auto;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
 }
 
-
-/* =========================================================
-   LOGIN CONTAINER
-========================================================= */
 
 .login-container {
-    width: 100% !important;
-    max-width: 430px !important;
 
-    margin: 0 !important;
-    padding: 0 !important;
+    width: 100%;
 
-    position: relative;
+    max-width: 430px;
+
+    margin-top: -40px;
 }
 
 
-/* =========================================================
+/* =====================================================
    BRAND
-========================================================= */
+===================================================== */
 
 .brand {
-    width: 100%;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     gap: 12px;
 
-    margin: 0 0 45px 0;
+    margin-bottom: 45px;
 }
 
 
 .brand-icon {
+
     width: 25px;
+
     height: 25px;
 
     border: 3px solid #4f91f7;
 
     border-radius: 50%;
 
-    flex-shrink: 0;
+    position: relative;
 }
 
 
 .brand-icon::after {
+
     content: "";
 
     position: absolute;
 
     width: 7px;
+
     height: 7px;
 
     background: #101114;
 
     border-radius: 50%;
 
-    margin-left: 6px;
-    margin-top: 6px;
+    top: 6px;
+
+    left: 6px;
 }
 
 
 .brand h1 {
+
     margin: 0;
 
     color: #4d8ff0;
@@ -132,54 +120,58 @@ body {
 }
 
 
-/* =========================================================
-   LOGIN FORM
-========================================================= */
+/* =====================================================
+   LOGIN INPUT
+===================================================== */
 
 .login-form {
+
     width: 100%;
 }
 
 
-/* =========================================================
-   INPUT
-========================================================= */
-
 .input-box {
-    position: relative;
 
     width: 100%;
 
     margin-bottom: 15px;
+
+    position: relative;
 }
 
 
 .input-box input {
+
     width: 100%;
+
     height: 52px;
 
     padding: 0 18px;
 
-    border: 1px solid #292c32;
-
     border-radius: 28px;
 
-    outline: none;
+    border: 1px solid #292c32;
 
     background: #111317;
 
     color: #ffffff;
 
+    outline: none;
+
     font-size: 14px;
+
+    transition: 0.2s;
 }
 
 
 .input-box input::placeholder {
+
     color: #70747d;
 }
 
 
 .input-box input:focus {
+
     border-color: #4f91f7;
 
     box-shadow:
@@ -188,54 +180,58 @@ body {
 
 
 .password-box input {
+
     padding-right: 50px;
 }
 
 
 .eye-icon {
+
     position: absolute;
 
     right: 18px;
+
     top: 50%;
 
     transform: translateY(-50%);
 
     color: #8b8f97;
 
-    font-size: 13px;
+    font-size: 14px;
 
     cursor: pointer;
 }
 
 
-/* =========================================================
+/* =====================================================
    TERMS
-========================================================= */
+===================================================== */
 
 .terms {
-    margin: 22px 0 45px;
 
     color: #8d9199;
 
     font-size: 12px;
 
     line-height: 1.6;
+
+    margin: 22px 0 45px;
 }
 
 
 .terms a {
+
     color: #ffffff;
 
     text-decoration: underline;
 }
 
 
-/* =========================================================
-   LINKS
-========================================================= */
+/* =====================================================
+   LOGIN LINKS
+===================================================== */
 
 .login-links {
-    width: 100%;
 
     display: flex;
 
@@ -246,6 +242,7 @@ body {
 
 
 .login-links a {
+
     color: #4d91f3;
 
     text-decoration: none;
@@ -255,16 +252,19 @@ body {
 
 
 .login-links a:hover {
+
     text-decoration: underline;
 }
 
 
-/* =========================================================
+/* =====================================================
    LOGIN BUTTON
-========================================================= */
+===================================================== */
 
 .login-btn {
+
     width: 100%;
+
     height: 48px;
 
     border: none;
@@ -273,7 +273,7 @@ body {
 
     background: #4e8fe9;
 
-    color: #ffffff;
+    color: white;
 
     font-size: 14px;
 
@@ -286,23 +286,24 @@ body {
 
 
 .login-btn:hover {
+
     background: #5c9af0;
 
     transform: translateY(-1px);
 }
 
 
-/* =========================================================
+/* =====================================================
    SOCIAL LOGIN
-========================================================= */
+===================================================== */
 
 .social-login {
-    width: 100%;
 
     display: flex;
 
-    align-items: center;
     justify-content: center;
+
+    align-items: center;
 
     gap: 12px;
 
@@ -312,7 +313,6 @@ body {
 
 .social-btn,
 .apple-btn {
-    padding: 0;
 
     border: none;
 
@@ -320,50 +320,45 @@ body {
 
     color: #ffffff;
 
-    font-size: 13px;
-
     text-decoration: underline;
 
     cursor: pointer;
+
+    font-size: 13px;
+
+    padding: 0;
 }
 
 
 .social-btn:hover,
 .apple-btn:hover {
+
     color: #4e91f2;
 }
 
 
 .google-icon {
+
     font-weight: bold;
+
+    color: #ffffff;
 
     margin-right: 4px;
 }
 
 
 .divider {
+
     color: #6b6f76;
 }
 
 
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-#dashboard {
-    min-height: 100vh;
-
-    background: #101114;
-
-    color: #ffffff;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
+/* =====================================================
+   DASHBOARD HEADER
+===================================================== */
 
 .top-header {
+
     min-height: 78px;
 
     padding: 0 35px;
@@ -381,6 +376,7 @@ body {
 
 
 .header-left {
+
     display: flex;
 
     align-items: center;
@@ -390,7 +386,9 @@ body {
 
 
 .small-logo {
+
     width: 28px;
+
     height: 28px;
 
     border: 3px solid #4e91f2;
@@ -400,15 +398,19 @@ body {
 
 
 .header-left h1 {
+
     margin: 0;
 
     color: #ffffff;
 
     font-size: 18px;
+
+    letter-spacing: .5px;
 }
 
 
 .header-left span {
+
     color: #737780;
 
     font-size: 11px;
@@ -416,6 +418,7 @@ body {
 
 
 .header-right {
+
     display: flex;
 
     align-items: center;
@@ -425,15 +428,17 @@ body {
 
 
 .user-info {
+
+    text-align: right;
+
     display: flex;
 
     flex-direction: column;
-
-    text-align: right;
 }
 
 
 .user-label {
+
     color: #70747c;
 
     font-size: 11px;
@@ -441,6 +446,7 @@ body {
 
 
 .user-info strong {
+
     color: #e7e9ed;
 
     font-size: 13px;
@@ -448,33 +454,34 @@ body {
 
 
 .logout-btn {
-    padding: 9px 17px;
 
     border: 1px solid #353941;
-
-    border-radius: 7px;
 
     background: #1b1e24;
 
     color: #dce0e7;
+
+    padding: 9px 17px;
+
+    border-radius: 7px;
 
     cursor: pointer;
 }
 
 
 .logout-btn:hover {
+
     border-color: #4e91f2;
 
     color: #4e91f2;
 }
 
 
-/* =========================================================
+/* =====================================================
    DASHBOARD MAIN
-========================================================= */
+===================================================== */
 
 .dashboard-main {
-    width: 100%;
 
     max-width: 1500px;
 
@@ -485,20 +492,23 @@ body {
 
 
 .page-heading {
+
     margin-bottom: 25px;
 }
 
 
 .page-heading h2 {
+
     margin: 0;
 
-    color: #f4f5f7;
-
     font-size: 25px;
+
+    color: #f4f5f7;
 }
 
 
 .page-heading p {
+
     margin: 6px 0 0;
 
     color: #777c85;
@@ -507,14 +517,16 @@ body {
 }
 
 
-/* =========================================================
+/* =====================================================
    CARDS
-========================================================= */
+===================================================== */
 
 .cards {
+
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 18px;
 
@@ -523,9 +535,6 @@ body {
 
 
 .card {
-    min-height: 110px;
-
-    padding: 20px;
 
     background: #17191e;
 
@@ -533,16 +542,22 @@ body {
 
     border-radius: 12px;
 
+    padding: 20px;
+
     display: flex;
 
     align-items: center;
 
     gap: 16px;
+
+    min-height: 110px;
 }
 
 
 .card-icon {
+
     width: 48px;
+
     height: 48px;
 
     border-radius: 10px;
@@ -550,6 +565,7 @@ body {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     font-size: 21px;
@@ -557,21 +573,25 @@ body {
 
 
 .blue-icon {
+
     background: rgba(64, 137, 244, .12);
 }
 
 
 .green-icon {
+
     background: rgba(34, 197, 94, .12);
 }
 
 
 .purple-icon {
+
     background: rgba(168, 85, 247, .12);
 }
 
 
 .card-content span {
+
     color: #777c85;
 
     font-size: 12px;
@@ -579,6 +599,7 @@ body {
 
 
 .card-content h2 {
+
     margin: 5px 0 0;
 
     color: #f5f6f8;
@@ -587,45 +608,51 @@ body {
 }
 
 
-/* =========================================================
-   PANELS
-========================================================= */
+/* =====================================================
+   PANEL
+===================================================== */
 
 .panel,
 .search-panel,
 .table-panel {
-    margin-bottom: 22px;
 
     background: #17191e;
 
     border: 1px solid #282b31;
 
     border-radius: 12px;
+
+    margin-bottom: 22px;
 }
 
 
 .panel {
     padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto 22px;
 }
 
 
 .panel-header {
+
     margin-bottom: 22px;
 }
 
 
 .panel-header h2,
 .search-title h2 {
+
     margin: 0;
 
-    color: #f0f2f5;
-
     font-size: 18px;
+
+    color: #f0f2f5;
 }
 
 
 .panel-header p,
 .search-title p {
+
     margin: 5px 0 0;
 
     color: #737780;
@@ -634,20 +661,23 @@ body {
 }
 
 
-/* =========================================================
-   ENTRY FORM
-========================================================= */
+/* =====================================================
+   ENTRY GRID
+===================================================== */
 
 .entry-grid {
+
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 17px;
 }
 
 
 .field {
+
     display: flex;
 
     flex-direction: column;
@@ -657,6 +687,7 @@ body {
 
 
 .field label {
+
     color: #8b9099;
 
     font-size: 12px;
@@ -664,38 +695,46 @@ body {
 
 
 .field input {
-    width: 100%;
+
     height: 44px;
+
+    width: 100%;
 
     padding: 0 13px;
 
-    border: 1px solid #30333a;
-
     border-radius: 7px;
 
-    outline: none;
+    border: 1px solid #30333a;
 
     background: #111317;
 
     color: #ffffff;
+
+    outline: none;
 }
 
 
 .field input::placeholder {
+
     color: #646871;
 }
 
 
 .field input:focus {
+
     border-color: #4d8ff0;
+
+    box-shadow:
+        0 0 0 2px rgba(77, 143, 240, .08);
 }
 
 
-/* =========================================================
+/* =====================================================
    FORM BUTTONS
-========================================================= */
+===================================================== */
 
 .form-actions {
+
     display: flex;
 
     gap: 10px;
@@ -706,11 +745,12 @@ body {
 
 .save-btn,
 .cancel-btn {
-    padding: 11px 20px;
 
     border: none;
 
     border-radius: 7px;
+
+    padding: 11px 20px;
 
     cursor: pointer;
 
@@ -719,24 +759,33 @@ body {
 
 
 .save-btn {
+
     background: #4d8ff0;
 
-    color: #ffffff;
+    color: white;
+}
+
+
+.save-btn:hover {
+
+    background: #5b99f1;
 }
 
 
 .cancel-btn {
+
     background: #dc3545;
 
-    color: #ffffff;
+    color: white;
 }
 
 
-/* =========================================================
+/* =====================================================
    SEARCH
-========================================================= */
+===================================================== */
 
 .search-panel {
+
     padding: 20px 24px;
 
     display: flex;
@@ -750,6 +799,7 @@ body {
 
 
 .search-title {
+
     display: flex;
 
     align-items: center;
@@ -759,7 +809,9 @@ body {
 
 
 .search-icon {
+
     width: 40px;
+
     height: 40px;
 
     border-radius: 8px;
@@ -769,54 +821,77 @@ body {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 }
 
 
 .search-box {
-    width: 380px;
-    height: 43px;
 
-    padding: 0 13px;
+    width: 380px;
+
+    height: 43px;
 
     border: 1px solid #30333a;
 
-    border-radius: 7px;
-
     background: #111317;
+
+    border-radius: 7px;
 
     display: flex;
 
     align-items: center;
 
+    padding: 0 13px;
+
     gap: 8px;
 }
 
 
+.search-box span {
+
+    color: #747983;
+
+    font-size: 13px;
+}
+
+
 .search-box input {
+
     width: 100%;
+
     height: 100%;
+
+    background: transparent;
 
     border: none;
 
     outline: none;
 
-    background: transparent;
+    color: white;
 
-    color: #ffffff;
+    font-size: 13px;
 }
 
 
-/* =========================================================
+.search-box input::placeholder {
+
+    color: #656a73;
+}
+
+
+/* =====================================================
    TABLE
-========================================================= */
+===================================================== */
 
 .table-panel {
+
     overflow: hidden;
 }
 
 
 .table-wrapper {
+
     width: 100%;
 
     overflow-x: auto;
@@ -824,6 +899,7 @@ body {
 
 
 table {
+
     width: 100%;
 
     min-width: 1050px;
@@ -833,24 +909,33 @@ table {
 
 
 thead {
+
     background: #1e2127;
 }
 
 
 th {
-    padding: 14px 12px;
-
-    border-bottom: 1px solid #30333a;
 
     color: #9297a0;
 
     font-size: 11px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+
+    padding: 14px 12px;
+
+    border-bottom: 1px solid #30333a;
 
     white-space: nowrap;
 }
 
 
 td {
+
     padding: 13px 12px;
 
     border-bottom: 1px solid #282b31;
@@ -866,73 +951,99 @@ td {
 
 
 tbody tr:hover {
+
     background: #1b1e24;
 }
 
 
-/* =========================================================
-   ACTION BUTTON
-========================================================= */
+/* =====================================================
+   TABLE BUTTONS
+===================================================== */
 
 .edit-btn,
 .delete-btn {
-    padding: 6px 10px;
 
     border: none;
+
+    padding: 6px 10px;
 
     border-radius: 5px;
 
     cursor: pointer;
 
     font-size: 11px;
+
+    margin: 2px;
 }
 
 
 .edit-btn {
+
     background: #f59e0b;
 
-    color: #ffffff;
+    color: white;
 }
 
 
 .delete-btn {
+
     background: #dc3545;
 
-    color: #ffffff;
+    color: white;
 }
 
 
-/* =========================================================
-   MOBILE
-========================================================= */
+.edit-btn:hover,
+.delete-btn:hover {
+
+    opacity: .85;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
 @media (max-width: 1000px) {
 
     .cards {
-        grid-template-columns: repeat(2, 1fr);
+
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
+
     .entry-grid {
-        grid-template-columns: repeat(2, 1fr);
+
+        grid-template-columns:
+            repeat(2, 1fr);
     }
+
 }
 
 
 @media (max-width: 700px) {
 
     .login-page {
-        padding: 20px !important;
+
+        padding: 20px;
     }
+
 
     .login-container {
-        max-width: 430px !important;
+
+        margin-top: 0;
     }
+
 
     .brand h1 {
-        font-size: 22px;
+
+        font-size: 23px;
     }
 
+
     .top-header {
+
         padding: 15px;
 
         flex-direction: column;
@@ -942,51 +1053,80 @@ tbody tr:hover {
         gap: 15px;
     }
 
+
     .header-right {
+
         width: 100%;
 
         justify-content: space-between;
     }
 
+
     .dashboard-main {
+
         padding: 18px;
     }
 
+
     .cards {
+
         grid-template-columns: 1fr;
     }
+
 
     .entry-grid {
+
         grid-template-columns: 1fr;
     }
 
+
     .search-panel {
+
         flex-direction: column;
 
         align-items: stretch;
     }
 
+
     .search-box {
+
         width: 100%;
     }
+
+
+    .panel {
+
+        padding: 18px;
+    }
+
+
+    .terms {
+
+        margin-bottom: 30px;
+    }
+
 }
 
 
 @media (max-width: 450px) {
 
-    .login-page {
-        padding: 18px !important;
-    }
-
-    .brand {
-        margin-bottom: 35px;
-    }
-
     .brand h1 {
+
         font-size: 20px;
     }
 
+
     .social-login {
+
         gap: 7px;
+
+        font-size: 11px;
     }
+
+
+    .login-container {
+
+        max-width: 100%;
+    }
+
 }
