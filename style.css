@@ -1127,6 +1127,19 @@ tbody tr:hover {
 
         max-width: 100%;
     }
+   .login-page {
+    min-height: 100vh;
+    position: relative;
+}
+
+.login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 430px;
+}
 
 
 
