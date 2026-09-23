@@ -51,16 +51,44 @@
   <!-- ENTRY FORM -->
   <section class="entry">
     <h2>Part Entry</h2>
-    <input id="partName" placeholder="Part Name">
-    <input id="buyerName" placeholder="Buyer Name">
-    <input id="styleNo" placeholder="Style No">
-    <input id="poNo" placeholder="PO No">
-    <input id="orderQty" type="number" placeholder="Order Qty">
-    <input id="color" placeholder="Color">
-    <input id="print" placeholder="Print">
-    <input id="embroidery" placeholder="Embroidery">
-    <input id="deliveryDate" type="date">
-    <br>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Part Name</label>
+        <input id="partName" placeholder="Enter part name">
+      </div>
+      <div class="form-group">
+        <label>Buyer Name</label>
+        <input id="buyerName" placeholder="Enter buyer name">
+      </div>
+      <div class="form-group">
+        <label>Style No</label>
+        <input id="styleNo" placeholder="Enter style no">
+      </div>
+      <div class="form-group">
+        <label>PO No</label>
+        <input id="poNo" placeholder="Enter PO no">
+      </div>
+      <div class="form-group">
+        <label>Order Qty</label>
+        <input id="orderQty" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label>Color</label>
+        <input id="color" placeholder="Enter color">
+      </div>
+      <div class="form-group">
+        <label>Print</label>
+        <input id="print" placeholder="Enter print details">
+      </div>
+      <div class="form-group">
+        <label>Embroidery</label>
+        <input id="embroidery" placeholder="Enter embroidery details">
+      </div>
+      <div class="form-group">
+        <label>Delivery Date</label>
+        <input id="deliveryDate" type="date">
+      </div>
+    </div>
     <button id="savePart">💾 Save Part</button>
     <button id="cancelEdit" style="display:none;">Cancel Edit</button>
   </section>
@@ -68,7 +96,10 @@
   <!-- SEARCH -->
   <section class="entry">
     <h2>Search</h2>
-    <input id="searchBox" placeholder="Search Part / Buyer / Style" style="width:100%; max-width:500px;">
+    <div class="form-group">
+      <label>Search Part / Buyer / Style</label>
+      <input id="searchBox" placeholder="Type to search...">
+    </div>
   </section>
 
   <!-- TABLE -->
