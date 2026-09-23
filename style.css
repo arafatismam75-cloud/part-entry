@@ -1129,3 +1129,14 @@ tbody tr:hover {
     }
 
 }
+/* ===== LOGIN CENTER FIX ===== */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    margin-top: 0;   /* ← এটা -40px কে বাতিল করবে */
+}
