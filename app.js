@@ -169,7 +169,7 @@ data
 );
 
 
-alert("Updated Successfully ✅");
+showToast("Updated Successfully", "success");
 
 
 editingId=null;
@@ -200,7 +200,7 @@ data
 
 
 
-alert("Saved Successfully ✅");
+showToast("Saved Successfully", "success");
 
 
 }
@@ -430,7 +430,7 @@ doc(db,"parts",id)
 
 
 
-alert("Deleted Successfully 🗑");
+showToast("Deleted Successfully", "success");
 
 
 loadParts();
