@@ -9,32 +9,35 @@
 
 <body>
 
-<!-- ===== LOGIN PAGE ===== -->
+<!-- ===== LOGIN ===== -->
 <div class="login-box" id="loginBox">
   <h1>Part Entry ERP</h1>
   <p>Login to continue</p>
-
   <form onsubmit="return false;">
     <input type="text" placeholder="Enter your name">
     <input type="password" placeholder="Enter your password">
     <input type="submit" value="Login">
   </form>
-
   <button id="googleLogin">Sign in with Google</button>
 </div>
 
 <!-- ===== DASHBOARD ===== -->
 <div id="dashboard" style="display:none;">
 
+  <!-- OVERLAY (mobile) -->
+  <div class="overlay" id="overlay" onclick="closeSidebarMobile()"></div>
+
+  <!-- TOGGLE BUTTON (☰) -->
+  <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
+
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">PART <span>ENTRY</span></div>
 
     <nav class="sidebar-nav">
-      <a data-section="dashboard" class="active">📊 Dashboard</a>
+      <a data-section="dashboard" class="active"> Dashboard</a>
       <a data-section="entry">➕ New Entry</a>
-      <a data-section="list">📋 Part List</a>
-      <a data-section="search">🔍 Search</a>
+      <a data-section="list"> Part List</a>
     </nav>
 
     <div class="sidebar-footer">
@@ -43,17 +46,13 @@
     </div>
   </aside>
 
-  <!-- MOBILE TOGGLE -->
-  <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
-
   <!-- MAIN CONTENT -->
-  <main class="main-content">
+  <main class="main-content" id="mainContent">
 
-    <!-- ===== SECTION: DASHBOARD ===== -->
+    <!-- ============ DASHBOARD ============ -->
     <section id="section-dashboard" class="section active">
-      <div class="topbar">
-        <h1>Dashboard</h1>
-      </div>
+      <div class="topbar"><h1>Dashboard</h1></div>
+
       <div class="cards">
         <div class="card">
           <h3>Total Part</h3>
@@ -68,13 +67,27 @@
           <h2 id="userRole2">Operator</h2>
         </div>
       </div>
+
+      <div class="entry recent-table">
+        <h2>Recent Entries</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Part</th>
+              <th>Buyer</th>
+              <th>Style</th>
+              <th>Qty</th>
+              <th>Delivery</th>
+            </tr>
+          </thead>
+          <tbody id="recentTable"></tbody>
+        </table>
+      </div>
     </section>
 
-    <!-- ===== SECTION: ENTRY FORM ===== -->
+    <!-- ============ NEW ENTRY ============ -->
     <section id="section-entry" class="section">
-      <div class="topbar">
-        <h1>New Part Entry</h1>
-      </div>
+      <div class="topbar"><h1>New Part Entry</h1></div>
       <div class="entry">
         <h2>Enter Part Information</h2>
         <div class="form-row">
@@ -115,57 +128,51 @@
             <input id="deliveryDate" type="date">
           </div>
         </div>
-        <button id="savePart">💾 Save Part</button>
+        <button id="savePart"> Save Part</button>
         <button id="cancelEdit" style="display:none;">Cancel Edit</button>
       </div>
     </section>
 
-    <!-- ===== SECTION: SEARCH ===== -->
-    <section id="section-search" class="section">
-      <div class="topbar">
-        <h1>Search</h1>
-      </div>
-      <div class="entry">
-        <h2>Search Part / Buyer / Style</h2>
-        <div class="form-group">
-          <label>Type to search</label>
-          <input id="searchBox" placeholder="Type keywords...">
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== SECTION: PART LIST ===== -->
+    <!-- ============ PART LIST ============ -->
     <section id="section-list" class="section">
-      <div class="topbar">
-        <h1>Part List</h1>
+      <div class="topbar"><h1>Part List</h1></div>
+
+      <div class="entry">
+        <div class="list-toolbar">
+          <div class="search-wrap">
+            <input id="searchBox" placeholder="Search Part / Buyer / Style...">
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Part</th>
+              <th>Buyer</th>
+              <th>Style</th>
+              <th>Qty</th>
+              <th>Color</th>
+              <th>Print</th>
+              <th>Embroidery</th>
+              <th>Delivery</th>
+              <th>PO No</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="partTable"></tbody>
+        </table>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Part</th>
-            <th>Buyer</th>
-            <th>Style</th>
-            <th>Qty</th>
-            <th>Color</th>
-            <th>Print</th>
-            <th>Embroidery</th>
-            <th>Delivery</th>
-            <th>PO No</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="partTable"></tbody>
-      </table>
     </section>
 
   </main>
 </div>
 
-<!-- ===== app.js আগের মতোই লোড হবে ===== -->
+<!-- ===== app.js (অপরিবর্তিত) ===== -->
 <script type="module" src="app.js"></script>
 
-<!-- ===== সেকশন সুইচিং (শুধু এটুকু নতুন) ===== -->
+<!-- ===== Section Switching + Sidebar Toggle + Recent Sync ===== -->
 <script>
+  // ===== Section Switching =====
   function showSection(name) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
@@ -174,29 +181,87 @@
       a.classList.toggle('active', a.dataset.section === name);
     });
 
-    // মোবাইলে মেনু ক্লিক করলে সাইডবার বন্ধ
-    if (window.innerWidth <= 900) {
-      document.getElementById('sidebar').classList.remove('open');
-    }
+    if (window.innerWidth <= 900) closeSidebarMobile();
   }
 
   document.querySelectorAll('.sidebar-nav a').forEach(a => {
     a.addEventListener('click', () => showSection(a.dataset.section));
   });
 
+  // ===== Sidebar Toggle (Desktop + Mobile) =====
   function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    const btn = document.getElementById('toggleBtn');
+    const overlay = document.getElementById('overlay');
+
+    if (window.innerWidth <= 900) {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    } else {
+      sidebar.classList.toggle('hidden');
+      main.classList.toggle('full');
+      btn.classList.toggle('shifted');
+    }
   }
 
-  // Dashboard-এ User নাম দেখানোর জন্য ছোট sync
-  // (app.js আগের #userRole আপডেট করে; এখানে ডুপ্লিকেট #userRole2-ও আপডেট করছি)
-  const observer = setInterval(() => {
-    const original = document.getElementById('userRole');
-    const dup = document.getElementById('userRole2');
-    if (original && dup && dup.innerText !== original.innerText) {
-      dup.innerText = original.innerText;
+  function closeSidebarMobile() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+  }
+
+  window.addEventListener('resize', () => {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    const btn = document.getElementById('toggleBtn');
+    const overlay = document.getElementById('overlay');
+
+    if (window.innerWidth <= 900) {
+      sidebar.classList.remove('hidden');
+      main.classList.remove('full');
+      btn.classList.remove('shifted');
+      overlay.classList.remove('active');
+    } else {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+  });
+
+  // ===== Sync: userRole → userRole2 =====
+  setInterval(() => {
+    const src = document.getElementById('userRole');
+    const dst = document.getElementById('userRole2');
+    if (src && dst && dst.innerText !== src.innerText) {
+      dst.innerText = src.innerText;
     }
   }, 500);
+
+  // ===== Recent Entries = partTable থেকে প্রথম ৫টি সারি কপি =====
+  setInterval(() => {
+    const srcBody = document.getElementById('partTable');
+    const dstBody = document.getElementById('recentTable');
+    if (!srcBody || !dstBody) return;
+
+    const rows = srcBody.querySelectorAll('tr');
+    if (rows.length === 0) {
+      dstBody.innerHTML = '<tr><td colspan="5" style="color:#6b6c72; padding:20px;">No data available</td></tr>';
+      return;
+    }
+
+    let html = '';
+    for (let i = 0; i < Math.min(5, rows.length); i++) {
+      const cells = rows[i].querySelectorAll('td');
+      if (cells.length < 9) continue;
+      html += `<tr>
+        <td>${cells[0].innerText}</td>
+        <td>${cells[1].innerText}</td>
+        <td>${cells[2].innerText}</td>
+        <td>${cells[3].innerText}</td>
+        <td>${cells[7].innerText}</td>
+      </tr>`;
+    }
+    if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
+  }, 1000);
 </script>
 
 </body>
