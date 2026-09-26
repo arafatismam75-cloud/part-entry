@@ -5,7 +5,6 @@ body {
   background: #121316;
   color: #ffffff;
   min-height: 100vh;
-  transition: background 0.3s;
 }
 
 /* ===== LOGIN ===== */
@@ -47,11 +46,8 @@ body {
 }
 #googleLogin:hover { background: #f0f0f0; transform: translateY(-1px); }
 
-/* ===== DASHBOARD LAYOUT ===== */
-#dashboard {
-  display: flex;
-  min-height: 100vh;
-}
+/* ===== LAYOUT ===== */
+#dashboard { display: flex; min-height: 100vh; }
 
 /* Sidebar */
 .sidebar {
@@ -60,17 +56,14 @@ body {
   border-right: 1px solid #2a2b30;
   padding: 25px 0;
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
   z-index: 100;
   transition: transform 0.3s ease;
 }
-.sidebar.hidden {
-  transform: translateX(-100%);
-}
+.sidebar.hidden { transform: translateX(-100%); }
 
 .sidebar-brand {
   padding: 0 25px 25px;
@@ -78,15 +71,10 @@ body {
   font-weight: 700;
   color: #4d8aea;
   border-bottom: 1px solid #2a2b30;
-  letter-spacing: -0.3px;
 }
-.sidebar-brand span { color: #ffffff; }
+.sidebar-brand span { color: #fff; }
 
-.sidebar-nav {
-  flex: 1;
-  padding: 20px 0;
-  overflow-y: auto;
-}
+.sidebar-nav { flex: 1; padding: 20px 0; overflow-y: auto; }
 .sidebar-nav a {
   display: flex;
   align-items: center;
@@ -96,16 +84,13 @@ body {
   text-decoration: none;
   font-size: 15px;
   cursor: pointer;
-  transition: all 0.2s;
   border-left: 4px solid transparent;
+  transition: all 0.2s;
 }
-.sidebar-nav a:hover {
-  background: #232429;
-  color: #ffffff;
-}
+.sidebar-nav a:hover { background: #232429; color: #fff; }
 .sidebar-nav a.active {
   background: #232429;
-  color: #ffffff;
+  color: #fff;
   border-left-color: #4d8aea;
 }
 
@@ -124,7 +109,6 @@ body {
   background: #e74c3c; color: #fff;
   border: none; border-radius: 20px;
   cursor: pointer; font-size: 13px; font-weight: 600;
-  transition: all 0.2s;
 }
 .sidebar-footer button:hover { background: #c0392b; }
 
@@ -137,18 +121,14 @@ body {
   min-height: 100vh;
   transition: margin-left 0.3s ease;
 }
-.main-content.full {
-  margin-left: 0;
-}
+.main-content.full { margin-left: 0; }
 
-/* Toggle button (☰) - সবসময় দৃশ্যমান */
+/* Toggle button */
 .toggle-btn {
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: 20px; left: 20px;
   z-index: 200;
-  width: 44px;
-  height: 44px;
+  width: 44px; height: 44px;
   border-radius: 10px;
   background: #1a1b1f;
   border: 1px solid #2a2b30;
@@ -160,38 +140,27 @@ body {
   justify-content: center;
   transition: all 0.2s;
 }
-.toggle-btn:hover {
-  background: #232429;
-  color: #ffffff;
-}
-.toggle-btn.shifted {
-  left: 258px;
-}
+.toggle-btn:hover { background: #232429; color: #fff; }
+.toggle-btn.shifted { left: 258px; }
 
-/* Overlay (মোবাইলে বাইরে ক্লিক করলে সাইডবার বন্ধ) */
 .overlay {
   display: none;
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 50;
 }
 .overlay.active { display: block; }
 
-/* Page topbar */
+/* Topbar */
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
 }
-.topbar h1 {
-  font-size: 22px;
-  color: #ffffff;
-  font-weight: 700;
-}
+.topbar h1 { font-size: 22px; color: #fff; font-weight: 700; }
 
-/* ===== SUMMARY CARDS ===== */
+/* ===== CARDS ===== */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -214,11 +183,14 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 .card h3 {
-  font-size: 12px; color: #8e8f96;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  margin-bottom: 10px; font-weight: 500;
+  font-size: 12px;
+  color: #8e8f96;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  font-weight: 500;
 }
-.card h2 { color: #ffffff; font-size: 32px; font-weight: 700; }
+.card h2 { color: #fff; font-size: 32px; font-weight: 700; }
 
 /* ===== FORM ===== */
 .entry {
@@ -229,9 +201,12 @@ body {
   border: 1px solid #2a2b30;
 }
 .entry h2 {
-  font-size: 17px; color: #ffffff;
-  margin-bottom: 20px; padding-bottom: 12px;
-  border-bottom: 1px solid #2a2b30; font-weight: 600;
+  font-size: 17px;
+  color: #fff;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2a2b30;
+  font-weight: 600;
 }
 .form-row {
   display: grid;
@@ -241,15 +216,23 @@ body {
 }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group label {
-  font-size: 11px; color: #8e8f96;
-  text-transform: uppercase; letter-spacing: 0.6px;
-  font-weight: 600; padding-left: 4px;
+  font-size: 11px;
+  color: #8e8f96;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+  padding-left: 4px;
 }
 .form-group input {
-  width: 100%; padding: 12px 14px;
-  background: #121316; border: 1px solid #2a2b30;
-  border-radius: 8px; color: #ffffff; font-size: 14px;
-  outline: none; transition: all 0.2s;
+  width: 100%;
+  padding: 12px 14px;
+  background: #121316;
+  border: 1px solid #2a2b30;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
 }
 .form-group input::placeholder { color: #6b6c72; }
 .form-group input:focus {
@@ -257,17 +240,23 @@ body {
   box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
 }
 .entry button {
-  padding: 12px 24px; border: none; border-radius: 24px;
-  background: #4d8aea; color: #fff; cursor: pointer;
-  font-size: 14px; font-weight: 600;
-  margin-top: 15px; margin-right: 10px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 24px;
+  background: #4d8aea;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-right: 10px;
   transition: all 0.2s;
 }
 .entry button:hover { background: #3b75d4; transform: translateY(-1px); }
 #cancelEdit { background: #e74c3c !important; }
 #cancelEdit:hover { background: #c0392b !important; }
 
-/* ===== SEARCH BAR (inside Part List) ===== */
+/* ===== SEARCH BAR (Part List-এর উপরে) ===== */
 .list-toolbar {
   display: flex;
   justify-content: space-between;
@@ -318,9 +307,12 @@ table {
 }
 thead { background: #232429; }
 thead th {
-  color: #8e8f96; font-size: 12px;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  font-weight: 600; border: 1px solid #353740;
+  color: #8e8f96;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  border: 1px solid #353740;
 }
 th, td {
   padding: 14px 12px;
@@ -332,29 +324,54 @@ th, td {
 }
 tbody tr:hover { background: #1f2025; }
 
-.edit-btn, .delete-btn {
-  padding: 7px 14px; border: none; border-radius: 20px;
-  color: #fff; cursor: pointer; font-size: 12px;
-  font-weight: 600; margin: 2px; transition: all 0.2s;
+/* Action column - বাটন পাশাপাশি */
+td:last-child {
+  white-space: nowrap;
 }
-.edit-btn { background: #f39c12; }
-.edit-btn:hover { background: #d68910; transform: translateY(-1px); }
-.delete-btn { background: #e74c3c; }
-.delete-btn:hover { background: #c0392b; transform: translateY(-1px); }
 
-/* Section visibility */
+/* ===== EDIT (সবুজ) / DELETE (লাল) ===== */
+.edit-btn, .delete-btn {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 3px;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.edit-btn {
+  background: #2ecc71;   /* সবুজ */
+}
+.edit-btn:hover {
+  background: #27ae60;
+  transform: translateY(-1px);
+}
+.delete-btn {
+  background: #e74c3c;   /* লাল */
+}
+.delete-btn:hover {
+  background: #c0392b;
+  transform: translateY(-1px);
+}
+
+/* ===== SECTION VISIBILITY ===== */
 .section { display: none; }
 .section.active { display: block; }
 
-/* ===== DASHBOARD EXTRA (Recent Entries) ===== */
-.recent-table {
-  margin-top: 10px;
+/* ===== BUYER-WISE SUMMARY ===== */
+.buyer-table th, .buyer-table td {
+  padding: 12px 10px;
 }
-.recent-table table {
-  font-size: 12px;
+.buyer-table td:first-child {
+  font-weight: 600;
+  color: #fff;
 }
-.recent-table th, .recent-table td {
-  padding: 10px 8px;
+.buyer-table .qty-cell {
+  color: #2ecc71;
+  font-weight: 700;
 }
 
 /* ===== MOBILE ===== */
