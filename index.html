@@ -267,6 +267,32 @@
 
     if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
   }, 1000);
+  // ===== Toast Notification =====
+function showToast(message, type = 'success') {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = 'toast ' + type;
+  toast.innerHTML = `
+    <span class="toast-icon">${type === 'success' ? '✅' : '⚠️'}</span>
+    <span class="toast-msg">${message}</span>
+  `;
+  container.appendChild(toast);
+
+  // অ্যানিমেশন: ডান দিক থেকে স্লাইড
+  setTimeout(() => toast.classList.add('show'), 10);
+
+  // ৩ সেকেন্ড পর স্বয়ংক্রিয়ভাবে মুছে যাবে
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
 </script>
 
 </body>
