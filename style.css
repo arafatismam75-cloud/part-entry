@@ -387,3 +387,52 @@ td:last-child {
   .edit-btn, .delete-btn { padding: 5px 10px; font-size: 11px; }
   .list-toolbar { flex-direction: column; align-items: stretch; }
 }
+/* ===== TOAST NOTIFICATION ===== */
+#toastContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.toast {
+  background: #1a1b1f;
+  border: 1px solid #2a2b30;
+  border-left: 5px solid #2ecc71;
+  color: #ffffff;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 260px;
+  max-width: 360px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transform: translateX(400px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  pointer-events: auto;
+}
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+.toast.success { border-left-color: #2ecc71; }
+.toast.error   { border-left-color: #e74c3c; }
+.toast-icon { font-size: 18px; }
+.toast-msg { flex: 1; }
+
+@media (max-width: 600px) {
+  #toastContainer {
+    top: 15px; right: 15px; left: 15px;
+  }
+  .toast {
+    min-width: auto; max-width: none; width: 100%;
+  }
+}
