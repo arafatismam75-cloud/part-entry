@@ -24,32 +24,25 @@
 <!-- ===== DASHBOARD ===== -->
 <div id="dashboard" style="display:none;">
 
-  <!-- OVERLAY (mobile) -->
   <div class="overlay" id="overlay" onclick="closeSidebarMobile()"></div>
-
-  <!-- TOGGLE BUTTON (☰) -->
   <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">PART <span>ENTRY</span></div>
-
     <nav class="sidebar-nav">
-      <a data-section="dashboard" class="active"> Dashboard</a>
+      <a data-section="dashboard" class="active">📊 Dashboard</a>
       <a data-section="entry">➕ New Entry</a>
-      <a data-section="list"> Part List</a>
+      <a data-section="list">📋 Part List</a>
     </nav>
-
     <div class="sidebar-footer">
       <div class="sidebar-user">👤 <span id="userRole">Operator</span></div>
       <button id="logout">Logout</button>
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
   <main class="main-content" id="mainContent">
 
-    <!-- ============ DASHBOARD ============ -->
+    <!-- ===== DASHBOARD ===== -->
     <section id="section-dashboard" class="section active">
       <div class="topbar"><h1>Dashboard</h1></div>
 
@@ -68,24 +61,22 @@
         </div>
       </div>
 
-      <div class="entry recent-table">
-        <h2>Recent Entries</h2>
+      <div class="entry buyer-table">
+        <h2>Buyer-wise Summary</h2>
         <table>
           <thead>
             <tr>
-              <th>Part</th>
               <th>Buyer</th>
-              <th>Style</th>
-              <th>Qty</th>
-              <th>Delivery</th>
+              <th>Total Entries</th>
+              <th>Total Order Qty</th>
             </tr>
           </thead>
-          <tbody id="recentTable"></tbody>
+          <tbody id="buyerSummary"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- ============ NEW ENTRY ============ -->
+    <!-- ===== NEW ENTRY ===== -->
     <section id="section-entry" class="section">
       <div class="topbar"><h1>New Part Entry</h1></div>
       <div class="entry">
@@ -128,12 +119,12 @@
             <input id="deliveryDate" type="date">
           </div>
         </div>
-        <button id="savePart"> Save Part</button>
+        <button id="savePart">💾 Save Part</button>
         <button id="cancelEdit" style="display:none;">Cancel Edit</button>
       </div>
     </section>
 
-    <!-- ============ PART LIST ============ -->
+    <!-- ===== PART LIST ===== -->
     <section id="section-list" class="section">
       <div class="topbar"><h1>Part List</h1></div>
 
@@ -170,7 +161,7 @@
 <!-- ===== app.js (অপরিবর্তিত) ===== -->
 <script type="module" src="app.js"></script>
 
-<!-- ===== Section Switching + Sidebar Toggle + Recent Sync ===== -->
+<!-- ===== Section Switch + Sidebar + Buyer Summary ===== -->
 <script>
   // ===== Section Switching =====
   function showSection(name) {
@@ -188,7 +179,7 @@
     a.addEventListener('click', () => showSection(a.dataset.section));
   });
 
-  // ===== Sidebar Toggle (Desktop + Mobile) =====
+  // ===== Sidebar Toggle =====
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('mainContent');
@@ -227,7 +218,7 @@
     }
   });
 
-  // ===== Sync: userRole → userRole2 =====
+  // ===== Sync userRole → userRole2 =====
   setInterval(() => {
     const src = document.getElementById('userRole');
     const dst = document.getElementById('userRole2');
@@ -236,30 +227,44 @@
     }
   }, 500);
 
-  // ===== Recent Entries = partTable থেকে প্রথম ৫টি সারি কপি =====
+  // ===== Buyer-wise Summary (partTable থেকে হিসাব) =====
   setInterval(() => {
     const srcBody = document.getElementById('partTable');
-    const dstBody = document.getElementById('recentTable');
+    const dstBody = document.getElementById('buyerSummary');
     if (!srcBody || !dstBody) return;
 
     const rows = srcBody.querySelectorAll('tr');
-    if (rows.length === 0) {
-      dstBody.innerHTML = '<tr><td colspan="5" style="color:#6b6c72; padding:20px;">No data available</td></tr>';
+    const buyers = {};
+
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length < 9) return;
+
+      const buyer = cells[1].innerText.trim() || 'Unknown';
+      const qty = Number(cells[3].innerText) || 0;
+
+      if (!buyers[buyer]) {
+        buyers[buyer] = { entries: 0, qty: 0 };
+      }
+      buyers[buyer].entries += 1;
+      buyers[buyer].qty += qty;
+    });
+
+    const buyerList = Object.entries(buyers).sort((a, b) => b[1].qty - a[1].qty);
+
+    if (buyerList.length === 0) {
+      dstBody.innerHTML = '<tr><td colspan="3" style="color:#6b6c72; padding:20px;">No data available</td></tr>';
       return;
     }
 
-    let html = '';
-    for (let i = 0; i < Math.min(5, rows.length); i++) {
-      const cells = rows[i].querySelectorAll('td');
-      if (cells.length < 9) continue;
-      html += `<tr>
-        <td>${cells[0].innerText}</td>
-        <td>${cells[1].innerText}</td>
-        <td>${cells[2].innerText}</td>
-        <td>${cells[3].innerText}</td>
-        <td>${cells[7].innerText}</td>
-      </tr>`;
-    }
+    const html = buyerList.map(([name, data]) => `
+      <tr>
+        <td>${name}</td>
+        <td>${data.entries}</td>
+        <td class="qty-cell">${data.qty}</td>
+      </tr>
+    `).join('');
+
     if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
   }, 1000);
 </script>
