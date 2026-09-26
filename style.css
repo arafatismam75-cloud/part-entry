@@ -5,9 +5,10 @@ body {
   background: #121316;
   color: #ffffff;
   min-height: 100vh;
+  transition: background 0.3s;
 }
 
-/* ===== LOGIN PAGE ===== */
+/* ===== LOGIN ===== */
 .login-box {
   width: 100%;
   max-width: 400px;
@@ -46,7 +47,7 @@ body {
 }
 #googleLogin:hover { background: #f0f0f0; transform: translateY(-1px); }
 
-/* ===== DASHBOARD LAYOUT WITH SIDEBAR ===== */
+/* ===== DASHBOARD LAYOUT ===== */
 #dashboard {
   display: flex;
   min-height: 100vh;
@@ -67,6 +68,9 @@ body {
   z-index: 100;
   transition: transform 0.3s ease;
 }
+.sidebar.hidden {
+  transform: translateX(-100%);
+}
 
 .sidebar-brand {
   padding: 0 25px 25px;
@@ -83,7 +87,6 @@ body {
   padding: 20px 0;
   overflow-y: auto;
 }
-
 .sidebar-nav a {
   display: flex;
   align-items: center;
@@ -110,24 +113,17 @@ body {
   border-top: 1px solid #2a2b30;
   padding: 18px 25px;
 }
-
 .sidebar-user {
   font-size: 13px;
   color: #b8b8d0;
   margin-bottom: 12px;
   word-break: break-word;
 }
-
 .sidebar-footer button {
-  width: 100%;
-  padding: 9px;
-  background: #e74c3c;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
+  width: 100%; padding: 9px;
+  background: #e74c3c; color: #fff;
+  border: none; border-radius: 20px;
+  cursor: pointer; font-size: 13px; font-weight: 600;
   transition: all 0.2s;
 }
 .sidebar-footer button:hover { background: #c0392b; }
@@ -137,25 +133,50 @@ body {
   margin-left: 240px;
   flex: 1;
   padding: 30px;
+  padding-top: 80px;
   min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+.main-content.full {
+  margin-left: 0;
 }
 
-/* Toggle button */
+/* Toggle button (☰) - সবসময় দৃশ্যমান */
 .toggle-btn {
-  display: none;
   position: fixed;
   top: 20px;
   left: 20px;
   z-index: 200;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
   background: #1a1b1f;
   border: 1px solid #2a2b30;
   color: #4d8aea;
   font-size: 20px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
 }
+.toggle-btn:hover {
+  background: #232429;
+  color: #ffffff;
+}
+.toggle-btn.shifted {
+  left: 258px;
+}
+
+/* Overlay (মোবাইলে বাইরে ক্লিক করলে সাইডবার বন্ধ) */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+}
+.overlay.active { display: block; }
 
 /* Page topbar */
 .topbar {
@@ -187,6 +208,7 @@ body {
 }
 .card:nth-child(2) { border-left-color: #2ecc71; }
 .card:nth-child(3) { border-left-color: #f39c12; }
+.card:nth-child(4) { border-left-color: #e74c3c; }
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -198,7 +220,7 @@ body {
 }
 .card h2 { color: #ffffff; font-size: 32px; font-weight: 700; }
 
-/* ===== FORM SECTIONS ===== */
+/* ===== FORM ===== */
 .entry {
   background: #1a1b1f;
   margin-bottom: 25px;
@@ -211,7 +233,6 @@ body {
   margin-bottom: 20px; padding-bottom: 12px;
   border-bottom: 1px solid #2a2b30; font-weight: 600;
 }
-
 .form-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -235,7 +256,6 @@ body {
   border-color: #4d8aea;
   box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
 }
-
 .entry button {
   padding: 12px 24px; border: none; border-radius: 24px;
   background: #4d8aea; color: #fff; cursor: pointer;
@@ -246,6 +266,46 @@ body {
 .entry button:hover { background: #3b75d4; transform: translateY(-1px); }
 #cancelEdit { background: #e74c3c !important; }
 #cancelEdit:hover { background: #c0392b !important; }
+
+/* ===== SEARCH BAR (inside Part List) ===== */
+.list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.list-toolbar .search-wrap {
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+}
+.list-toolbar .search-wrap::before {
+  content: "🔍";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.6;
+}
+.list-toolbar input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  background: #121316;
+  border: 1px solid #2a2b30;
+  border-radius: 24px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+.list-toolbar input::placeholder { color: #6b6c72; }
+.list-toolbar input:focus {
+  border-color: #4d8aea;
+  box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
+}
 
 /* ===== TABLE ===== */
 table {
@@ -286,32 +346,27 @@ tbody tr:hover { background: #1f2025; }
 .section { display: none; }
 .section.active { display: block; }
 
+/* ===== DASHBOARD EXTRA (Recent Entries) ===== */
+.recent-table {
+  margin-top: 10px;
+}
+.recent-table table {
+  font-size: 12px;
+}
+.recent-table th, .recent-table td {
+  padding: 10px 8px;
+}
+
 /* ===== MOBILE ===== */
 @media (max-width: 900px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  .sidebar.open {
-    transform: translateX(0);
-  }
-  .main-content {
-    margin-left: 0;
-    padding: 20px;
-    padding-top: 80px;
-  }
-  .toggle-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .cards {
-    grid-template-columns: 1fr;
-  }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main-content { margin-left: 0; padding: 20px; padding-top: 80px; }
+  .toggle-btn.shifted { left: 20px; }
+  .form-row { grid-template-columns: 1fr; gap: 10px; }
+  .cards { grid-template-columns: 1fr; }
   table { font-size: 11px; }
   th, td { padding: 8px 5px; }
   .edit-btn, .delete-btn { padding: 5px 10px; font-size: 11px; }
+  .list-toolbar { flex-direction: column; align-items: stretch; }
 }
