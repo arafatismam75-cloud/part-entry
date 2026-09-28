@@ -436,3 +436,63 @@ td:last-child {
     min-width: auto; max-width: none; width: 100%;
   }
 }
+/* ===== STYLISH DATE INPUT ===== */
+.form-group input[type="date"].date-input {
+  position: relative;
+  cursor: pointer;
+  color-scheme: dark;
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%234d8aea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3e%3c/rect%3e%3cline x1='16' y1='2' x2='16' y2='6'%3e%3c/line%3e%3cline x1='8' y1='2' x2='8' y2='6'%3e%3c/line%3e%3cline x1='3' y1='10' x2='21' y2='10'%3e%3c/line%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+}
+
+/* ব্রাউজারের ডিফল্ট ক্যালেন্ডার আইকন হাইড */
+.form-group input[type="date"].date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* ডেট টেক্সট সাদা */
+.form-group input[type="date"].date-input::-webkit-datetime-edit {
+  color: #ffffff;
+}
+.form-group input[type="date"].date-input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+.form-group input[type="date"].date-input::-webkit-datetime-edit-text {
+  color: #6b6c72;
+  padding: 0 3px;
+}
+.form-group input[type="date"].date-input::-webkit-datetime-edit-month-field,
+.form-group input[type="date"].date-input::-webkit-datetime-edit-day-field,
+.form-group input[type="date"].date-input::-webkit-datetime-edit-year-field {
+  color: #ffffff;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.form-group input[type="date"].date-input::-webkit-datetime-edit-month-field:focus,
+.form-group input[type="date"].date-input::-webkit-datetime-edit-day-field:focus,
+.form-group input[type="date"].date-input::-webkit-datetime-edit-year-field:focus {
+  background: #4d8aea;
+  color: #ffffff;
+  outline: none;
+}
+
+/* ফোকাসে নীল গ্লো */
+.form-group input[type="date"].date-input:focus {
+  border-color: #4d8aea;
+  box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.25);
+}
+
+/* hover */
+.form-group input[type="date"].date-input:hover {
+  border-color: #3b75d4;
+  background-color: #18191d;
+}
