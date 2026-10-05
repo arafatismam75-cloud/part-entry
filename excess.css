@@ -1,0 +1,280 @@
+/* =====================================================
+   EXCESS CUTTING PAGE STYLES
+   এই ফাইলটি excess.html-এর জন্য, style.css-এর মতোই
+   সাথে সাব-মেনু স্টাইল যোগ করা
+   ===================================================== */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: #121316;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* LAYOUT */
+#dashboard { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px; background: #1a1b1f;
+  border-right: 1px solid #2a2b30;
+  padding: 25px 0; position: fixed;
+  top: 0; left: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  z-index: 100; transition: transform 0.3s ease;
+}
+.sidebar.hidden { transform: translateX(-100%); }
+.sidebar-brand {
+  padding: 0 25px 25px; font-size: 18px;
+  font-weight: 700; color: #4d8aea;
+  border-bottom: 1px solid #2a2b30;
+}
+.sidebar-brand span { color: #fff; }
+.sidebar-nav { flex: 1; padding: 20px 0; overflow-y: auto; }
+.sidebar-nav a {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 25px; color: #b8b8d0;
+  text-decoration: none; font-size: 15px;
+  cursor: pointer; border-left: 4px solid transparent;
+  transition: all 0.2s;
+}
+.sidebar-nav a:hover { background: #232429; color: #fff; }
+.sidebar-nav a.active {
+  background: #232429; color: #fff;
+  border-left-color: #4d8aea;
+}
+
+/* SUBMENU */
+.sidebar-nav a.has-submenu {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.sidebar-nav a.has-submenu .arrow {
+  transition: transform 0.2s; font-size: 12px;
+}
+.sidebar-nav a.has-submenu.open .arrow { transform: rotate(90deg); }
+
+.submenu {
+  display: none; background: #16171b;
+  border-left: 3px solid #4d8aea;
+}
+.submenu.open { display: block; }
+.submenu a {
+  padding: 11px 25px 11px 45px;
+  font-size: 14px; color: #8e8f96;
+  border-left: none;
+}
+.submenu a:hover { background: #232429; color: #fff; }
+.submenu a.active {
+  background: #232429; color: #fff;
+  border-left: none;
+}
+
+.sidebar-footer {
+  border-top: 1px solid #2a2b30;
+  padding: 18px 25px;
+}
+.sidebar-user {
+  font-size: 13px; color: #b8b8d0;
+  margin-bottom: 12px; word-break: break-word;
+}
+.sidebar-footer button {
+  width: 100%; padding: 9px;
+  background: #e74c3c; color: #fff;
+  border: none; border-radius: 20px;
+  cursor: pointer; font-size: 13px; font-weight: 600;
+}
+.sidebar-footer button:hover { background: #c0392b; }
+
+/* MAIN */
+.main-content {
+  margin-left: 240px; flex: 1;
+  padding: 30px; padding-top: 80px;
+  min-height: 100vh; transition: margin-left 0.3s ease;
+}
+.main-content.full { margin-left: 0; }
+
+/* TOGGLE */
+.toggle-btn {
+  position: fixed; top: 20px; left: 20px; z-index: 200;
+  width: 44px; height: 44px; border-radius: 10px;
+  background: #1a1b1f; border: 1px solid #2a2b30;
+  color: #4d8aea; font-size: 20px;
+  cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.toggle-btn:hover { background: #232429; color: #fff; }
+.toggle-btn.shifted { left: 258px; }
+
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.5); z-index: 50;
+}
+.overlay.active { display: block; }
+
+/* TOPBAR */
+.topbar {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 25px;
+}
+.topbar h1 { font-size: 22px; color: #fff; font-weight: 700; }
+
+/* FORM */
+.entry {
+  background: #1a1b1f; margin-bottom: 25px;
+  padding: 25px; border-radius: 12px;
+  border: 1px solid #2a2b30;
+}
+.entry h2 {
+  font-size: 17px; color: #fff;
+  margin-bottom: 20px; padding-bottom: 12px;
+  border-bottom: 1px solid #2a2b30; font-weight: 600;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px; margin-bottom: 10px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label {
+  font-size: 11px; color: #8e8f96;
+  text-transform: uppercase; letter-spacing: 0.6px;
+  font-weight: 600; padding-left: 4px;
+}
+.form-group input {
+  width: 100%; padding: 12px 14px;
+  background: #121316; border: 1px solid #2a2b30;
+  border-radius: 8px; color: #fff;
+  font-size: 14px; outline: none; transition: all 0.2s;
+}
+.form-group input::placeholder { color: #6b6c72; }
+.form-group input:focus {
+  border-color: #4d8aea;
+  box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
+}
+.entry button {
+  padding: 12px 24px; border: none;
+  border-radius: 24px; background: #4d8aea;
+  color: #fff; cursor: pointer;
+  font-size: 14px; font-weight: 600;
+  margin-top: 15px; margin-right: 10px;
+  transition: all 0.2s;
+}
+.entry button:hover { background: #3b75d4; transform: translateY(-1px); }
+#cancelExcessEdit { background: #e74c3c !important; }
+#cancelExcessEdit:hover { background: #c0392b !important; }
+
+/* SEARCH */
+.list-toolbar {
+  display: flex; justify-content: space-between;
+  align-items: center; gap: 15px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.list-toolbar .search-wrap {
+  flex: 1; min-width: 240px; position: relative;
+}
+.list-toolbar .search-wrap::before {
+  content: "🔍"; position: absolute;
+  left: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 14px; opacity: 0.6;
+}
+.list-toolbar input {
+  width: 100%; padding: 12px 16px 12px 42px;
+  background: #121316; border: 1px solid #2a2b30;
+  border-radius: 24px; color: #fff;
+  font-size: 14px; outline: none; transition: all 0.2s;
+}
+.list-toolbar input::placeholder { color: #6b6c72; }
+.list-toolbar input:focus {
+  border-color: #4d8aea;
+  box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
+}
+
+/* TABLE */
+table {
+  width: 100%; border-collapse: collapse;
+  background: #1a1b1f; border-radius: 12px;
+  overflow: hidden; border: 1px solid #2a2b30;
+}
+thead { background: #232429; }
+thead th {
+  color: #8e8f96; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  font-weight: 600; border: 1px solid #353740;
+}
+th, td {
+  padding: 14px 12px; border: 1px solid #353740;
+  text-align: center; font-size: 13px;
+  color: #d1d1d6; vertical-align: middle;
+}
+tbody tr:hover { background: #1f2025; }
+td:last-child { white-space: nowrap; }
+
+/* EDIT/DELETE */
+.edit-btn, .delete-btn {
+  padding: 7px 14px; border: none;
+  border-radius: 20px; color: #fff;
+  cursor: pointer; font-size: 12px;
+  font-weight: 600; margin: 0 3px;
+  display: inline-block; transition: all 0.2s;
+}
+.edit-btn { background: #2ecc71; }
+.edit-btn:hover { background: #27ae60; transform: translateY(-1px); }
+.delete-btn { background: #e74c3c; }
+.delete-btn:hover { background: #c0392b; transform: translateY(-1px); }
+
+/* SECTION */
+.section { display: none; }
+.section.active { display: block; }
+
+/* BUTTON PRIMARY */
+.btn-primary {
+  padding: 12px 24px; border: none;
+  border-radius: 24px; background: #4d8aea;
+  color: #fff; cursor: pointer;
+  font-size: 14px; font-weight: 600;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: #3b75d4; transform: translateY(-1px); }
+
+/* TOAST */
+#toastContainer {
+  position: fixed; top: 20px; right: 20px;
+  z-index: 9999; display: flex;
+  flex-direction: column; gap: 12px;
+  pointer-events: none;
+}
+.toast {
+  background: #1a1b1f; border: 1px solid #2a2b30;
+  border-left: 5px solid #2ecc71; color: #fff;
+  padding: 14px 20px; border-radius: 10px;
+  font-size: 14px; font-weight: 500;
+  display: flex; align-items: center; gap: 12px;
+  min-width: 260px; max-width: 360px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transform: translateX(400px); opacity: 0;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  pointer-events: auto;
+}
+.toast.show { transform: translateX(0); opacity: 1; }
+.toast.success { border-left-color: #2ecc71; }
+.toast.error { border-left-color: #e74c3c; }
+.toast-icon { font-size: 18px; }
+.toast-msg { flex: 1; }
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main-content { margin-left: 0; padding: 20px; padding-top: 80px; }
+  .toggle-btn.shifted { left: 20px; }
+  .form-row { grid-template-columns: 1fr; gap: 10px; }
+  table { font-size: 11px; }
+  th, td { padding: 8px 5px; }
+  .edit-btn, .delete-btn { padding: 5px 10px; font-size: 11px; }
+  .list-toolbar { flex-direction: column; align-items: stretch; }
+  #toastContainer { top: 15px; right: 15px; left: 15px; }
+  .toast { min-width: auto; max-width: none; width: 100%; }
+}
