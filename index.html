@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Part Entry ERP</title>
+
+<!-- ===== CSS LINK ===== -->
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -30,9 +33,12 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">PART <span>ENTRY</span></div>
     <nav class="sidebar-nav">
-      <a data-section="dashboard" class="active"> Dashboard</a>
+      <a data-section="dashboard" class="active">📊 Dashboard</a>
       <a data-section="entry">➕ New Entry</a>
-      <a data-section="list"> Part List</a>
+      <a data-section="list">📋 Part List</a>
+
+      <!-- ===== EXCESS CUTTING LINK ===== -->
+      <a href="excess.html">✂️ Excess Cutting</a>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">👤 <span id="userRole">Operator</span></div>
@@ -116,11 +122,10 @@
           </div>
           <div class="form-group">
             <label>Delivery Date</label>
-            <input id="deliveryDate" type="date" class="date-input"
-              </br>
+            <input id="deliveryDate" type="date" class="date-input">
           </div>
         </div>
-        <button id="savePart">Save Part</button>
+        <button id="savePart">💾 Save Part</button>
         <button id="cancelEdit" style="display:none;">Cancel Edit</button>
       </div>
     </section>
@@ -162,7 +167,7 @@
 <!-- ===== app.js (অপরিবর্তিত) ===== -->
 <script type="module" src="app.js"></script>
 
-<!-- ===== Section Switch + Sidebar + Buyer Summary ===== -->
+<!-- ===== Section Switch + Sidebar + Buyer Summary + Toast ===== -->
 <script>
   // ===== Section Switching =====
   function showSection(name) {
@@ -170,13 +175,17 @@
     document.getElementById('section-' + name).classList.add('active');
 
     document.querySelectorAll('.sidebar-nav a').forEach(a => {
-      a.classList.toggle('active', a.dataset.section === name);
+      if (a.dataset.section) {
+        a.classList.toggle('active', a.dataset.section === name);
+      } else {
+        a.classList.remove('active');
+      }
     });
 
     if (window.innerWidth <= 900) closeSidebarMobile();
   }
 
-  document.querySelectorAll('.sidebar-nav a').forEach(a => {
+  document.querySelectorAll('.sidebar-nav a[data-section]').forEach(a => {
     a.addEventListener('click', () => showSection(a.dataset.section));
   });
 
@@ -228,7 +237,7 @@
     }
   }, 500);
 
-  // ===== Buyer-wise Summary (partTable থেকে হিসাব) =====
+  // ===== Buyer-wise Summary =====
   setInterval(() => {
     const srcBody = document.getElementById('partTable');
     const dstBody = document.getElementById('buyerSummary');
@@ -268,32 +277,31 @@
 
     if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
   }, 1000);
+
   // ===== Toast Notification =====
-function showToast(message, type = 'success') {
-  let container = document.getElementById('toastContainer');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'toastContainer';
-    document.body.appendChild(container);
+  function showToast(message, type = 'success') {
+    let container = document.getElementById('toastContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toastContainer';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast ' + type;
+    toast.innerHTML = `
+      <span class="toast-icon">${type === 'success' ? '✅' : '⚠️'}</span>
+      <span class="toast-msg">${message}</span>
+    `;
+    container.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 400);
+    }, 3000);
   }
-
-  const toast = document.createElement('div');
-  toast.className = 'toast ' + type;
-  toast.innerHTML = `
-    <span class="toast-icon">${type === 'success' ? '✅' : '⚠️'}</span>
-    <span class="toast-msg">${message}</span>
-  `;
-  container.appendChild(toast);
-
-  // অ্যানিমেশন: ডান দিক থেকে স্লাইড
-  setTimeout(() => toast.classList.add('show'), 10);
-
-  // ৩ সেকেন্ড পর স্বয়ংক্রিয়ভাবে মুছে যাবে
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 400);
-  }, 3000);
-}
 </script>
 
 </body>
