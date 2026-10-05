@@ -36,8 +36,6 @@
       <a data-section="dashboard" class="active">📊 Dashboard</a>
       <a data-section="entry">➕ New Entry</a>
       <a data-section="list">📋 Part List</a>
-
-      <!-- ===== EXCESS CUTTING LINK ===== -->
       <a href="excess.html">✂️ Excess Cutting</a>
     </nav>
     <div class="sidebar-footer">
@@ -48,10 +46,8 @@
 
   <main class="main-content" id="mainContent">
 
-    <!-- ===== DASHBOARD ===== -->
     <section id="section-dashboard" class="section active">
       <div class="topbar"><h1>Dashboard</h1></div>
-
       <div class="cards">
         <div class="card">
           <h3>Total Part</h3>
@@ -66,7 +62,6 @@
           <h2 id="userRole2">Operator</h2>
         </div>
       </div>
-
       <div class="entry buyer-table">
         <h2>Buyer-wise Summary</h2>
         <table>
@@ -82,7 +77,6 @@
       </div>
     </section>
 
-    <!-- ===== NEW ENTRY ===== -->
     <section id="section-entry" class="section">
       <div class="topbar"><h1>New Part Entry</h1></div>
       <div class="entry">
@@ -122,7 +116,7 @@
           </div>
           <div class="form-group">
             <label>Delivery Date</label>
-            <input id="deliveryDate" type="date" class="date-input">
+            <input id="deliveryDate" type="date">
           </div>
         </div>
         <button id="savePart">💾 Save Part</button>
@@ -130,17 +124,14 @@
       </div>
     </section>
 
-    <!-- ===== PART LIST ===== -->
     <section id="section-list" class="section">
       <div class="topbar"><h1>Part List</h1></div>
-
       <div class="entry">
         <div class="list-toolbar">
           <div class="search-wrap">
             <input id="searchBox" placeholder="Search Part / Buyer / Style...">
           </div>
         </div>
-
         <table>
           <thead>
             <tr>
@@ -164,12 +155,9 @@
   </main>
 </div>
 
-<!-- ===== app.js (অপরিবর্তিত) ===== -->
 <script type="module" src="app.js"></script>
 
-<!-- ===== Section Switch + Sidebar + Buyer Summary + Toast ===== -->
 <script>
-  // ===== Section Switching =====
   function showSection(name) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
@@ -189,7 +177,6 @@
     a.addEventListener('click', () => showSection(a.dataset.section));
   });
 
-  // ===== Sidebar Toggle =====
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('mainContent');
@@ -228,57 +215,6 @@
     }
   });
 
-  // ===== Sync userRole → userRole2 =====
-  setInterval(() => {
-    const src = document.getElementById('userRole');
-    const dst = document.getElementById('userRole2');
-    if (src && dst && dst.innerText !== src.innerText) {
-      dst.innerText = src.innerText;
-    }
-  }, 500);
-
-  // ===== Buyer-wise Summary =====
-  setInterval(() => {
-    const srcBody = document.getElementById('partTable');
-    const dstBody = document.getElementById('buyerSummary');
-    if (!srcBody || !dstBody) return;
-
-    const rows = srcBody.querySelectorAll('tr');
-    const buyers = {};
-
-    rows.forEach(row => {
-      const cells = row.querySelectorAll('td');
-      if (cells.length < 9) return;
-
-      const buyer = cells[1].innerText.trim() || 'Unknown';
-      const qty = Number(cells[3].innerText) || 0;
-
-      if (!buyers[buyer]) {
-        buyers[buyer] = { entries: 0, qty: 0 };
-      }
-      buyers[buyer].entries += 1;
-      buyers[buyer].qty += qty;
-    });
-
-    const buyerList = Object.entries(buyers).sort((a, b) => b[1].qty - a[1].qty);
-
-    if (buyerList.length === 0) {
-      dstBody.innerHTML = '<tr><td colspan="3" style="color:#6b6c72; padding:20px;">No data available</td></tr>';
-      return;
-    }
-
-    const html = buyerList.map(([name, data]) => `
-      <tr>
-        <td>${name}</td>
-        <td>${data.entries}</td>
-        <td class="qty-cell">${data.qty}</td>
-      </tr>
-    `).join('');
-
-    if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
-  }, 1000);
-
-  // ===== Toast Notification =====
   function showToast(message, type = 'success') {
     let container = document.getElementById('toastContainer');
     if (!container) {
@@ -286,7 +222,6 @@
       container.id = 'toastContainer';
       document.body.appendChild(container);
     }
-
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
     toast.innerHTML = `
@@ -294,14 +229,54 @@
       <span class="toast-msg">${message}</span>
     `;
     container.appendChild(toast);
-
     setTimeout(() => toast.classList.add('show'), 10);
-
     setTimeout(() => {
       toast.classList.remove('show');
       setTimeout(() => toast.remove(), 400);
     }, 3000);
   }
+
+  const logoutBtn = document.getElementById('logout');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      setTimeout(() => { window.location.href = 'index.html'; }, 800);
+    }, true);
+  }
+
+  setInterval(() => {
+    const src = document.getElementById('userRole');
+    const dst = document.getElementById('userRole2');
+    if (src && dst && dst.innerText !== src.innerText) dst.innerText = src.innerText;
+  }, 500);
+
+  setInterval(() => {
+    const srcBody = document.getElementById('partTable');
+    const dstBody = document.getElementById('buyerSummary');
+    if (!srcBody || !dstBody) return;
+    const rows = srcBody.querySelectorAll('tr');
+    const buyers = {};
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length < 9) return;
+      const buyer = cells[1].innerText.trim() || 'Unknown';
+      const qty = Number(cells[3].innerText) || 0;
+      if (!buyers[buyer]) buyers[buyer] = { entries: 0, qty: 0 };
+      buyers[buyer].entries += 1;
+      buyers[buyer].qty += qty;
+    });
+    const buyerList = Object.entries(buyers).sort((a, b) => b[1].qty - a[1].qty);
+    if (buyerList.length === 0) {
+      dstBody.innerHTML = '<tr><td colspan="3" style="color:#6b6c72; padding:20px;">No data available</td></tr>';
+      return;
+    }
+    const html = buyerList.map(([name, data]) => `
+      <tr>
+        <td>${name}</td>
+        <td>${data.entries}</td>
+        <td class="qty-cell">${data.qty}</td>
+      </tr>`).join('');
+    if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
+  }, 1000);
 </script>
 
 </body>
