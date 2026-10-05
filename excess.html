@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excess Cutting - Part Entry ERP</title>
+
+<!-- ===== EXCESS CSS LINK ===== -->
+<link rel="stylesheet" href="excess.css">
+
+</head>
+
+<body>
+
+<div id="dashboard">
+
+  <div class="overlay" id="overlay" onclick="closeSidebarMobile()"></div>
+  <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">PART <span>ENTRY</span></div>
+    <nav class="sidebar-nav">
+      <a href="index.html">📊 Dashboard</a>
+      <a href="index.html">➕ New Entry</a>
+      <a href="index.html">📋 Part List</a>
+
+      <a class="has-submenu open" onclick="toggleSubmenu(this)">
+        ✂️ Excess Cutting
+        <span class="arrow">▶</span>
+      </a>
+      <div class="submenu open" id="excessSubmenu">
+        <a data-excess="entry" class="active" onclick="showExcessSection('entry')">➕ Excess Cut Entry</a>
+        <a data-excess="view" onclick="showExcessSection('view')">📋 View Data</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">👤 <span id="userRole">Operator</span></div>
+      <button id="logout">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="mainContent">
+
+    <section id="section-entry" class="section active">
+      <div class="topbar">
+        <h1>Excess Cut Entry</h1>
+      </div>
+      <div class="entry">
+        <h2>Enter Excess Cutting Details</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>SR No</label>
+            <input id="srNo" placeholder="Enter SR No">
+          </div>
+          <div class="form-group">
+            <label>Floor</label>
+            <input id="floor" placeholder="Enter floor">
+          </div>
+          <div class="form-group">
+            <label>Buyer Name</label>
+            <input id="buyerName" placeholder="Enter buyer name">
+          </div>
+          <div class="form-group">
+            <label>Style No</label>
+            <input id="styleNo" placeholder="Enter style no">
+          </div>
+          <div class="form-group">
+            <label>PO No</label>
+            <input id="poNo" placeholder="Enter PO no">
+          </div>
+          <div class="form-group">
+            <label>Order Qty</label>
+            <input id="orderQty" type="number" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label>Cut Qty</label>
+            <input id="cutQty" type="number" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label>Excess Qty</label>
+            <input id="excessQty" type="number" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label>Color</label>
+            <input id="color" placeholder="Enter color">
+          </div>
+          <div class="form-group">
+            <label>Delivery Date</label>
+            <input id="deliveryDate" type="date">
+          </div>
+          <div class="form-group">
+            <label>Remarks</label>
+            <input id="remarks" placeholder="Enter remarks">
+          </div>
+        </div>
+        <button id="saveExcess">💾 Save Entry</button>
+        <button id="cancelExcessEdit" style="display:none;">Cancel Edit</button>
+      </div>
+    </section>
+
+    <section id="section-view" class="section">
+      <div class="topbar">
+        <h1>Excess Cutting — View Data</h1>
+        <button class="btn-primary" onclick="exportExcessPDF()" style="margin:0; padding:10px 22px; font-size:14px;">📄 Export PDF</button>
+      </div>
+      <div class="entry">
+        <div class="list-toolbar">
+          <div class="search-wrap">
+            <input id="excessSearchBox" placeholder="Search SR / Buyer / Style / Floor...">
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Floor</th>
+              <th>Buyer</th>
+              <th>Style</th>
+              <th>PO No</th>
+              <th>Order Qty</th>
+              <th>Cut Qty</th>
+              <th>Excess Qty</th>
+              <th>Color</th>
+              <th>Delivery</th>
+              <th>Remarks</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="excessTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script type="module" src="excess.js"></script>
+
+<script>
+  function toggleSubmenu(el) {
+    el.classList.toggle('open');
+    document.getElementById('excessSubmenu').classList.toggle('open');
+  }
+
+  function showExcessSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+
+    document.querySelectorAll('.submenu a').forEach(a => {
+      a.classList.toggle('active', a.dataset.excess === name);
+    });
+
+    if (window.innerWidth <= 900) closeSidebarMobile();
+  }
+
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    const btn = document.getElementById('toggleBtn');
+    const overlay = document.getElementById('overlay');
+
+    if (window.innerWidth <= 900) {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    } else {
+      sidebar.classList.toggle('hidden');
+      main.classList.toggle('full');
+      btn.classList.toggle('shifted');
+    }
+  }
+
+  function closeSidebarMobile() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+  }
+
+  window.addEventListener('resize', () => {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    const btn = document.getElementById('toggleBtn');
+    const overlay = document.getElementById('overlay');
+
+    if (window.innerWidth <= 900) {
+      sidebar.classList.remove('hidden');
+      main.classList.remove('full');
+      btn.classList.remove('shifted');
+      overlay.classList.remove('active');
+    } else {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+  });
+
+  function showToast(message, type = 'success') {
+    let container = document.getElementById('toastContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toastContainer';
+      document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast ' + type;
+    toast.innerHTML = `
+      <span class="toast-icon">${type === 'success' ? '✅' : '⚠️'}</span>
+      <span class="toast-msg">${message}</span>
+    `;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 400);
+    }, 3000);
+  }
+
+  function exportExcessPDF() {
+    const rows = document.querySelectorAll('#excessTable tr');
+    if (!rows.length || (rows.length === 1 && rows[0].innerText.includes('No data'))) {
+      showToast('No data to export', 'error');
+      return;
+    }
+    if (typeof window.jspdf === 'undefined') {
+      showToast('PDF library loading...', 'error');
+      return;
+    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape' });
+
+    doc.setFontSize(18);
+    doc.setTextColor(77, 138, 234);
+    doc.text('EXCESS CUTTING REPORT', 14, 20);
+
+    doc.setFontSize(10);
+    doc.setTextColor(120, 120, 120);
+    doc.text('Generated: ' + new Date().toLocaleString('en-US'), 14, 27);
+
+    const data = [];
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length < 11) return;
+      data.push([
+        cells[0].innerText, cells[1].innerText, cells[2].innerText,
+        cells[3].innerText, cells[4].innerText, cells[5].innerText,
+        cells[6].innerText, cells[7].innerText
+      ]);
+    });
+
+    doc.autoTable({
+      head: [['SR No', 'Floor', 'Buyer', 'Style', 'PO No', 'Order Qty', 'Cut Qty', 'Excess Qty']],
+      body: data,
+      startY: 33,
+      styles: { fontSize: 9, cellPadding: 3 },
+      headStyles: { fillColor: [77, 138, 234], textColor: 255, fontStyle: 'bold' },
+      alternateRowStyles: { fillColor: [245, 245, 245] }
+    });
+
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(9);
+      doc.setTextColor(150, 150, 150);
+      doc.text('Page ' + i + ' of ' + pageCount, 14, doc.internal.pageSize.height - 10);
+    }
+    doc.save('excess-cutting-' + new Date().toISOString().split('T')[0] + '.pdf');
+  }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+</body>
+</html>
