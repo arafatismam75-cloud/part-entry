@@ -3,25 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Part Entry ERP</title>
+<title>G.M.S Textiles - Part Entry ERP</title>
 
 <!-- ===== CSS LINK ===== -->
 <link rel="stylesheet" href="style.css">
 
+<style>
+  /* ===== LOGIN PAGE (নতুন ডিজাইন) ===== */
+  #loginBox {
+    min-height: 100vh;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .login-wrapper {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .login-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .login-brand svg {
+    width: 28px;
+    height: 28px;
+    fill: #4d8aea;
+  }
+  .login-brand span {
+    font-size: 26px;
+    font-weight: 700;
+    color: #4d8aea;
+    letter-spacing: -0.5px;
+  }
+  .login-input {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 28px;
+    border: 1px solid #2a2b30;
+    background: transparent;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+  .login-input::placeholder { color: #6b6c72; }
+  .login-input:focus { border-color: #4d8aea; }
+
+  .password-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 14px;
+  }
+  .password-wrap .login-input {
+    margin-bottom: 0;
+    padding-right: 50px;
+  }
+  .eye-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    fill: #8e8f96;
+    cursor: pointer;
+  }
+
+  .terms-text {
+    font-size: 12px;
+    color: #9e9ea4;
+    margin: 14px 0 18px;
+    line-height: 1.5;
+    align-self: flex-start;
+  }
+  .terms-text a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .action-links {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .action-links button {
+    color: #4d8aea;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+    font-family: inherit;
+  }
+  .action-links button:hover { text-decoration: underline; }
+
+  .login-btn-main {
+    width: 100%;
+    padding: 14px;
+    border-radius: 28px;
+    border: none;
+    background: #4d8aea;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 22px;
+    transition: background-color 0.2s;
+  }
+  .login-btn-main:hover { background: #3b75d4; }
+
+  .oauth-links {
+    font-size: 13px;
+    color: #5b5c62;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .oauth-links button {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 0;
+  }
+  #loginMessage {
+    width: 100%;
+    min-height: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #ff6b6b;
+  }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 500px) {
+    .login-brand span { font-size: 22px; }
+    .login-input { padding: 14px 18px; font-size: 14px; }
+    .login-btn-main { padding: 13px; font-size: 15px; }
+  }
+</style>
 </head>
 
 <body>
 
-<!-- ===== LOGIN ===== -->
-<div class="login-box" id="loginBox">
-  <h1>Part Entry ERP</h1>
-  <p>Login to continue</p>
-  <form onsubmit="return false;">
-    <input type="text" placeholder="Enter your name">
-    <input type="password" placeholder="Enter your password">
-    <input type="submit" value="Login">
-  </form>
-  <button id="googleLogin">Sign in with Google</button>
+<!-- ===== LOGIN PAGE (নতুন ডিজাইন) ===== -->
+<div id="loginBox">
+  <div class="login-wrapper">
+    <div class="login-brand">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+      </svg>
+      <span>G.M.S Textiles</span>
+    </div>
+
+    <input type="email" id="loginEmail" class="login-input" placeholder="Phone number / email address">
+
+    <div class="password-wrap">
+      <input type="password" id="loginPassword" class="login-input" placeholder="Password">
+      <svg class="eye-icon" id="togglePassword" viewBox="0 0 24 24">
+        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+      </svg>
+    </div>
+
+    <div class="terms-text">
+      By signing up or logging in, you consent to GMS Textile's
+      <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+    </div>
+
+    <div id="loginMessage"></div>
+
+    <div class="action-links">
+      <button id="forgotPassword">Forgot password?</button>
+      <button id="signupBtn">Sign up</button>
+    </div>
+
+    <button class="login-btn-main" id="emailLogin">Log in</button>
+
+    <div class="oauth-links">
+      <button id="googleLogin">Log in with Google</button>
+      <span>|</span>
+      <button id="appleLogin">Login with Apple</button>
+    </div>
+  </div>
 </div>
 
 <!-- ===== DASHBOARD ===== -->
@@ -95,11 +275,11 @@
             <input id="styleNo" placeholder="Enter style no">
           </div>
           <div class="form-group">
-            <label>Style Name</label>
-            <input id="poNo" placeholder="Enter Style Name">
+            <label>PO No</label>
+            <input id="poNo" placeholder="Enter PO no">
           </div>
           <div class="form-group">
-            <label>Table No</label>
+            <label>Order Qty</label>
             <input id="orderQty" type="number" placeholder="0">
           </div>
           <div class="form-group">
@@ -138,12 +318,12 @@
               <th>Part</th>
               <th>Buyer</th>
               <th>Style</th>
-              <th>Table no</th>
+              <th>Qty</th>
               <th>Color</th>
               <th>Print</th>
               <th>Embroidery</th>
               <th>Delivery</th>
-              <th>Style Name</th>
+              <th>PO No</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -155,9 +335,39 @@
   </main>
 </div>
 
+<!-- ===== APP.JS LINK (module) ===== -->
 <script type="module" src="app.js"></script>
 
+<!-- ===== Section Switch + Sidebar + Buyer Summary + Toast + Password Eye ===== -->
 <script>
+  // ===== Password Show/Hide =====
+  document.getElementById('togglePassword').addEventListener('click', () => {
+    const pwd = document.getElementById('loginPassword');
+    pwd.type = pwd.type === 'password' ? 'text' : 'password';
+  });
+
+  // ===== Forgot Password (placeholder) =====
+  document.getElementById('forgotPassword').addEventListener('click', () => {
+    const msg = document.getElementById('loginMessage');
+    msg.textContent = 'Please contact your administrator.';
+    msg.style.color = '#f39c12';
+  });
+
+  // ===== Sign Up (placeholder) =====
+  document.getElementById('signupBtn').addEventListener('click', () => {
+    const msg = document.getElementById('loginMessage');
+    msg.textContent = 'Sign up is disabled. Contact admin.';
+    msg.style.color = '#f39c12';
+  });
+
+  // ===== Apple Login (placeholder) =====
+  document.getElementById('appleLogin').addEventListener('click', () => {
+    const msg = document.getElementById('loginMessage');
+    msg.textContent = 'Apple login not available.';
+    msg.style.color = '#f39c12';
+  });
+
+  // ===== Section Switch =====
   function showSection(name) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
@@ -177,6 +387,7 @@
     a.addEventListener('click', () => showSection(a.dataset.section));
   });
 
+  // ===== Sidebar Toggle =====
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('mainContent');
@@ -215,6 +426,7 @@
     }
   });
 
+  // ===== Toast =====
   function showToast(message, type = 'success') {
     let container = document.getElementById('toastContainer');
     if (!container) {
@@ -236,25 +448,34 @@
     }, 3000);
   }
 
+  // ===== Logout with redirect =====
   const logoutBtn = document.getElementById('logout');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      setTimeout(() => { window.location.href = 'index.html'; }, 800);
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 800);
     }, true);
   }
 
+  // ===== Sync userRole → userRole2 =====
   setInterval(() => {
     const src = document.getElementById('userRole');
     const dst = document.getElementById('userRole2');
-    if (src && dst && dst.innerText !== src.innerText) dst.innerText = src.innerText;
+    if (src && dst && dst.innerText !== src.innerText) {
+      dst.innerText = src.innerText;
+    }
   }, 500);
 
+  // ===== Buyer-wise Summary =====
   setInterval(() => {
     const srcBody = document.getElementById('partTable');
     const dstBody = document.getElementById('buyerSummary');
     if (!srcBody || !dstBody) return;
+
     const rows = srcBody.querySelectorAll('tr');
     const buyers = {};
+
     rows.forEach(row => {
       const cells = row.querySelectorAll('td');
       if (cells.length < 9) return;
@@ -264,17 +485,22 @@
       buyers[buyer].entries += 1;
       buyers[buyer].qty += qty;
     });
+
     const buyerList = Object.entries(buyers).sort((a, b) => b[1].qty - a[1].qty);
+
     if (buyerList.length === 0) {
       dstBody.innerHTML = '<tr><td colspan="3" style="color:#6b6c72; padding:20px;">No data available</td></tr>';
       return;
     }
+
     const html = buyerList.map(([name, data]) => `
       <tr>
         <td>${name}</td>
         <td>${data.entries}</td>
         <td class="qty-cell">${data.qty}</td>
-      </tr>`).join('');
+      </tr>
+    `).join('');
+
     if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
   }, 1000);
 </script>
