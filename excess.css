@@ -278,3 +278,40 @@ td:last-child { white-space: nowrap; }
   #toastContainer { top: 15px; right: 15px; left: 15px; }
   .toast { min-width: auto; max-width: none; width: 100%; }
 }
+.form-group input[type="date"].date-input::-webkit-datetime-edit {
+  color: #ffffff;
+}
+.form-group input[type="date"].date-input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+.form-group input[type="date"].date-input::-webkit-datetime-edit-text {
+  color: #6b6c72;
+  padding: 0 3px;
+}
+.form-group input[type="date"].date-input::-webkit-datetime-edit-month-field,
+.form-group input[type="date"].date-input::-webkit-datetime-edit-day-field,
+.form-group input[type="date"].date-input::-webkit-datetime-edit-year-field {
+  color: #ffffff;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.form-group input[type="date"].date-input::-webkit-datetime-edit-month-field:focus,
+.form-group input[type="date"].date-input::-webkit-datetime-edit-day-field:focus,
+.form-group input[type="date"].date-input::-webkit-datetime-edit-year-field:focus {
+  background: #4d8aea;
+  color: #ffffff;
+  outline: none;
+}
+
+/* ফোকাসে নীল গ্লো */
+.form-group input[type="date"].date-input:focus {
+  border-color: #4d8aea;
+  box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.25);
+}
+
+/* hover */
+.form-group input[type="date"].date-input:hover {
+  border-color: #3b75d4;
+  background-color: #18191d;
+}
