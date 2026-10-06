@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Excess Cutting - Part Entry ERP</title>
 
-<!-- ===== EXCESS CSS LINK ===== -->
-<link rel="stylesheet" href="excess.css">
+<!-- ===== CSS LINK (ঠিক করা) ===== -->
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -22,7 +22,7 @@
     <nav class="sidebar-nav">
       <a href="index.html"> Dashboard</a>
       <a href="index.html">➕ New Entry</a>
-      <a href="index.html"> Part List</a>
+      <a href="index.html">Part List</a>
 
       <a class="has-submenu open" onclick="toggleSubmenu(this)">
         ✂️ Excess Cutting
@@ -53,10 +53,15 @@
             <input id="srNo" placeholder="Enter SR No">
           </div>
           <div class="form-group">
-         <label>Floor</label>
-                  <input id="floor" placeholder="Enter Floor">
-    
-              </div>
+            <label>Floor</label>
+            <select id="floor">
+              <option value="">Select Floor</option>
+              <option value="Cutting-1">Cutting-1</option>
+              <option value="Cutting-2">Cutting-2</option>
+              <option value="Cutting-3">Cutting-3</option>
+              <option value="Cutting-4">Cutting-4</option>
+            </select>
+          </div>
           <div class="form-group">
             <label>Buyer Name</label>
             <input id="buyerName" placeholder="Enter buyer name">
@@ -67,9 +72,8 @@
           </div>
           <div class="form-group">
             <label>Table No</label>
-            <input id="poNo" placeholder="Enter PO no">
+            <input id="tableNo" placeholder="Enter Table No">
           </div>
-          
           <div class="form-group">
             <label>Cut Qty</label>
             <input id="cutQty" type="number" placeholder="0">
@@ -91,7 +95,7 @@
             <input id="remarks" placeholder="Enter remarks">
           </div>
         </div>
-        <button id="saveExcess"> Save </button>
+        <button id="saveExcess"> Save Entry</button>
         <button id="cancelExcessEdit" style="display:none;">Cancel Edit</button>
       </div>
     </section>
@@ -99,7 +103,7 @@
     <section id="section-view" class="section">
       <div class="topbar">
         <h1>Excess Cutting — View Data</h1>
-        <button class="btn-primary" onclick="exportExcessPDF()" style="margin:0; padding:10px 22px; font-size:14px;">📄 Export PDF</button>
+        <button class="btn-primary" onclick="exportExcessPDF()" style="margin:0; padding:10px 22px; font-size:14px;"> Export PDF</button>
       </div>
       <div class="entry">
         <div class="list-toolbar">
@@ -115,7 +119,6 @@
               <th>Buyer</th>
               <th>Style</th>
               <th>Table No</th>
-              
               <th>Cut Qty</th>
               <th>Excess Qty</th>
               <th>Color</th>
@@ -237,13 +240,13 @@
       if (cells.length < 11) return;
       data.push([
         cells[0].innerText, cells[1].innerText, cells[2].innerText,
-        cells[3].innerText, cells[4].innerText, cells[5].innerText,
-        cells[6].innerText, cells[7].innerText
+        cells[3].innerText, cells[4].innerText,
+        cells[5].innerText, cells[6].innerText
       ]);
     });
 
     doc.autoTable({
-      head: [['SR No', 'Floor', 'Buyer', 'Style', 'Table no', 'Order Qty', 'Cut Qty', 'Excess Qty']],
+      head: [['SR No', 'Floor', 'Buyer', 'Style', 'Table No', 'Cut Qty', 'Excess Qty']],
       body: data,
       startY: 33,
       styles: { fontSize: 9, cellPadding: 3 },
