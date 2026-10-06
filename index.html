@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>G.M.S Textiles - Part Entry ERP</title>
 
-<!-- ===== CSS LINK ===== -->
 <link rel="stylesheet" href="style.css">
 
 <style>
-  /* ===== LOGIN PAGE (নতুন ডিজাইন) ===== */
   #loginBox {
     min-height: 100vh;
     background: #0a0a0a;
@@ -32,11 +30,7 @@
     gap: 10px;
     margin-bottom: 40px;
   }
-  .login-brand svg {
-    width: 28px;
-    height: 28px;
-    fill: #4d8aea;
-  }
+  .login-brand svg { width: 28px; height: 28px; fill: #4d8aea; }
   .login-brand span {
     font-size: 26px;
     font-weight: 700;
@@ -63,10 +57,7 @@
     width: 100%;
     margin-bottom: 14px;
   }
-  .password-wrap .login-input {
-    margin-bottom: 0;
-    padding-right: 50px;
-  }
+  .password-wrap .login-input { margin-bottom: 0; padding-right: 50px; }
   .eye-icon {
     position: absolute;
     right: 20px;
@@ -151,20 +142,25 @@
     font-size: 13px;
     color: #ff6b6b;
   }
-
-  /* ===== MOBILE ===== */
-  @media (max-width: 500px) {
-    .login-brand span { font-size: 22px; }
-    .login-input { padding: 14px 18px; font-size: 14px; }
-    .login-btn-main { padding: 13px; font-size: 15px; }
-  }
 </style>
 </head>
 
 <body>
 
-<!-- ===== LOGIN PAGE (নতুন ডিজাইন) ===== -->
-<div id="loginBox">
+<!-- ===== LOADING SCREEN ===== -->
+<div id="loadingScreen" style="
+  position: fixed; inset: 0;
+  background: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+">
+  <div style="color: #4d8aea; font-size: 16px; letter-spacing: 1px;">
+    Loading...
+  </div>
+</div>
+
+<!-- ===== LOGIN PAGE ===== -->
+<div id="loginBox" style="display:none;">
   <div class="login-wrapper">
     <div class="login-brand">
       <svg viewBox="0 0 24 24">
@@ -213,10 +209,10 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">PART <span>ENTRY</span></div>
     <nav class="sidebar-nav">
-      <a data-section="dashboard" class="active">Dashboard</a>
+      <a data-section="dashboard" class="active">📊 Dashboard</a>
       <a data-section="entry">➕ New Entry</a>
-      <a data-section="list">Part List</a>
-      <a href="excess.html">Excess Cutting</a>
+      <a data-section="list">📋 Part List</a>
+      <a href="excess.html">✂️ Excess Cutting</a>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">👤 <span id="userRole">Operator</span></div>
@@ -299,7 +295,7 @@
             <input id="deliveryDate" type="date">
           </div>
         </div>
-        <button id="savePart">Save Part</button>
+        <button id="savePart">💾 Save Part</button>
         <button id="cancelEdit" style="display:none;">Cancel Edit</button>
       </div>
     </section>
@@ -335,43 +331,35 @@
   </main>
 </div>
 
-<!-- ===== APP.JS LINK (module) ===== -->
 <script type="module" src="app.js"></script>
 
-<!-- ===== Section Switch + Sidebar + Buyer Summary + Toast + Password Eye ===== -->
 <script>
-  // ===== Password Show/Hide =====
   document.getElementById('togglePassword').addEventListener('click', () => {
     const pwd = document.getElementById('loginPassword');
     pwd.type = pwd.type === 'password' ? 'text' : 'password';
   });
 
-  // ===== Forgot Password (placeholder) =====
   document.getElementById('forgotPassword').addEventListener('click', () => {
     const msg = document.getElementById('loginMessage');
     msg.textContent = 'Please contact your administrator.';
     msg.style.color = '#f39c12';
   });
 
-  // ===== Sign Up (placeholder) =====
   document.getElementById('signupBtn').addEventListener('click', () => {
     const msg = document.getElementById('loginMessage');
     msg.textContent = 'Sign up is disabled. Contact admin.';
     msg.style.color = '#f39c12';
   });
 
-  // ===== Apple Login (placeholder) =====
   document.getElementById('appleLogin').addEventListener('click', () => {
     const msg = document.getElementById('loginMessage');
     msg.textContent = 'Apple login not available.';
     msg.style.color = '#f39c12';
   });
 
-  // ===== Section Switch =====
   function showSection(name) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
-
     document.querySelectorAll('.sidebar-nav a').forEach(a => {
       if (a.dataset.section) {
         a.classList.toggle('active', a.dataset.section === name);
@@ -379,7 +367,6 @@
         a.classList.remove('active');
       }
     });
-
     if (window.innerWidth <= 900) closeSidebarMobile();
   }
 
@@ -387,13 +374,11 @@
     a.addEventListener('click', () => showSection(a.dataset.section));
   });
 
-  // ===== Sidebar Toggle =====
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('mainContent');
     const btn = document.getElementById('toggleBtn');
     const overlay = document.getElementById('overlay');
-
     if (window.innerWidth <= 900) {
       sidebar.classList.toggle('open');
       overlay.classList.toggle('active');
@@ -414,7 +399,6 @@
     const main = document.getElementById('mainContent');
     const btn = document.getElementById('toggleBtn');
     const overlay = document.getElementById('overlay');
-
     if (window.innerWidth <= 900) {
       sidebar.classList.remove('hidden');
       main.classList.remove('full');
@@ -426,7 +410,6 @@
     }
   });
 
-  // ===== Toast =====
   function showToast(message, type = 'success') {
     let container = document.getElementById('toastContainer');
     if (!container) {
@@ -448,7 +431,6 @@
     }, 3000);
   }
 
-  // ===== Logout with redirect =====
   const logoutBtn = document.getElementById('logout');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -458,7 +440,6 @@
     }, true);
   }
 
-  // ===== Sync userRole → userRole2 =====
   setInterval(() => {
     const src = document.getElementById('userRole');
     const dst = document.getElementById('userRole2');
@@ -467,15 +448,12 @@
     }
   }, 500);
 
-  // ===== Buyer-wise Summary =====
   setInterval(() => {
     const srcBody = document.getElementById('partTable');
     const dstBody = document.getElementById('buyerSummary');
     if (!srcBody || !dstBody) return;
-
     const rows = srcBody.querySelectorAll('tr');
     const buyers = {};
-
     rows.forEach(row => {
       const cells = row.querySelectorAll('td');
       if (cells.length < 9) return;
@@ -485,14 +463,11 @@
       buyers[buyer].entries += 1;
       buyers[buyer].qty += qty;
     });
-
     const buyerList = Object.entries(buyers).sort((a, b) => b[1].qty - a[1].qty);
-
     if (buyerList.length === 0) {
       dstBody.innerHTML = '<tr><td colspan="3" style="color:#6b6c72; padding:20px;">No data available</td></tr>';
       return;
     }
-
     const html = buyerList.map(([name, data]) => `
       <tr>
         <td>${name}</td>
@@ -500,7 +475,6 @@
         <td class="qty-cell">${data.qty}</td>
       </tr>
     `).join('');
-
     if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
   }, 1000);
 </script>
