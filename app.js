@@ -3,7 +3,8 @@ import { auth, provider, db } from "./firebase.js";
 import {
     signInWithPopup,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signInWithEmailAndPassword    // ← ✅ নতুন ১
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
 
@@ -22,8 +23,7 @@ import {
 
 
 
-// ================= LOGIN =================
-
+// ================= GOOGLE LOGIN =================
 
 document.getElementById("googleLogin").onclick = async()=>{
 
@@ -41,6 +41,30 @@ document.getElementById("googleLogin").onclick = async()=>{
 
     }
 
+};
+
+
+// ================= EMAIL / PASSWORD LOGIN =================   ← ✅ নতুন ২
+
+document.getElementById("emailLogin").onclick = async () => {
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    const msg = document.getElementById("loginMessage");
+
+    msg.textContent = "";
+    msg.style.color = "#ff6b6b";
+
+    if (!email || !password) {
+        msg.textContent = "Please enter email and password.";
+        return;
+    }
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+        console.log(error);
+        msg.textContent = error.message;
+    }
 };
 
 
@@ -74,7 +98,7 @@ onAuthStateChanged(auth,(user)=>{
 
 
         document.getElementById("userRole").innerText =
-        user.displayName || "Operator";
+        user.displayName || user.email || "Operator";
 
 
         loadParts();
@@ -85,7 +109,7 @@ onAuthStateChanged(auth,(user)=>{
     else{
 
 
-        document.getElementById("loginBox").style.display="block";
+        document.getElementById("loginBox").style.display="flex";
 
         document.getElementById("dashboard").style.display="none";
 
