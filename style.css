@@ -496,3 +496,58 @@ td:last-child {
   border-color: #3b75d4;
   background-color: #18191d;
 }
+/* ===== DATE INPUT FIX (ডার্ক থিম) ===== */
+input[type="date"] {
+  color-scheme: dark;
+  color: #ffffff;
+  background: #121316;
+  border: 1px solid #2a2b30;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  width: 100%;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(1);
+  opacity: 1;
+}
+
+/* ===== SELECT DROPDOWN ===== */
+select {
+  width: 100%;
+  padding: 12px 14px;
+  background: #121316;
+  border: 1px solid #2a2b30;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8f96' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+select:focus {
+  border-color: #4d8aea;
+  box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
+}
+
+select option {
+  background: #1a1b1f;
+  color: #ffffff;
+}
