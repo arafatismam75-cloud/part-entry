@@ -4,7 +4,7 @@ import {
     signInWithPopup,
     signOut,
     onAuthStateChanged,
-    signInWithEmailAndPassword    // ← ✅ নতুন ১
+    signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
 
@@ -44,7 +44,7 @@ document.getElementById("googleLogin").onclick = async()=>{
 };
 
 
-// ================= EMAIL / PASSWORD LOGIN =================   ← ✅ নতুন ২
+// ================= EMAIL / PASSWORD LOGIN =================
 
 document.getElementById("emailLogin").onclick = async () => {
     const email = document.getElementById("loginEmail").value.trim();
@@ -88,34 +88,29 @@ document.getElementById("logout").onclick = async()=>{
 
 onAuthStateChanged(auth,(user)=>{
 
+    // ✅ Loading Screen লুকান
+    document.getElementById("loadingScreen").style.display = "none";
 
     if(user){
-
 
         document.getElementById("loginBox").style.display="none";
 
         document.getElementById("dashboard").style.display="block";
 
-
         document.getElementById("userRole").innerText =
         user.displayName || user.email || "Operator";
 
-
         loadParts();
-
 
     }
 
     else{
 
-
         document.getElementById("loginBox").style.display="flex";
 
         document.getElementById("dashboard").style.display="none";
 
-
     }
-
 
 });
 
