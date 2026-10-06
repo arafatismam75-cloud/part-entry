@@ -16,6 +16,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 
+// ================= USER CHECK =================
 onAuthStateChanged(auth, (user) => {
     if (user) {
         document.getElementById("userRole").innerText = user.displayName || "Operator";
@@ -26,6 +27,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
+// ================= LOGOUT =================
 document.getElementById("logout").onclick = async () => {
     await signOut(auth);
     window.location.href = "index.html";
@@ -34,14 +36,14 @@ document.getElementById("logout").onclick = async () => {
 
 let editingExcessId = null;
 
+// ================= SAVE / UPDATE =================
 document.getElementById("saveExcess").onclick = async () => {
     let data = {
         srNo: document.getElementById("srNo").value,
         floor: document.getElementById("floor").value,
         buyerName: document.getElementById("buyerName").value,
         styleNo: document.getElementById("styleNo").value,
-        poNo: document.getElementById("poNo").value,
-        orderQty: Number(document.getElementById("orderQty").value),
+        tableNo: document.getElementById("tableNo").value,
         cutQty: Number(document.getElementById("cutQty").value),
         excessQty: Number(document.getElementById("excessQty").value),
         color: document.getElementById("color").value,
@@ -65,13 +67,14 @@ document.getElementById("saveExcess").onclick = async () => {
 };
 
 
+// ================= LOAD =================
 async function loadExcess() {
     let table = document.getElementById("excessTable");
     table.innerHTML = "";
     let snapshot = await getDocs(collection(db, "excessCutting"));
 
     if (snapshot.empty) {
-        table.innerHTML = '<tr><td colspan="12" class="empty">No data available</td></tr>';
+        table.innerHTML = '<tr><td colspan="11" class="empty">No data available</td></tr>';
         return;
     }
 
@@ -83,8 +86,7 @@ async function loadExcess() {
                 <td>${p.floor || ""}</td>
                 <td>${p.buyerName || ""}</td>
                 <td>${p.styleNo || ""}</td>
-                <td>${p.poNo || ""}</td>
-                <td>${p.orderQty || 0}</td>
+                <td>${p.tableNo || ""}</td>
                 <td>${p.cutQty || 0}</td>
                 <td>${p.excessQty || 0}</td>
                 <td>${p.color || ""}</td>
@@ -100,6 +102,7 @@ async function loadExcess() {
 }
 
 
+// ================= EDIT =================
 window.editExcess = async (id) => {
     let snapshot = await getDocs(collection(db, "excessCutting"));
     snapshot.forEach((docSnap) => {
@@ -109,8 +112,7 @@ window.editExcess = async (id) => {
             document.getElementById("floor").value = p.floor || "";
             document.getElementById("buyerName").value = p.buyerName || "";
             document.getElementById("styleNo").value = p.styleNo || "";
-            document.getElementById("poNo").value = p.poNo || "";
-            document.getElementById("orderQty").value = p.orderQty || "";
+            document.getElementById("tableNo").value = p.tableNo || "";
             document.getElementById("cutQty").value = p.cutQty || "";
             document.getElementById("excessQty").value = p.excessQty || "";
             document.getElementById("color").value = p.color || "";
@@ -127,6 +129,7 @@ window.editExcess = async (id) => {
 };
 
 
+// ================= DELETE =================
 window.deleteExcess = async (id) => {
     if (confirm("Delete this entry?")) {
         await deleteDoc(doc(db, "excessCutting", id));
@@ -136,6 +139,7 @@ window.deleteExcess = async (id) => {
 };
 
 
+// ================= CANCEL EDIT =================
 document.getElementById("cancelExcessEdit").onclick = () => {
     editingExcessId = null;
     clearExcessForm();
@@ -144,6 +148,7 @@ document.getElementById("cancelExcessEdit").onclick = () => {
 };
 
 
+// ================= SEARCH =================
 document.getElementById("excessSearchBox").addEventListener("keyup", () => {
     let value = document.getElementById("excessSearchBox").value.toLowerCase();
     let rows = document.querySelectorAll("#excessTable tr");
@@ -154,13 +159,13 @@ document.getElementById("excessSearchBox").addEventListener("keyup", () => {
 });
 
 
+// ================= CLEAR =================
 function clearExcessForm() {
     document.getElementById("srNo").value = "";
     document.getElementById("floor").value = "";
     document.getElementById("buyerName").value = "";
     document.getElementById("styleNo").value = "";
-    document.getElementById("poNo").value = "";
-    document.getElementById("orderQty").value = "";
+    document.getElementById("tableNo").value = "";
     document.getElementById("cutQty").value = "";
     document.getElementById("excessQty").value = "";
     document.getElementById("color").value = "";
