@@ -1,8 +1,4 @@
-```javascript
-// =====================================================
-// STYLE WISE PART - APP.JS
-// Firebase + Login + Entry + Search + Pagination
-// =====================================================
+
 
 import { auth, provider, db } from "./firebase.js";
 
