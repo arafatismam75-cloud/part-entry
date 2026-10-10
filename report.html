@@ -26,9 +26,9 @@
         <span class="arrow">▶</span>
       </a>
       <div class="submenu open" id="excessSubmenu">
-        <a href="excess.html" data-excess="entry">➕ Excess Cut Entry</a>
-        <a href="excess.html" data-excess="view">📋 View Data</a>
-        <a href="report.html" data-excess="report" class="active">📊 Reports</a>
+        <a href="excess.html">➕ Excess Cut Entry</a>
+        <a href="excess.html">📋 View Data</a>
+        <a href="report.html" class="active">📊 Reports</a>
       </div>
     </nav>
     <div class="sidebar-footer">
@@ -44,27 +44,10 @@
       <button class="btn-primary" onclick="exportReportPDF()" style="margin:0; padding:10px 22px; font-size:14px;">📄 Export PDF</button>
     </div>
 
-    <!-- FILTERS -->
+    <!-- 4 FILTER DROPDOWNS -->
     <div class="entry">
       <h2>Filters</h2>
       <div class="form-row">
-
-        <div class="form-group">
-          <label>Date From</label>
-          <input type="date" id="filterDateFrom">
-        </div>
-
-        <div class="form-group">
-          <label>Date To</label>
-          <input type="date" id="filterDateTo">
-        </div>
-
-        <div class="form-group">
-          <label>Floor</label>
-          <select id="filterFloor">
-            <option value="">All Floors</option>
-          </select>
-        </div>
 
         <div class="form-group">
           <label>Buyer</label>
@@ -74,17 +57,29 @@
         </div>
 
         <div class="form-group">
-          <label>Group By</label>
-          <select id="groupBy">
-            <option value="srNo">SR No</option>
-            <option value="buyerName">Buyer</option>
-            <option value="styleNo">Style</option>
-            <option value="color">Color</option>
+          <label>SR No</label>
+          <select id="filterSrNo">
+            <option value="">All SR No</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Style</label>
+          <select id="filterStyle">
+            <option value="">All Styles</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Color</label>
+          <select id="filterColor">
+            <option value="">All Colors</option>
           </select>
         </div>
 
       </div>
-      <button class="btn-primary" onclick="applyFilters()" style="margin-top:15px;">🔍 Apply Filters</button>
+
+      <button class="btn-primary" onclick="applyFilters()" style="margin-top:15px;">🔍 Apply</button>
       <button class="btn-primary" onclick="clearFilters()" style="margin-top:15px; background:#2a2b30;">Clear</button>
     </div>
 
@@ -102,16 +97,32 @@
         <h3>Total Excess Qty</h3>
         <h2 id="statExcessQty">0</h2>
       </div>
-      <div class="card">
-        <h3>Total Groups</h3>
-        <h2 id="statGroups">0</h2>
-      </div>
     </div>
 
-    <!-- REPORT AREA -->
-    <div id="reportArea">
-      <div class="entry">
-        <div class="empty" style="padding:40px;">Loading report...</div>
+    <!-- REPORT TABLE -->
+    <div class="entry">
+      <h2>Report Data</h2>
+      <div style="overflow-x:auto;">
+        <table id="reportTable">
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Floor</th>
+              <th>Buyer</th>
+              <th>Style</th>
+              <th>Table No</th>
+              <th>Cut Qty</th>
+              <th>Excess Qty</th>
+              <th>Color</th>
+              <th>Delivery</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody id="reportBody">
+            <tr><td colspan="10" class="empty">Loading...</td></tr>
+          </tbody>
+          <tfoot id="reportFooter"></tfoot>
+        </table>
       </div>
     </div>
 
@@ -183,7 +194,6 @@
     }, 3000);
   }
 
-  // Global access for report.js
   window.showToast = showToast;
 </script>
 
