@@ -9,15 +9,15 @@ import {
 
 
 import {
-
     collection,
     addDoc,
     getDocs,
     deleteDoc,
     updateDoc,
     doc,
-    serverTimestamp
-
+    serverTimestamp,
+    query,        // ← নতুন
+    orderBy       // ← নতুন
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 
@@ -88,7 +88,6 @@ document.getElementById("logout").onclick = async()=>{
 
 onAuthStateChanged(auth,(user)=>{
 
-    // ✅ Loading Screen লুকান
     document.getElementById("loadingScreen").style.display = "none";
 
     if(user){
@@ -257,7 +256,10 @@ let table=document.getElementById("partTable");
 table.innerHTML="";
 
 
-let snapshot = await getDocs(collection(db,"parts"));
+// ✅ orderBy যোগ — নতুন এন্ট্রি সবার উপরে
+let snapshot = await getDocs(
+    query(collection(db,"parts"), orderBy("createdAt", "desc"))
+);
 
 
 
