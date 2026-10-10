@@ -12,7 +12,9 @@ import {
     deleteDoc,
     updateDoc,
     doc,
-    serverTimestamp
+    serverTimestamp,
+    query,        // ← নতুন
+    orderBy       // ← নতুন
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 
@@ -71,7 +73,11 @@ document.getElementById("saveExcess").onclick = async () => {
 async function loadExcess() {
     let table = document.getElementById("excessTable");
     table.innerHTML = "";
-    let snapshot = await getDocs(collection(db, "excessCutting"));
+
+    // ✅ orderBy যোগ — নতুন এন্ট্রি সবার উপরে
+    let snapshot = await getDocs(
+        query(collection(db, "excessCutting"), orderBy("createdAt", "desc"))
+    );
 
     if (snapshot.empty) {
         table.innerHTML = '<tr><td colspan="11" class="empty">No data available</td></tr>';
