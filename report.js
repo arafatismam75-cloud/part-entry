@@ -42,6 +42,7 @@ async function initReport() {
     populateBuyerDropdown();
     populateSRDropdown();
     populateStyleDropdown();
+    populateColorDropdown();
     applyFilters();
 }
 
@@ -63,7 +64,7 @@ async function loadAllData() {
 }
 
 
-// ================= POPULATE BUYER DROPDOWN =================
+// ================= POPULATE BUYER =================
 function populateBuyerDropdown() {
     const set = new Set();
     allData.forEach(i => { if (i.buyerName) set.add(i.buyerName.trim()); });
@@ -77,13 +78,13 @@ function populateBuyerDropdown() {
 }
 
 
-// ================= POPULATE SR DROPDOWN (নির্ভর করে Buyer-এর উপর) =================
+// ================= POPULATE SR (Buyer-এর উপর নির্ভর) =================
 function populateSRDropdown() {
-    const selectedBuyer = document.getElementById("filterBuyer").value;
+    const buyer = document.getElementById("filterBuyer").value;
 
     const set = new Set();
     allData.forEach(i => {
-        if (selectedBuyer && i.buyerName !== selectedBuyer) return;
+        if (buyer && i.buyerName !== buyer) return;
         if (i.srNo) set.add(i.srNo.trim());
     });
     const list = [...set].sort();
@@ -93,21 +94,18 @@ function populateSRDropdown() {
     list.forEach(s => {
         sel.innerHTML += `<option value="${s}">${s}</option>`;
     });
-
-    // SR dropdown পরিবর্তন হলে Style dropdown আপডেট হবে
-    populateStyleDropdown();
 }
 
 
-// ================= POPULATE STYLE DROPDOWN (নির্ভর করে Buyer + SR-এর উপর) =================
+// ================= POPULATE STYLE (Buyer + SR-এর উপর নির্ভর) =================
 function populateStyleDropdown() {
-    const selectedBuyer = document.getElementById("filterBuyer").value;
-    const selectedSR = document.getElementById("filterSR").value;
+    const buyer = document.getElementById("filterBuyer").value;
+    const sr = document.getElementById("filterSR").value;
 
     const set = new Set();
     allData.forEach(i => {
-        if (selectedBuyer && i.buyerName !== selectedBuyer) return;
-        if (selectedSR && i.srNo !== selectedSR) return;
+        if (buyer && i.buyerName !== buyer) return;
+        if (sr && i.srNo !== sr) return;
         if (i.styleNo) set.add(i.styleNo.trim());
     });
     const list = [...set].sort();
@@ -120,20 +118,41 @@ function populateStyleDropdown() {
 }
 
 
+// ================= POPULATE COLOR (Buyer + SR + Style-এর উপর নির্ভর) =================
+function populateColorDropdown() {
+    const buyer = document.getElementById("filterBuyer").value;
+    const sr = document.getElementById("filterSR").value;
+    const style = document.getElementById("filterStyle").value;
+
+    const set = new Set();
+    allData.forEach(i => {
+        if (buyer && i.buyerName !== buyer) return;
+        if (sr && i.srNo !== sr) return;
+        if (style && i.styleNo !== style) return;
+        if (i.color) set.add(i.color.trim());
+    });
+    const list = [...set].sort();
+
+    const sel = document.getElementById("filterColor");
+    sel.innerHTML = '<option value="">All Colors</option>';
+    list.forEach(c => {
+        sel.innerHTML += `<option value="${c}">${c}</option>`;
+    });
+}
+
+
 // ================= APPLY FILTERS =================
 window.applyFilters = function () {
-    const dateFrom = document.getElementById("filterDateFrom").value;
-    const dateTo = document.getElementById("filterDateTo").value;
     const buyer = document.getElementById("filterBuyer").value;
-    const srNo = document.getElementById("filterSR").value;
-    const styleNo = document.getElementById("filterStyle").value;
+    const sr = document.getElementById("filterSR").value;
+    const style = document.getElementById("filterStyle").value;
+    const color = document.getElementById("filterColor").value;
 
     filteredData = allData.filter((item) => {
         if (buyer && item.buyerName !== buyer) return false;
-        if (srNo && item.srNo !== srNo) return false;
-        if (styleNo && item.styleNo !== styleNo) return false;
-        if (dateFrom && item.deliveryDate && item.deliveryDate < dateFrom) return false;
-        if (dateTo && item.deliveryDate && item.deliveryDate > dateTo) return false;
+        if (sr && item.srNo !== sr) return false;
+        if (style && item.styleNo !== style) return false;
+        if (color && item.color !== color) return false;
         return true;
     });
 
@@ -143,14 +162,14 @@ window.applyFilters = function () {
 
 // ================= CLEAR FILTERS =================
 window.clearFilters = function () {
-    document.getElementById("filterDateFrom").value = "";
-    document.getElementById("filterDateTo").value = "";
     document.getElementById("filterBuyer").value = "";
     document.getElementById("filterSR").value = "";
     document.getElementById("filterStyle").value = "";
+    document.getElementById("filterColor").value = "";
 
     populateSRDropdown();
     populateStyleDropdown();
+    populateColorDropdown();
     applyFilters();
 };
 
@@ -177,7 +196,7 @@ function renderReport() {
         return;
     }
 
-    // Buyer অনুযায়ী গ্রুপ
+    // Buyer → SR → Style → Color গ্রুপ
     const buyerGroups = {};
     filteredData.forEach(item => {
         const key = item.buyerName || "— Unknown —";
@@ -190,14 +209,6 @@ function renderReport() {
     Object.keys(buyerGroups).sort().forEach(buyerName => {
         const buyerItems = buyerGroups[buyerName];
 
-        // SR অনুযায়ী গ্রুপ
-        const srGroups = {};
-        buyerItems.forEach(item => {
-            const key = item.srNo || "— Unknown —";
-            if (!srGroups[key]) srGroups[key] = [];
-            srGroups[key].push(item);
-        });
-
         html += `
             <div class="entry" style="border-left:5px solid #4d8aea;">
                 <h2 style="color:#4d8aea; font-size:18px;">
@@ -205,23 +216,31 @@ function renderReport() {
                 </h2>
         `;
 
+        // SR গ্রুপ
+        const srGroups = {};
+        buyerItems.forEach(item => {
+            const key = item.srNo || "— Unknown —";
+            if (!srGroups[key]) srGroups[key] = [];
+            srGroups[key].push(item);
+        });
+
         Object.keys(srGroups).sort().forEach(srNo => {
             const srItems = srGroups[srNo];
 
-            // Style অনুযায়ী গ্রুপ
+            html += `
+                <div style="margin:18px 0 22px 15px; padding:14px; background:#121316; border-radius:10px; border:1px solid #2a2b30;">
+                    <h3 style="color:#f39c12; font-size:15px; padding-bottom:8px; border-bottom:1px solid #2a2b30;">
+                        📋 SR No: <span style="color:#fff;">${srNo}</span>
+                    </h3>
+            `;
+
+            // Style গ্রুপ
             const styleGroups = {};
             srItems.forEach(item => {
                 const key = item.styleNo || "— Unknown —";
                 if (!styleGroups[key]) styleGroups[key] = [];
                 styleGroups[key].push(item);
             });
-
-            html += `
-                <div style="margin:20px 0 25px 15px; padding:15px; background:#121316; border-radius:10px; border:1px solid #2a2b30;">
-                    <h3 style="color:#f39c12; font-size:15px; padding-bottom:8px; border-bottom:1px solid #2a2b30;">
-                        📋 SR No: <span style="color:#fff;">${srNo}</span>
-                    </h3>
-            `;
 
             Object.keys(styleGroups).sort().forEach(styleNo => {
                 const styleItems = styleGroups[styleNo];
@@ -306,22 +325,19 @@ window.exportReportPDF = function () {
     const fBuyer = document.getElementById("filterBuyer").value;
     const fSR = document.getElementById("filterSR").value;
     const fStyle = document.getElementById("filterStyle").value;
-    const fFrom = document.getElementById("filterDateFrom").value;
-    const fTo = document.getElementById("filterDateTo").value;
+    const fColor = document.getElementById("filterColor").value;
 
     let filterText = "Filters: ";
     if (fBuyer) filterText += `Buyer=${fBuyer} `;
     if (fSR) filterText += `SR=${fSR} `;
     if (fStyle) filterText += `Style=${fStyle} `;
-    if (fFrom) filterText += `From=${fFrom} `;
-    if (fTo) filterText += `To=${fTo} `;
-    if (!fBuyer && !fSR && !fStyle && !fFrom && !fTo) filterText += "None";
+    if (fColor) filterText += `Color=${fColor} `;
+    if (!fBuyer && !fSR && !fStyle && !fColor) filterText += "None";
 
     doc.text(filterText, 14, 33);
 
     let startY = 42;
 
-    // Buyer → SR → Style গ্রুপ
     const buyerGroups = {};
     filteredData.forEach(item => {
         const key = item.buyerName || "— Unknown —";
@@ -332,7 +348,6 @@ window.exportReportPDF = function () {
     Object.keys(buyerGroups).sort().forEach(buyerName => {
         const buyerItems = buyerGroups[buyerName];
 
-        // Buyer heading
         if (startY > 180) { doc.addPage(); startY = 20; }
         doc.setFontSize(13);
         doc.setTextColor(77, 138, 234);
@@ -404,7 +419,6 @@ window.exportReportPDF = function () {
         startY += 4;
     });
 
-    // Page numbers
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
@@ -419,11 +433,22 @@ window.exportReportPDF = function () {
 
 // ================= CASCADING DROPDOWN LISTENERS =================
 document.getElementById("filterBuyer").addEventListener("change", () => {
-    populateSRDropdown();       // SR dropdown আপডেট হবে
-    document.getElementById("filterStyle").value = ""; // Style reset
+    populateSRDropdown();
+    document.getElementById("filterSR").value = "";
     populateStyleDropdown();
+    document.getElementById("filterStyle").value = "";
+    populateColorDropdown();
+    document.getElementById("filterColor").value = "";
 });
 
 document.getElementById("filterSR").addEventListener("change", () => {
-    populateStyleDropdown();    // Style dropdown আপডেট হবে
+    populateStyleDropdown();
+    document.getElementById("filterStyle").value = "";
+    populateColorDropdown();
+    document.getElementById("filterColor").value = "";
+});
+
+document.getElementById("filterStyle").addEventListener("change", () => {
+    populateColorDropdown();
+    document.getElementById("filterColor").value = "";
 });
