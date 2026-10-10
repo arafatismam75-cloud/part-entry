@@ -36,7 +36,7 @@ let allData = [];
 let filteredData = [];
 
 
-// ================= INIT REPORT =================
+// ================= INIT =================
 async function initReport() {
     await loadAllData();
     populateDropdowns();
@@ -63,47 +63,60 @@ async function loadAllData() {
 
 // ================= POPULATE DROPDOWNS =================
 function populateDropdowns() {
-    const buyersSet = new Set();
-    const floorsSet = new Set();
+    const buyers = new Set();
+    const srNos = new Set();
+    const styles = new Set();
+    const colors = new Set();
 
     allData.forEach((item) => {
-        if (item.buyerName) buyersSet.add(item.buyerName.trim());
-        if (item.floor) floorsSet.add(item.floor.trim());
+        if (item.buyerName) buyers.add(item.buyerName.trim());
+        if (item.srNo) srNos.add(item.srNo.trim());
+        if (item.styleNo) styles.add(item.styleNo.trim());
+        if (item.color) colors.add(item.color.trim());
     });
 
-    const buyers = [...buyersSet].sort();
-    const floors = [...floorsSet].sort();
-
+    // Buyer
     const buyerSelect = document.getElementById("filterBuyer");
     buyerSelect.innerHTML = '<option value="">All Buyers</option>';
-    buyers.forEach(b => {
+    [...buyers].sort().forEach(b => {
         buyerSelect.innerHTML += `<option value="${b}">${b}</option>`;
     });
 
-    const floorSelect = document.getElementById("filterFloor");
-    floorSelect.innerHTML = '<option value="">All Floors</option>';
-    floors.forEach(f => {
-        floorSelect.innerHTML += `<option value="${f}">${f}</option>`;
+    // SR No
+    const srSelect = document.getElementById("filterSrNo");
+    srSelect.innerHTML = '<option value="">All SR No</option>';
+    [...srNos].sort().forEach(s => {
+        srSelect.innerHTML += `<option value="${s}">${s}</option>`;
+    });
+
+    // Style
+    const styleSelect = document.getElementById("filterStyle");
+    styleSelect.innerHTML = '<option value="">All Styles</option>';
+    [...styles].sort().forEach(s => {
+        styleSelect.innerHTML += `<option value="${s}">${s}</option>`;
+    });
+
+    // Color
+    const colorSelect = document.getElementById("filterColor");
+    colorSelect.innerHTML = '<option value="">All Colors</option>';
+    [...colors].sort().forEach(c => {
+        colorSelect.innerHTML += `<option value="${c}">${c}</option>`;
     });
 }
 
 
 // ================= APPLY FILTERS =================
 window.applyFilters = function () {
-    const dateFrom = document.getElementById("filterDateFrom").value;
-    const dateTo = document.getElementById("filterDateTo").value;
-    const floor = document.getElementById("filterFloor").value;
     const buyer = document.getElementById("filterBuyer").value;
+    const srNo = document.getElementById("filterSrNo").value;
+    const style = document.getElementById("filterStyle").value;
+    const color = document.getElementById("filterColor").value;
 
     filteredData = allData.filter((item) => {
-        // Floor
-        if (floor && item.floor !== floor) return false;
-        // Buyer
         if (buyer && item.buyerName !== buyer) return false;
-        // Date From
-        if (dateFrom && item.deliveryDate && item.deliveryDate < dateFrom) return false;
-        // Date To
-        if (dateTo && item.deliveryDate && item.deliveryDate > dateTo) return false;
+        if (srNo && item.srNo !== srNo) return false;
+        if (style && item.styleNo !== style) return false;
+        if (color && item.color !== color) return false;
         return true;
     });
 
@@ -113,19 +126,18 @@ window.applyFilters = function () {
 
 // ================= CLEAR FILTERS =================
 window.clearFilters = function () {
-    document.getElementById("filterDateFrom").value = "";
-    document.getElementById("filterDateTo").value = "";
-    document.getElementById("filterFloor").value = "";
     document.getElementById("filterBuyer").value = "";
-    document.getElementById("groupBy").value = "srNo";
+    document.getElementById("filterSrNo").value = "";
+    document.getElementById("filterStyle").value = "";
+    document.getElementById("filterColor").value = "";
     applyFilters();
 };
 
 
 // ================= RENDER REPORT =================
 function renderReport() {
-    const groupBy = document.getElementById("groupBy").value;
-    const area = document.getElementById("reportArea");
+    const tbody = document.getElementById("reportBody");
+    const tfoot = document.getElementById("reportFooter");
 
     // Stats
     const totalCut = filteredData.reduce((sum, i) => sum + (Number(i.cutQty) || 0), 0);
@@ -136,106 +148,35 @@ function renderReport() {
     document.getElementById("statExcessQty").innerText = totalExcess;
 
     if (filteredData.length === 0) {
-        document.getElementById("statGroups").innerText = 0;
-        area.innerHTML = `
-            <div class="entry">
-                <div class="empty" style="padding:40px;">No data found for the selected filters.</div>
-            </div>
-        `;
+        tbody.innerHTML = '<tr><td colspan="10" class="empty">No data found</td></tr>';
+        tfoot.innerHTML = "";
         return;
     }
 
-    // Group data
-    const groups = {};
-    filteredData.forEach((item) => {
-        const key = item[groupBy] || "— Unknown —";
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(item);
-    });
+    tbody.innerHTML = filteredData.map(i => `
+        <tr>
+            <td>${i.srNo || ""}</td>
+            <td>${i.floor || ""}</td>
+            <td>${i.buyerName || ""}</td>
+            <td>${i.styleNo || ""}</td>
+            <td>${i.tableNo || ""}</td>
+            <td>${i.cutQty || 0}</td>
+            <td>${i.excessQty || 0}</td>
+            <td>${i.color || ""}</td>
+            <td>${i.deliveryDate || ""}</td>
+            <td>${i.remarks || ""}</td>
+        </tr>
+    `).join("");
 
-    const groupKeys = Object.keys(groups).sort();
-    document.getElementById("statGroups").innerText = groupKeys.length;
-
-    // Column setup based on groupBy
-    let columns = [];
-    if (groupBy === "srNo") {
-        columns = ["Buyer", "Style", "Color", "Cut Qty", "Excess Qty"];
-    } else if (groupBy === "buyerName") {
-        columns = ["SR No", "Style", "Color", "Cut Qty", "Excess Qty"];
-    } else if (groupBy === "styleNo") {
-        columns = ["SR No", "Buyer", "Color", "Cut Qty", "Excess Qty"];
-    } else if (groupBy === "color") {
-        columns = ["SR No", "Buyer", "Style", "Cut Qty", "Excess Qty"];
-    }
-
-    // Build HTML
-    let html = "";
-
-    groupKeys.forEach((key) => {
-        const items = groups[key];
-        const groupCut = items.reduce((sum, i) => sum + (Number(i.cutQty) || 0), 0);
-        const groupExcess = items.reduce((sum, i) => sum + (Number(i.excessQty) || 0), 0);
-
-        const groupLabel = {
-            srNo: "SR No",
-            buyerName: "Buyer",
-            styleNo: "Style",
-            color: "Color"
-        }[groupBy];
-
-        html += `
-            <div class="entry" style="margin-bottom:18px;">
-                <h2 style="color:#4d8aea; font-size:16px; padding-bottom:10px; border-bottom:2px solid #4d8aea;">
-                    ${groupLabel}: <span style="color:#fff;">${key}</span>
-                </h2>
-
-                <table style="margin-top:12px;">
-                    <thead>
-                        <tr>${columns.map(c => `<th>${c}</th>`).join("")}</tr>
-                    </thead>
-                    <tbody>
-                        ${items.map(i => `
-                            <tr>
-                                ${groupBy === "srNo" ? `
-                                    <td>${i.buyerName || ""}</td>
-                                    <td>${i.styleNo || ""}</td>
-                                    <td>${i.color || ""}</td>
-                                    <td>${i.cutQty || 0}</td>
-                                    <td>${i.excessQty || 0}</td>
-                                ` : groupBy === "buyerName" ? `
-                                    <td>${i.srNo || ""}</td>
-                                    <td>${i.styleNo || ""}</td>
-                                    <td>${i.color || ""}</td>
-                                    <td>${i.cutQty || 0}</td>
-                                    <td>${i.excessQty || 0}</td>
-                                ` : groupBy === "styleNo" ? `
-                                    <td>${i.srNo || ""}</td>
-                                    <td>${i.buyerName || ""}</td>
-                                    <td>${i.color || ""}</td>
-                                    <td>${i.cutQty || 0}</td>
-                                    <td>${i.excessQty || 0}</td>
-                                ` : `
-                                    <td>${i.srNo || ""}</td>
-                                    <td>${i.buyerName || ""}</td>
-                                    <td>${i.styleNo || ""}</td>
-                                    <td>${i.cutQty || 0}</td>
-                                    <td>${i.excessQty || 0}</td>
-                                `}
-                            </tr>
-                        `).join("")}
-                    </tbody>
-                </table>
-
-                <div style="margin-top:14px; padding:12px 16px; background:#121316; border-radius:8px; border:1px solid #2a2b30; display:flex; gap:30px; flex-wrap:wrap; font-size:14px;">
-                    <div>📦 <strong style="color:#4d8aea;">Total Entries:</strong> <span style="color:#fff;">${items.length}</span></div>
-                    <div>✂️ <strong style="color:#2ecc71;">Total Cut Qty:</strong> <span style="color:#fff;">${groupCut}</span></div>
-                    <div>📊 <strong style="color:#f39c12;">Total Excess Qty:</strong> <span style="color:#fff;">${groupExcess}</span></div>
-                </div>
-            </div>
-        `;
-    });
-
-    area.innerHTML = html;
+    // Footer total
+    tfoot.innerHTML = `
+        <tr style="background:#232429; font-weight:700;">
+            <td colspan="5" style="text-align:right; color:#4d8aea;">TOTAL:</td>
+            <td style="color:#2ecc71;">${totalCut}</td>
+            <td style="color:#f39c12;">${totalExcess}</td>
+            <td colspan="3"></td>
+        </tr>
+    `;
 }
 
 
@@ -252,8 +193,8 @@ window.exportReportPDF = function () {
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: "landscape" });
-    const groupBy = document.getElementById("groupBy").value;
 
+    // Title
     doc.setFontSize(18);
     doc.setTextColor(77, 138, 234);
     doc.text("EXCESS CUTTING REPORT", 14, 20);
@@ -261,81 +202,41 @@ window.exportReportPDF = function () {
     doc.setFontSize(10);
     doc.setTextColor(120, 120, 120);
     doc.text("Generated: " + new Date().toLocaleString("en-US"), 14, 27);
-    doc.text("Grouped by: " + ({
-        srNo: "SR No",
-        buyerName: "Buyer",
-        styleNo: "Style",
-        color: "Color"
-    })[groupBy], 14, 32);
 
-    let startY = 40;
+    // Active filters
+    const buyer = document.getElementById("filterBuyer").value || "All";
+    const srNo = document.getElementById("filterSrNo").value || "All";
+    const style = document.getElementById("filterStyle").value || "All";
+    const color = document.getElementById("filterColor").value || "All";
 
-    // Group data
-    const groups = {};
-    filteredData.forEach((item) => {
-        const key = item[groupBy] || "— Unknown —";
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(item);
-    });
+    doc.text(`Filters — Buyer: ${buyer} | SR No: ${srNo} | Style: ${style} | Color: ${color}`, 14, 33);
 
-    const groupKeys = Object.keys(groups).sort();
+    // Table
+    const body = filteredData.map(i => [
+        i.srNo || "",
+        i.floor || "",
+        i.buyerName || "",
+        i.styleNo || "",
+        i.tableNo || "",
+        i.cutQty || 0,
+        i.excessQty || 0,
+        i.color || "",
+        i.deliveryDate || "",
+        i.remarks || ""
+    ]);
 
-    // Column setup
-    let columns = [];
-    if (groupBy === "srNo") {
-        columns = ["Buyer", "Style", "Color", "Cut Qty", "Excess Qty"];
-    } else if (groupBy === "buyerName") {
-        columns = ["SR No", "Style", "Color", "Cut Qty", "Excess Qty"];
-    } else if (groupBy === "styleNo") {
-        columns = ["SR No", "Buyer", "Color", "Cut Qty", "Excess Qty"];
-    } else {
-        columns = ["SR No", "Buyer", "Style", "Cut Qty", "Excess Qty"];
-    }
+    const totalCut = filteredData.reduce((sum, i) => sum + (Number(i.cutQty) || 0), 0);
+    const totalExcess = filteredData.reduce((sum, i) => sum + (Number(i.excessQty) || 0), 0);
 
-    const groupLabel = {
-        srNo: "SR No",
-        buyerName: "Buyer",
-        styleNo: "Style",
-        color: "Color"
-    }[groupBy];
-
-    groupKeys.forEach((key, index) => {
-        const items = groups[key];
-        const groupCut = items.reduce((sum, i) => sum + (Number(i.cutQty) || 0), 0);
-        const groupExcess = items.reduce((sum, i) => sum + (Number(i.excessQty) || 0), 0);
-
-        // Group heading
-        doc.setFontSize(12);
-        doc.setTextColor(77, 138, 234);
-        doc.text(`${groupLabel}: ${key}`, 14, startY);
-
-        // Table data
-        const body = items.map(i => {
-            if (groupBy === "srNo") return [i.buyerName || "", i.styleNo || "", i.color || "", i.cutQty || 0, i.excessQty || 0];
-            if (groupBy === "buyerName") return [i.srNo || "", i.styleNo || "", i.color || "", i.cutQty || 0, i.excessQty || 0];
-            if (groupBy === "styleNo") return [i.srNo || "", i.buyerName || "", i.color || "", i.cutQty || 0, i.excessQty || 0];
-            return [i.srNo || "", i.buyerName || "", i.styleNo || "", i.cutQty || 0, i.excessQty || 0];
-        });
-
-        doc.autoTable({
-            head: [columns],
-            body: body,
-            startY: startY + 4,
-            styles: { fontSize: 9, cellPadding: 3 },
-            headStyles: { fillColor: [77, 138, 234], textColor: 255, fontStyle: "bold" },
-            alternateRowStyles: { fillColor: [245, 245, 245] },
-            didDrawPage: (data) => {
-                startY = data.cursor.y;
-            }
-        });
-
-        // Group totals
-        const finalY = doc.lastAutoTable.finalY + 6;
-        doc.setFontSize(10);
-        doc.setTextColor(50, 50, 50);
-        doc.text(`Total Entries: ${items.length}   |   Total Cut Qty: ${groupCut}   |   Total Excess Qty: ${groupExcess}`, 14, finalY);
-
-        startY = finalY + 12;
+    doc.autoTable({
+        head: [["SR No", "Floor", "Buyer", "Style", "Table No", "Cut Qty", "Excess Qty", "Color", "Delivery", "Remarks"]],
+        body: body,
+        foot: [["", "", "", "", "TOTAL:", totalCut, totalExcess, "", "", ""]],
+        startY: 40,
+        styles: { fontSize: 8, cellPadding: 3 },
+        headStyles: { fillColor: [77, 138, 234], textColor: 255, fontStyle: "bold" },
+        footStyles: { fillColor: [35, 36, 41], textColor: [46, 204, 113], fontStyle: "bold" },
+        alternateRowStyles: { fillColor: [245, 245, 245] }
     });
 
     // Page numbers
@@ -349,7 +250,3 @@ window.exportReportPDF = function () {
 
     doc.save(`excess-report-${new Date().toISOString().split("T")[0]}.pdf`);
 };
-
-
-// Auto refresh when Group By changes
-document.getElementById("groupBy").addEventListener("change", renderReport);
