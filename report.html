@@ -44,10 +44,20 @@
       <button class="btn-primary" onclick="exportReportPDF()" style="margin:0; padding:10px 22px; font-size:14px;">📄 Export PDF</button>
     </div>
 
-    <!-- 4 FILTER DROPDOWNS -->
+    <!-- FILTERS -->
     <div class="entry">
       <h2>Filters</h2>
       <div class="form-row">
+
+        <div class="form-group">
+          <label>Date From</label>
+          <input type="date" id="filterDateFrom">
+        </div>
+
+        <div class="form-group">
+          <label>Date To</label>
+          <input type="date" id="filterDateTo">
+        </div>
 
         <div class="form-group">
           <label>Buyer</label>
@@ -58,8 +68,8 @@
 
         <div class="form-group">
           <label>SR No</label>
-          <select id="filterSrNo">
-            <option value="">All SR No</option>
+          <select id="filterSR">
+            <option value="">All SR</option>
           </select>
         </div>
 
@@ -70,16 +80,8 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label>Color</label>
-          <select id="filterColor">
-            <option value="">All Colors</option>
-          </select>
-        </div>
-
       </div>
-
-      <button class="btn-primary" onclick="applyFilters()" style="margin-top:15px;">🔍 Apply</button>
+      <button class="btn-primary" onclick="applyFilters()" style="margin-top:15px;">🔍 Apply Filters</button>
       <button class="btn-primary" onclick="clearFilters()" style="margin-top:15px; background:#2a2b30;">Clear</button>
     </div>
 
@@ -97,32 +99,16 @@
         <h3>Total Excess Qty</h3>
         <h2 id="statExcessQty">0</h2>
       </div>
+      <div class="card">
+        <h3>Total Styles</h3>
+        <h2 id="statStyles">0</h2>
+      </div>
     </div>
 
-    <!-- REPORT TABLE -->
-    <div class="entry">
-      <h2>Report Data</h2>
-      <div style="overflow-x:auto;">
-        <table id="reportTable">
-          <thead>
-            <tr>
-              <th>SR No</th>
-              <th>Floor</th>
-              <th>Buyer</th>
-              <th>Style</th>
-              <th>Table No</th>
-              <th>Cut Qty</th>
-              <th>Excess Qty</th>
-              <th>Color</th>
-              <th>Delivery</th>
-              <th>Remarks</th>
-            </tr>
-          </thead>
-          <tbody id="reportBody">
-            <tr><td colspan="10" class="empty">Loading...</td></tr>
-          </tbody>
-          <tfoot id="reportFooter"></tfoot>
-        </table>
+    <!-- REPORT AREA -->
+    <div id="reportArea">
+      <div class="entry">
+        <div class="empty" style="padding:40px;">Loading report...</div>
       </div>
     </div>
 
