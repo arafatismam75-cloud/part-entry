@@ -43,7 +43,21 @@ async function initReport() {
     populateSRDropdown();
     populateStyleDropdown();
     populateColorDropdown();
-    applyFilters();
+
+    // পেজ লোডে কোনো ডেটা দেখাবে না — শুধু নির্দেশনা
+    document.getElementById("reportArea").innerHTML = `
+        <div class="entry">
+            <div class="empty" style="padding:40px; text-align:center; font-size:15px; color:#8e8f96;">
+                🔍 Select filters above and click <strong style="color:#4d8aea;">Apply Filters</strong> to see the report.
+            </div>
+        </div>
+    `;
+
+    // Stats zero
+    document.getElementById("statEntries").innerText = 0;
+    document.getElementById("statCutQty").innerText = 0;
+    document.getElementById("statExcessQty").innerText = 0;
+    document.getElementById("statStyles").innerText = 0;
 }
 
 
@@ -67,7 +81,10 @@ async function loadAllData() {
 // ================= POPULATE BUYER =================
 function populateBuyerDropdown() {
     const set = new Set();
-    allData.forEach(i => { if (i.buyerName) set.add(i.buyerName.trim()); });
+    allData.forEach(i => {
+        const v = (i.buyerName || "").trim();
+        if (v) set.add(v);
+    });
     const list = [...set].sort();
 
     const sel = document.getElementById("filterBuyer");
@@ -80,12 +97,14 @@ function populateBuyerDropdown() {
 
 // ================= POPULATE SR (Buyer-এর উপর নির্ভর) =================
 function populateSRDropdown() {
-    const buyer = document.getElementById("filterBuyer").value;
+    const buyer = document.getElementById("filterBuyer").value.trim();
 
     const set = new Set();
     allData.forEach(i => {
-        if (buyer && i.buyerName !== buyer) return;
-        if (i.srNo) set.add(i.srNo.trim());
+        const b = (i.buyerName || "").trim();
+        if (buyer && b !== buyer) return;
+        const v = (i.srNo || "").trim();
+        if (v) set.add(v);
     });
     const list = [...set].sort();
 
@@ -99,14 +118,17 @@ function populateSRDropdown() {
 
 // ================= POPULATE STYLE (Buyer + SR-এর উপর নির্ভর) =================
 function populateStyleDropdown() {
-    const buyer = document.getElementById("filterBuyer").value;
-    const sr = document.getElementById("filterSR").value;
+    const buyer = document.getElementById("filterBuyer").value.trim();
+    const sr = document.getElementById("filterSR").value.trim();
 
     const set = new Set();
     allData.forEach(i => {
-        if (buyer && i.buyerName !== buyer) return;
-        if (sr && i.srNo !== sr) return;
-        if (i.styleNo) set.add(i.styleNo.trim());
+        const b = (i.buyerName || "").trim();
+        const s = (i.srNo || "").trim();
+        if (buyer && b !== buyer) return;
+        if (sr && s !== sr) return;
+        const v = (i.styleNo || "").trim();
+        if (v) set.add(v);
     });
     const list = [...set].sort();
 
@@ -120,16 +142,20 @@ function populateStyleDropdown() {
 
 // ================= POPULATE COLOR (Buyer + SR + Style-এর উপর নির্ভর) =================
 function populateColorDropdown() {
-    const buyer = document.getElementById("filterBuyer").value;
-    const sr = document.getElementById("filterSR").value;
-    const style = document.getElementById("filterStyle").value;
+    const buyer = document.getElementById("filterBuyer").value.trim();
+    const sr = document.getElementById("filterSR").value.trim();
+    const style = document.getElementById("filterStyle").value.trim();
 
     const set = new Set();
     allData.forEach(i => {
-        if (buyer && i.buyerName !== buyer) return;
-        if (sr && i.srNo !== sr) return;
-        if (style && i.styleNo !== style) return;
-        if (i.color) set.add(i.color.trim());
+        const b = (i.buyerName || "").trim();
+        const s = (i.srNo || "").trim();
+        const st = (i.styleNo || "").trim();
+        if (buyer && b !== buyer) return;
+        if (sr && s !== sr) return;
+        if (style && st !== style) return;
+        const v = (i.color || "").trim();
+        if (v) set.add(v);
     });
     const list = [...set].sort();
 
@@ -143,16 +169,16 @@ function populateColorDropdown() {
 
 // ================= APPLY FILTERS =================
 window.applyFilters = function () {
-    const buyer = document.getElementById("filterBuyer").value;
-    const sr = document.getElementById("filterSR").value;
-    const style = document.getElementById("filterStyle").value;
-    const color = document.getElementById("filterColor").value;
+    const buyer = document.getElementById("filterBuyer").value.trim();
+    const sr = document.getElementById("filterSR").value.trim();
+    const style = document.getElementById("filterStyle").value.trim();
+    const color = document.getElementById("filterColor").value.trim();
 
     filteredData = allData.filter((item) => {
-        if (buyer && item.buyerName !== buyer) return false;
-        if (sr && item.srNo !== sr) return false;
-        if (style && item.styleNo !== style) return false;
-        if (color && item.color !== color) return false;
+        if (buyer && (item.buyerName || "").trim() !== buyer) return false;
+        if (sr && (item.srNo || "").trim() !== sr) return false;
+        if (style && (item.styleNo || "").trim() !== style) return false;
+        if (color && (item.color || "").trim() !== color) return false;
         return true;
     });
 
@@ -170,7 +196,19 @@ window.clearFilters = function () {
     populateSRDropdown();
     populateStyleDropdown();
     populateColorDropdown();
-    applyFilters();
+
+    // খালি অবস্থায় ফিরে যান
+    document.getElementById("reportArea").innerHTML = `
+        <div class="entry">
+            <div class="empty" style="padding:40px; text-align:center; font-size:15px; color:#8e8f96;">
+                🔍 Select filters above and click <strong style="color:#4d8aea;">Apply Filters</strong> to see the report.
+            </div>
+        </div>
+    `;
+    document.getElementById("statEntries").innerText = 0;
+    document.getElementById("statCutQty").innerText = 0;
+    document.getElementById("statExcessQty").innerText = 0;
+    document.getElementById("statStyles").innerText = 0;
 };
 
 
@@ -180,7 +218,7 @@ function renderReport() {
 
     const totalCut = filteredData.reduce((s, i) => s + (Number(i.cutQty) || 0), 0);
     const totalExcess = filteredData.reduce((s, i) => s + (Number(i.excessQty) || 0), 0);
-    const totalStyles = new Set(filteredData.map(i => i.styleNo).filter(Boolean)).size;
+    const totalStyles = new Set(filteredData.map(i => (i.styleNo || "").trim()).filter(Boolean)).size;
 
     document.getElementById("statEntries").innerText = filteredData.length;
     document.getElementById("statCutQty").innerText = totalCut;
@@ -196,10 +234,10 @@ function renderReport() {
         return;
     }
 
-    // Buyer → SR → Style → Color গ্রুপ
+    // Buyer → SR → Style গ্রুপ (trim সহ)
     const buyerGroups = {};
     filteredData.forEach(item => {
-        const key = item.buyerName || "— Unknown —";
+        const key = (item.buyerName || "").trim() || "— Unknown —";
         if (!buyerGroups[key]) buyerGroups[key] = [];
         buyerGroups[key].push(item);
     });
@@ -216,10 +254,9 @@ function renderReport() {
                 </h2>
         `;
 
-        // SR গ্রুপ
         const srGroups = {};
         buyerItems.forEach(item => {
-            const key = item.srNo || "— Unknown —";
+            const key = (item.srNo || "").trim() || "— Unknown —";
             if (!srGroups[key]) srGroups[key] = [];
             srGroups[key].push(item);
         });
@@ -234,10 +271,9 @@ function renderReport() {
                     </h3>
             `;
 
-            // Style গ্রুপ
             const styleGroups = {};
             srItems.forEach(item => {
-                const key = item.styleNo || "— Unknown —";
+                const key = (item.styleNo || "").trim() || "— Unknown —";
                 if (!styleGroups[key]) styleGroups[key] = [];
                 styleGroups[key].push(item);
             });
@@ -268,7 +304,7 @@ function renderReport() {
                             <tbody>
                                 ${styleItems.map(i => `
                                     <tr>
-                                        <td>${i.color || ""}</td>
+                                        <td>${(i.color || "").trim()}</td>
                                         <td>${i.cutQty || 0}</td>
                                         <td>${i.excessQty || 0}</td>
                                         <td>${i.tableNo || ""}</td>
@@ -289,10 +325,10 @@ function renderReport() {
                 `;
             });
 
-            html += `</div>`; // close SR box
+            html += `</div>`;
         });
 
-        html += `</div>`; // close Buyer box
+        html += `</div>`;
     });
 
     area.innerHTML = html;
@@ -302,7 +338,7 @@ function renderReport() {
 // ================= EXPORT PDF =================
 window.exportReportPDF = function () {
     if (filteredData.length === 0) {
-        window.showToast("No data to export", "error");
+        window.showToast("Apply filters first to export", "error");
         return;
     }
     if (typeof window.jspdf === "undefined") {
@@ -321,11 +357,10 @@ window.exportReportPDF = function () {
     doc.setTextColor(120, 120, 120);
     doc.text("Generated: " + new Date().toLocaleString("en-US"), 14, 27);
 
-    // Filter info
-    const fBuyer = document.getElementById("filterBuyer").value;
-    const fSR = document.getElementById("filterSR").value;
-    const fStyle = document.getElementById("filterStyle").value;
-    const fColor = document.getElementById("filterColor").value;
+    const fBuyer = document.getElementById("filterBuyer").value.trim();
+    const fSR = document.getElementById("filterSR").value.trim();
+    const fStyle = document.getElementById("filterStyle").value.trim();
+    const fColor = document.getElementById("filterColor").value.trim();
 
     let filterText = "Filters: ";
     if (fBuyer) filterText += `Buyer=${fBuyer} `;
@@ -340,7 +375,7 @@ window.exportReportPDF = function () {
 
     const buyerGroups = {};
     filteredData.forEach(item => {
-        const key = item.buyerName || "— Unknown —";
+        const key = (item.buyerName || "").trim() || "— Unknown —";
         if (!buyerGroups[key]) buyerGroups[key] = [];
         buyerGroups[key].push(item);
     });
@@ -356,7 +391,7 @@ window.exportReportPDF = function () {
 
         const srGroups = {};
         buyerItems.forEach(item => {
-            const key = item.srNo || "— Unknown —";
+            const key = (item.srNo || "").trim() || "— Unknown —";
             if (!srGroups[key]) srGroups[key] = [];
             srGroups[key].push(item);
         });
@@ -372,7 +407,7 @@ window.exportReportPDF = function () {
 
             const styleGroups = {};
             srItems.forEach(item => {
-                const key = item.styleNo || "— Unknown —";
+                const key = (item.styleNo || "").trim() || "— Unknown —";
                 if (!styleGroups[key]) styleGroups[key] = [];
                 styleGroups[key].push(item);
             });
@@ -388,7 +423,7 @@ window.exportReportPDF = function () {
                 doc.text(`    Style: ${styleNo}`, 14, startY);
 
                 const body = styleItems.map(i => [
-                    i.color || "",
+                    (i.color || "").trim(),
                     i.cutQty || 0,
                     i.excessQty || 0,
                     i.tableNo || "",
@@ -432,23 +467,32 @@ window.exportReportPDF = function () {
 
 
 // ================= CASCADING DROPDOWN LISTENERS =================
-document.getElementById("filterBuyer").addEventListener("change", () => {
-    populateSRDropdown();
-    document.getElementById("filterSR").value = "";
-    populateStyleDropdown();
-    document.getElementById("filterStyle").value = "";
-    populateColorDropdown();
-    document.getElementById("filterColor").value = "";
-});
+const buyerSel = document.getElementById("filterBuyer");
+if (buyerSel) {
+    buyerSel.addEventListener("change", () => {
+        populateSRDropdown();
+        document.getElementById("filterSR").value = "";
+        populateStyleDropdown();
+        document.getElementById("filterStyle").value = "";
+        populateColorDropdown();
+        document.getElementById("filterColor").value = "";
+    });
+}
 
-document.getElementById("filterSR").addEventListener("change", () => {
-    populateStyleDropdown();
-    document.getElementById("filterStyle").value = "";
-    populateColorDropdown();
-    document.getElementById("filterColor").value = "";
-});
+const srSel = document.getElementById("filterSR");
+if (srSel) {
+    srSel.addEventListener("change", () => {
+        populateStyleDropdown();
+        document.getElementById("filterStyle").value = "";
+        populateColorDropdown();
+        document.getElementById("filterColor").value = "";
+    });
+}
 
-document.getElementById("filterStyle").addEventListener("change", () => {
-    populateColorDropdown();
-    document.getElementById("filterColor").value = "";
-});
+const styleSel = document.getElementById("filterStyle");
+if (styleSel) {
+    styleSel.addEventListener("change", () => {
+        populateColorDropdown();
+        document.getElementById("filterColor").value = "";
+    });
+                }
