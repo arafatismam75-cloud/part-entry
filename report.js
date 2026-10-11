@@ -48,7 +48,7 @@ async function initReport() {
     document.getElementById("reportArea").innerHTML = `
         <div class="entry">
             <div class="empty" style="padding:40px; text-align:center; font-size:15px; color:#8e8f96;">
-                🔍 Select filters above and click <strong style="color:#4d8aea;">Apply Filters</strong> to see the report.
+                 Select filters above and click <strong style="color:#4d8aea;">Apply Filters</strong> to see the report.
             </div>
         </div>
     `;
@@ -267,7 +267,7 @@ function renderReport() {
             html += `
                 <div style="margin:18px 0 22px 15px; padding:14px; background:#121316; border-radius:10px; border:1px solid #2a2b30;">
                     <h3 style="color:#f39c12; font-size:15px; padding-bottom:8px; border-bottom:1px solid #2a2b30;">
-                        📋 SR No: <span style="color:#fff;">${srNo}</span>
+                        SR No: <span style="color:#fff;">${srNo}</span>
                     </h3>
             `;
 
@@ -286,7 +286,7 @@ function renderReport() {
                 html += `
                     <div style="margin:15px 0 20px 15px;">
                         <h4 style="color:#2ecc71; font-size:14px; margin-bottom:10px;">
-                            ✂️ Style: <span style="color:#fff;">${styleNo}</span>
+                             Style: <span style="color:#fff;">${styleNo}</span>
                         </h4>
 
                         <table style="margin-top:8px;">
@@ -317,9 +317,9 @@ function renderReport() {
                         </table>
 
                         <div style="margin-top:10px; padding:10px 14px; background:#1a1b1f; border-radius:8px; border:1px solid #2a2b30; display:flex; gap:22px; flex-wrap:wrap; font-size:13px;">
-                            <div>📦 Entries: <strong style="color:#4d8aea;">${styleItems.length}</strong></div>
-                            <div>✂️ Cut Qty: <strong style="color:#2ecc71;">${styleCut}</strong></div>
-                            <div>📊 Excess Qty: <strong style="color:#f39c12;">${styleExcess}</strong></div>
+                            <div>Entries: <strong style="color:#4d8aea;">${styleItems.length}</strong></div>
+                            <div> Cut Qty: <strong style="color:#2ecc71;">${styleCut}</strong></div>
+                            <div>Excess Qty: <strong style="color:#f39c12;">${styleExcess}</strong></div>
                         </div>
                     </div>
                 `;
