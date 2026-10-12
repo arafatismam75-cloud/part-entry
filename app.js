@@ -7,7 +7,6 @@ import {
     signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-
 import {
     collection,
     addDoc,
@@ -16,41 +15,27 @@ import {
     updateDoc,
     doc,
     serverTimestamp,
-    query,        // ← নতুন
-    orderBy       // ← নতুন
+    query,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 
-
-
 // ================= GOOGLE LOGIN =================
-
-document.getElementById("googleLogin").onclick = async()=>{
-
-    try{
-
+document.getElementById("googleLogin").onclick = async () => {
+    try {
         await signInWithPopup(auth, provider);
-
-    }
-
-    catch(error){
-
+    } catch (error) {
         console.log(error);
-
         alert(error.message);
-
     }
-
 };
 
 
 // ================= EMAIL / PASSWORD LOGIN =================
-
 document.getElementById("emailLogin").onclick = async () => {
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPassword").value;
     const msg = document.getElementById("loginMessage");
-
     msg.textContent = "";
     msg.style.color = "#ff6b6b";
 
@@ -68,491 +53,199 @@ document.getElementById("emailLogin").onclick = async () => {
 };
 
 
-
-
 // ================= LOGOUT =================
-
-
-document.getElementById("logout").onclick = async()=>{
-
+document.getElementById("logout").onclick = async () => {
     await signOut(auth);
-
 };
 
 
-
-
-
 // ================= USER CHECK =================
-
-
-onAuthStateChanged(auth,(user)=>{
-
+onAuthStateChanged(auth, (user) => {
     document.getElementById("loadingScreen").style.display = "none";
 
-    if(user){
-
-        document.getElementById("loginBox").style.display="none";
-
-        document.getElementById("dashboard").style.display="block";
-
-        document.getElementById("userRole").innerText =
-        user.displayName || user.email || "Operator";
-
+    if (user) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("userRole").innerText = user.displayName || user.email || "Operator";
         loadParts();
-
+    } else {
+        document.getElementById("loginBox").style.display = "flex";
+        document.getElementById("dashboard").style.display = "none";
     }
-
-    else{
-
-        document.getElementById("loginBox").style.display="flex";
-
-        document.getElementById("dashboard").style.display="none";
-
-    }
-
 });
-
-
-
-
 
 
 let editingId = null;
 
 
+// ================= HELPER: CHECKBOX থেকে মান সংগ্রহ =================
+function getCheckedValues(className) {
+    const checked = document.querySelectorAll(`.${className}:checked`);
+    const values = [];
+    checked.forEach(cb => values.push(cb.value));
+    return values.join(", ");
+}
 
+// ================= HELPER: CHECKBOX-এ মান সেট করা =================
+function setCheckedValues(className, valueString) {
+    // প্রথমে সব আনচেক করুন
+    document.querySelectorAll(`.${className}`).forEach(cb => cb.checked = false);
+
+    if (!valueString) return;
+
+    // কমা দিয়ে ভাগ করে প্রতিটি মান খুঁজুন
+    const values = valueString.split(",").map(v => v.trim()).filter(Boolean);
+    values.forEach(val => {
+        document.querySelectorAll(`.${className}`).forEach(cb => {
+            if (cb.value === val) cb.checked = true;
+        });
+    });
+}
 
 
 // ================= SAVE / UPDATE =================
+document.getElementById("savePart").onclick = async () => {
 
+    let data = {
+        partName: document.getElementById("partName").value.trim(),
+        buyerName: document.getElementById("buyerName").value.trim(),
+        styleNo: document.getElementById("styleNo").value.trim(),
+        poNo: document.getElementById("poNo").value.trim(),
+        orderQty: Number(document.getElementById("orderQty").value),
+        color: document.getElementById("color").value.trim(),
+        print: getCheckedValues("print-cb"),
+        embroidery: getCheckedValues("embroidery-cb"),
+        deliveryDate: document.getElementById("deliveryDate").value
+    };
 
-document.getElementById("savePart").onclick = async()=>{
+    if (editingId) {
+        await updateDoc(doc(db, "parts", editingId), data);
+        showToast("Updated Successfully", "success");
+        editingId = null;
+        document.getElementById("savePart").innerHTML = "Save Part";
+        document.getElementById("cancelEdit").style.display = "none";
+    } else {
+        data.createdAt = serverTimestamp();
+        await addDoc(collection(db, "parts"), data);
+        showToast("Saved Successfully", "success");
+    }
 
-
-let data={
-
-
-partName:
-document.getElementById("partName").value,
-
-
-buyerName:
-document.getElementById("buyerName").value,
-
-
-styleNo:
-document.getElementById("styleNo").value,
-
-
-poNo:
-document.getElementById("poNo").value,
-
-
-orderQty:
-Number(document.getElementById("orderQty").value),
-
-
-color:
-document.getElementById("color").value,
-
-
-print:
-document.getElementById("print").value,
-
-
-embroidery:
-document.getElementById("embroidery").value,
-
-
-deliveryDate:
-document.getElementById("deliveryDate").value
-
-
-
+    clearForm();
+    loadParts();
 };
-
-
-
-
-if(editingId){
-
-
-await updateDoc(
-
-doc(db,"parts",editingId),
-
-data
-
-);
-
-
-showToast("Updated Successfully", "success");
-
-
-editingId=null;
-
-
-document.getElementById("savePart").innerHTML="💾 Save Part";
-
-
-document.getElementById("cancelEdit").style.display="none";
-
-
-
-}
-
-else{
-
-
-data.createdAt = serverTimestamp();
-
-
-await addDoc(
-
-collection(db,"parts"),
-
-data
-
-);
-
-
-
-showToast("Saved Successfully", "success");
-
-
-}
-
-
-
-
-clearForm();
-
-
-loadParts();
-
-
-
-};
-
-
-
-
-
-
-
 
 
 // ================= LOAD PART =================
-
-
-
-async function loadParts(){
-
-
-let table=document.getElementById("partTable");
-
-
-table.innerHTML="";
-
-
-// ✅ orderBy যোগ — নতুন এন্ট্রি সবার উপরে
-let snapshot = await getDocs(
-    query(collection(db,"parts"), orderBy("createdAt", "desc"))
-);
-
-
-
-let total=0;
-
-let totalQty=0;
-
-
-
-snapshot.forEach((docSnap)=>{
-
-
-let p=docSnap.data();
-
-
-total++;
-
-totalQty += Number(p.orderQty || 0);
-
-
-
-
-table.innerHTML += `
-
-
-<tr>
-
-
-<td>${p.partName || ""}</td>
-
-
-<td>${p.buyerName || ""}</td>
-
-
-<td>${p.styleNo || ""}</td>
-
-
-<td>${p.orderQty || 0}</td>
-
-
-<td>${p.color || ""}</td>
-
-
-<td>${p.print || ""}</td>
-
-
-<td>${p.embroidery || ""}</td>
-
-
-<td>${p.deliveryDate || ""}</td>
-
-
-<td>${p.poNo || ""}</td>
-
-
-
-<td>
-
-
-<button class="edit-btn"
-onclick="editPart('${docSnap.id}')">
-
-✏️ Edit
-
-</button>
-
-
-
-<button class="delete-btn"
-onclick="deletePart('${docSnap.id}')">
-
-🗑 Delete
-
-</button>
-
-
-</td>
-
-
-
-</tr>
-
-
-`;
-
-
-
-});
-
-
-
-
-document.getElementById("totalPart").innerText=total;
-
-
-document.getElementById("totalQty").innerText=totalQty;
-
-
-
+async function loadParts() {
+    let table = document.getElementById("partTable");
+    table.innerHTML = "";
+
+    let snapshot = await getDocs(
+        query(collection(db, "parts"), orderBy("createdAt", "desc"))
+    );
+
+    let total = 0;
+    let totalQty = 0;
+
+    snapshot.forEach((docSnap) => {
+        let p = docSnap.data();
+        total++;
+        totalQty += Number(p.orderQty || 0);
+
+        table.innerHTML += `
+            <tr>
+                <td>${p.partName || ""}</td>
+                <td>${p.buyerName || ""}</td>
+                <td>${p.styleNo || ""}</td>
+                <td>${p.poNo || ""}</td>
+                <td>${p.orderQty || 0}</td>
+                <td>${p.color || ""}</td>
+                <td>${p.print || ""}</td>
+                <td>${p.embroidery || ""}</td>
+                <td>${p.deliveryDate || ""}</td>
+                <td>
+                    <button class="edit-btn" onclick="editPart('${docSnap.id}')">✏️ Edit</button>
+                    <button class="delete-btn" onclick="deletePart('${docSnap.id}')">🗑 Delete</button>
+                </td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("totalPart").innerText = total;
+    document.getElementById("totalQty").innerText = totalQty;
 }
-
-
-
-
-
-
-
 
 
 // ================= EDIT =================
+window.editPart = async (id) => {
+    let snapshot = await getDocs(collection(db, "parts"));
+    snapshot.forEach((docSnap) => {
+        if (docSnap.id === id) {
+            let p = docSnap.data();
 
+            document.getElementById("partName").value = p.partName || "";
+            document.getElementById("buyerName").value = p.buyerName || "";
+            document.getElementById("styleNo").value = p.styleNo || "";
+            document.getElementById("poNo").value = p.poNo || "";
+            document.getElementById("orderQty").value = p.orderQty || "";
+            document.getElementById("color").value = p.color || "";
+            document.getElementById("deliveryDate").value = p.deliveryDate || "";
 
-window.editPart = async(id)=>{
+            // Checkbox সেট করুন
+            setCheckedValues("print-cb", p.print || "");
+            setCheckedValues("embroidery-cb", p.embroidery || "");
 
+            editingId = id;
+            document.getElementById("savePart").innerHTML = "✏️ Update";
+            document.getElementById("cancelEdit").style.display = "inline-block";
 
-let snapshot =
-await getDocs(collection(db,"parts"));
-
-
-
-snapshot.forEach((docSnap)=>{
-
-
-if(docSnap.id === id){
-
-
-let p=docSnap.data();
-
-
-
-document.getElementById("partName").value=p.partName;
-
-document.getElementById("buyerName").value=p.buyerName;
-
-document.getElementById("styleNo").value=p.styleNo;
-
-document.getElementById("poNo").value=p.poNo;
-
-document.getElementById("orderQty").value=p.orderQty;
-
-document.getElementById("color").value=p.color;
-
-document.getElementById("print").value=p.print;
-
-document.getElementById("embroidery").value=p.embroidery;
-
-document.getElementById("deliveryDate").value=p.deliveryDate;
-
-
-
-editingId=id;
-
-
-document.getElementById("savePart").innerHTML="✏️ Update";
-
-
-document.getElementById("cancelEdit").style.display="inline-block";
-
-
-
-}
-
-
-});
-
-
+            if (typeof showSection === 'function') showSection('entry');
+        }
+    });
 };
-
-
-
-
-
 
 
 // ================= DELETE =================
-
-
-window.deletePart = async(id)=>{
-
-
-if(confirm("Delete this Part?")){
-
-
-await deleteDoc(
-
-doc(db,"parts",id)
-
-);
-
-
-
-showToast("Deleted Successfully", "success");
-
-
-loadParts();
-
-
-}
-
-
+window.deletePart = async (id) => {
+    if (confirm("Delete this Part?")) {
+        await deleteDoc(doc(db, "parts", id));
+        showToast("Deleted Successfully", "success");
+        loadParts();
+    }
 };
-
-
-
-
-
 
 
 // ================= CANCEL EDIT =================
-
-
-document.getElementById("cancelEdit").onclick=()=>{
-
-
-editingId=null;
-
-
-clearForm();
-
-
-document.getElementById("savePart").innerHTML="💾 Save Part";
-
-
-document.getElementById("cancelEdit").style.display="none";
-
-
+document.getElementById("cancelEdit").onclick = () => {
+    editingId = null;
+    clearForm();
+    document.getElementById("savePart").innerHTML = " Save Part";
+    document.getElementById("cancelEdit").style.display = "none";
 };
 
 
-
-
-
-
 // ================= SEARCH =================
-
-
-document.getElementById("searchBox").addEventListener("keyup",()=>{
-
-
-let value =
-document.getElementById("searchBox").value.toLowerCase();
-
-
-
-let rows =
-document.querySelectorAll("#partTable tr");
-
-
-
-rows.forEach(row=>{
-
-
-let text=row.innerText.toLowerCase();
-
-
-row.style.display =
-text.includes(value) ? "" : "none";
-
-
+document.getElementById("searchBox").addEventListener("keyup", () => {
+    let value = document.getElementById("searchBox").value.toLowerCase();
+    let rows = document.querySelectorAll("#partTable tr");
+    rows.forEach(row => {
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(value) ? "" : "none";
+    });
 });
-
-
-});
-
-
-
-
-
 
 
 // ================= CLEAR =================
+function clearForm() {
+    document.getElementById("partName").value = "";
+    document.getElementById("buyerName").value = "";
+    document.getElementById("styleNo").value = "";
+    document.getElementById("poNo").value = "";
+    document.getElementById("orderQty").value = "";
+    document.getElementById("color").value = "";
+    document.getElementById("deliveryDate").value = "";
 
-
-function clearForm(){
-
-
-document.getElementById("partName").value="";
-
-document.getElementById("buyerName").value="";
-
-document.getElementById("styleNo").value="";
-
-document.getElementById("poNo").value="";
-
-document.getElementById("orderQty").value="";
-
-document.getElementById("color").value="";
-
-document.getElementById("print").value="";
-
-document.getElementById("embroidery").value="";
-
-document.getElementById("deliveryDate").value="";
-
-
-}
+    // সব চেকবক্স আনচেক
+    document.querySelectorAll(".print-cb").forEach(cb => cb.checked = false);
+    document.querySelectorAll(".embroidery-cb").forEach(cb => cb.checked = false);
+        }
