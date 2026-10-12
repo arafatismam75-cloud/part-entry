@@ -22,12 +22,8 @@ import {
 
 // ================= GOOGLE LOGIN =================
 document.getElementById("googleLogin").onclick = async () => {
-    try {
-        await signInWithPopup(auth, provider);
-    } catch (error) {
-        console.log(error);
-        alert(error.message);
-    }
+    try { await signInWithPopup(auth, provider); }
+    catch (error) { console.log(error); alert(error.message); }
 };
 
 
@@ -36,27 +32,17 @@ document.getElementById("emailLogin").onclick = async () => {
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPassword").value;
     const msg = document.getElementById("loginMessage");
-    msg.textContent = "";
-    msg.style.color = "#ff6b6b";
+    msg.textContent = ""; msg.style.color = "#ff6b6b";
 
-    if (!email || !password) {
-        msg.textContent = "Please enter email and password.";
-        return;
-    }
+    if (!email || !password) { msg.textContent = "Please enter email and password."; return; }
 
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-        console.log(error);
-        msg.textContent = error.message;
-    }
+    try { await signInWithEmailAndPassword(auth, email, password); }
+    catch (error) { console.log(error); msg.textContent = error.message; }
 };
 
 
 // ================= LOGOUT =================
-document.getElementById("logout").onclick = async () => {
-    await signOut(auth);
-};
+document.getElementById("logout").onclick = async () => { await signOut(auth); };
 
 
 // ================= USER CHECK =================
@@ -78,7 +64,7 @@ onAuthStateChanged(auth, (user) => {
 let editingId = null;
 
 
-// ================= HELPER: CHECKBOX থেকে মান সংগ্রহ =================
+// ================= CHECKBOX HELPERS =================
 function getCheckedValues(className) {
     const checked = document.querySelectorAll(`.${className}:checked`);
     const values = [];
@@ -86,14 +72,9 @@ function getCheckedValues(className) {
     return values.join(", ");
 }
 
-// ================= HELPER: CHECKBOX-এ মান সেট করা =================
 function setCheckedValues(className, valueString) {
-    // প্রথমে সব আনচেক করুন
     document.querySelectorAll(`.${className}`).forEach(cb => cb.checked = false);
-
     if (!valueString) return;
-
-    // কমা দিয়ে ভাগ করে প্রতিটি মান খুঁজুন
     const values = valueString.split(",").map(v => v.trim()).filter(Boolean);
     values.forEach(val => {
         document.querySelectorAll(`.${className}`).forEach(cb => {
@@ -111,7 +92,7 @@ document.getElementById("savePart").onclick = async () => {
         buyerName: document.getElementById("buyerName").value.trim(),
         styleNo: document.getElementById("styleNo").value.trim(),
         poNo: document.getElementById("poNo").value.trim(),
-        orderQty: Number(document.getElementById("orderQty").value),
+        orderQty: document.getElementById("orderQty").value,   // Table No
         color: document.getElementById("color").value.trim(),
         print: getCheckedValues("print-cb"),
         embroidery: getCheckedValues("embroidery-cb"),
@@ -122,7 +103,7 @@ document.getElementById("savePart").onclick = async () => {
         await updateDoc(doc(db, "parts", editingId), data);
         showToast("Updated Successfully", "success");
         editingId = null;
-        document.getElementById("savePart").innerHTML = "Save Part";
+        document.getElementById("savePart").innerHTML = "💾 Save Part";
         document.getElementById("cancelEdit").style.display = "none";
     } else {
         data.createdAt = serverTimestamp();
@@ -140,9 +121,7 @@ async function loadParts() {
     let table = document.getElementById("partTable");
     table.innerHTML = "";
 
-    let snapshot = await getDocs(
-        query(collection(db, "parts"), orderBy("createdAt", "desc"))
-    );
+    let snapshot = await getDocs(query(collection(db, "parts"), orderBy("createdAt", "desc")));
 
     let total = 0;
     let totalQty = 0;
@@ -158,7 +137,7 @@ async function loadParts() {
                 <td>${p.buyerName || ""}</td>
                 <td>${p.styleNo || ""}</td>
                 <td>${p.poNo || ""}</td>
-                <td>${p.orderQty || 0}</td>
+                <td>${p.orderQty || ""}</td>
                 <td>${p.color || ""}</td>
                 <td>${p.print || ""}</td>
                 <td>${p.embroidery || ""}</td>
@@ -191,7 +170,6 @@ window.editPart = async (id) => {
             document.getElementById("color").value = p.color || "";
             document.getElementById("deliveryDate").value = p.deliveryDate || "";
 
-            // Checkbox সেট করুন
             setCheckedValues("print-cb", p.print || "");
             setCheckedValues("embroidery-cb", p.embroidery || "");
 
@@ -219,7 +197,7 @@ window.deletePart = async (id) => {
 document.getElementById("cancelEdit").onclick = () => {
     editingId = null;
     clearForm();
-    document.getElementById("savePart").innerHTML = " Save Part";
+    document.getElementById("savePart").innerHTML = "💾 Save Part";
     document.getElementById("cancelEdit").style.display = "none";
 };
 
@@ -245,7 +223,6 @@ function clearForm() {
     document.getElementById("color").value = "";
     document.getElementById("deliveryDate").value = "";
 
-    // সব চেকবক্স আনচেক
     document.querySelectorAll(".print-cb").forEach(cb => cb.checked = false);
     document.querySelectorAll(".embroidery-cb").forEach(cb => cb.checked = false);
-        }
+}
