@@ -84,6 +84,15 @@ function setCheckedValues(className, valueString) {
 }
 
 
+// ================= UPDATE MULTI-SELECT DISPLAY =================
+function refreshDisplays() {
+    if (typeof updateMultiSelectDisplay === 'function') {
+        updateMultiSelectDisplay("print");
+        updateMultiSelectDisplay("embroidery");
+    }
+}
+
+
 // ================= SAVE / UPDATE =================
 document.getElementById("savePart").onclick = async () => {
 
@@ -92,7 +101,7 @@ document.getElementById("savePart").onclick = async () => {
         buyerName: document.getElementById("buyerName").value.trim(),
         styleNo: document.getElementById("styleNo").value.trim(),
         poNo: document.getElementById("poNo").value.trim(),
-        orderQty: document.getElementById("orderQty").value,   // Table No
+        orderQty: document.getElementById("orderQty").value,
         color: document.getElementById("color").value.trim(),
         print: getCheckedValues("print-cb"),
         embroidery: getCheckedValues("embroidery-cb"),
@@ -173,6 +182,9 @@ window.editPart = async (id) => {
             setCheckedValues("print-cb", p.print || "");
             setCheckedValues("embroidery-cb", p.embroidery || "");
 
+            // Dropdown display আপডেট করুন
+            setTimeout(refreshDisplays, 50);
+
             editingId = id;
             document.getElementById("savePart").innerHTML = "✏️ Update";
             document.getElementById("cancelEdit").style.display = "inline-block";
@@ -225,4 +237,7 @@ function clearForm() {
 
     document.querySelectorAll(".print-cb").forEach(cb => cb.checked = false);
     document.querySelectorAll(".embroidery-cb").forEach(cb => cb.checked = false);
+
+    // Dropdown display reset
+    setTimeout(refreshDisplays, 50);
 }
