@@ -7,8 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <style>
   #loginBox {
-    min-height: 100vh;
-    background: #0a0a0a;
+    min-height: 100vh; background: #0a0a0a;
     display: flex; align-items: center; justify-content: center;
     padding: 24px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -27,10 +26,7 @@
   .login-input:focus { border-color: #4d8aea; }
   .password-wrap { position: relative; width: 100%; margin-bottom: 14px; }
   .password-wrap .login-input { margin-bottom: 0; padding-right: 50px; }
-  .eye-icon {
-    position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-    width: 20px; height: 20px; fill: #8e8f96; cursor: pointer;
-  }
+  .eye-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; fill: #8e8f96; cursor: pointer; }
   .terms-text { font-size: 12px; color: #9e9ea4; margin: 14px 0 18px; line-height: 1.5; align-self: flex-start; }
   .terms-text a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
   .action-links { width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 20px; }
@@ -43,62 +39,35 @@
   }
   .login-btn-main:hover { background: #3b75d4; }
   .oauth-links { font-size: 13px; color: #5b5c62; display: flex; gap: 14px; align-items: center; }
-  .oauth-links button {
-    color: #fff; text-decoration: underline; text-underline-offset: 3px;
-    cursor: pointer; background: none; border: none; font-size: 13px;
-    font-family: inherit; padding: 0;
-  }
+  .oauth-links button { color: #fff; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; background: none; border: none; font-size: 13px; font-family: inherit; padding: 0; }
   #loginMessage { width: 100%; min-height: 20px; margin-bottom: 10px; text-align: center; font-size: 13px; color: #ff6b6b; }
 
   /* ===== CHECKBOX BUTTON STYLE ===== */
   .checkbox-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 6px 0;
+    display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 0;
   }
   .checkbox-grid label {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 14px;
-    background: #121316;
-    border: 1px solid #2a2b30;
-    border-radius: 20px;
-    color: #b8b8d0;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-    text-transform: none;
-    letter-spacing: 0;
-    margin: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 8px 14px; background: #121316;
+    border: 1px solid #2a2b30; border-radius: 20px;
+    color: #b8b8d0; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+    user-select: none; text-transform: none;
+    letter-spacing: 0; margin: 0;
   }
   .checkbox-grid label:hover {
-    background: #232429;
-    border-color: #3b75d4;
-    color: #fff;
+    background: #232429; border-color: #3b75d4; color: #fff;
   }
-  .checkbox-grid input[type="checkbox"] {
-    display: none;
-  }
-  .checkbox-grid input[type="checkbox"]:checked + span {
-    /* চেকড লেবেলের ভেতরের span */
-  }
+  .checkbox-grid input[type="checkbox"] { display: none; }
   .checkbox-grid label:has(input[type="checkbox"]:checked) {
-    background: #2ecc71;
-    border-color: #2ecc71;
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+    background: #2ecc71; border-color: #2ecc71; color: #fff;
+    font-weight: 600; box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
   }
 </style>
 </head>
 
 <body>
 
-<!-- ===== LOADING ===== -->
 <div id="loadingScreen" style="position:fixed; inset:0; background:#0a0a0a; display:flex; align-items:center; justify-content:center; z-index:9999;">
   <div style="color:#4d8aea; font-size:16px; letter-spacing:1px;">Loading...</div>
 </div>
@@ -107,17 +76,13 @@
 <div id="loginBox" style="display:none;">
   <div class="login-wrapper">
     <div class="login-brand">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
       <span>G.M.S Textiles</span>
     </div>
     <input type="email" id="loginEmail" class="login-input" placeholder="Phone number / email address">
     <div class="password-wrap">
       <input type="password" id="loginPassword" class="login-input" placeholder="Password">
-      <svg class="eye-icon" id="togglePassword" viewBox="0 0 24 24">
-        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-      </svg>
+      <svg class="eye-icon" id="togglePassword" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
     </div>
     <div class="terms-text">
       By signing up or logging in, you consent to GMS Textile's
@@ -146,7 +111,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">PART <span>ENTRY</span></div>
     <nav class="sidebar-nav">
-      <a data-section="dashboard" class="active">Dashboard</a>
+      <a data-section="dashboard" class="active"> Dashboard</a>
       <a data-section="entry">➕ New Entry</a>
       <a data-section="list"> Part List</a>
       <a href="excess.html">✂️ Excess Cutting</a>
@@ -171,9 +136,7 @@
       <div class="entry buyer-table">
         <h2>Buyer-wise Summary</h2>
         <table>
-          <thead>
-            <tr><th>Buyer</th><th>Total Entries</th><th>Total Order Qty</th></tr>
-          </thead>
+          <thead><tr><th>Buyer</th><th>Total Entries</th><th>Total Order Qty</th></tr></thead>
           <tbody id="buyerSummary"></tbody>
         </table>
       </div>
@@ -185,21 +148,30 @@
       <div class="entry">
         <h2>Enter Part Information</h2>
         <div class="form-row">
+
           <div class="form-group">
             <label>Part Name</label>
             <input id="partName" placeholder="Enter part name">
           </div>
+
           <div class="form-group">
             <label>Buyer Name</label>
             <input id="buyerName" placeholder="Enter buyer name">
           </div>
+
           <div class="form-group">
             <label>Style No</label>
             <input id="styleNo" placeholder="Enter style no">
           </div>
+
+          <div class="form-group">
+            <label>PO No</label>
+            <input id="poNo" placeholder="Enter PO no">
+          </div>
+
           <div class="form-group">
             <label>Table No</label>
-            <select id="poNo">
+            <select id="orderQty">
               <option value="">Select Table</option>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -213,18 +185,17 @@
               <option value="10">10</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Order Qty</label>
-            <input id="orderQty" type="number" placeholder="0">
-          </div>
+
           <div class="form-group">
             <label>Color</label>
             <input id="color" placeholder="Enter color">
           </div>
+
           <div class="form-group">
             <label>Delivery Date</label>
             <input id="deliveryDate" type="date">
           </div>
+
         </div>
 
         <!-- PRINT CHECKBOXES -->
@@ -259,7 +230,7 @@
           </div>
         </div>
 
-        <button id="savePart">Save Part</button>
+        <button id="savePart"> Save Part</button>
         <button id="cancelEdit" style="display:none;">Cancel Edit</button>
       </div>
     </section>
@@ -276,8 +247,8 @@
         <table>
           <thead>
             <tr>
-              <th>Part</th><th>Buyer</th><th>Style</th><th>Table No</th>
-              <th>Qty</th><th>Color</th><th>Print</th><th>Embroidery</th>
+              <th>Part</th><th>Buyer</th><th>Style</th><th>PO No</th><th>Table No</th>
+              <th>Color</th><th>Print</th><th>Embroidery</th>
               <th>Delivery</th><th>Action</th>
             </tr>
           </thead>
@@ -296,19 +267,16 @@
     const pwd = document.getElementById('loginPassword');
     pwd.type = pwd.type === 'password' ? 'text' : 'password';
   });
-
   document.getElementById('forgotPassword').addEventListener('click', () => {
     const msg = document.getElementById('loginMessage');
     msg.textContent = 'Please contact your administrator.';
     msg.style.color = '#f39c12';
   });
-
   document.getElementById('signupBtn').addEventListener('click', () => {
     const msg = document.getElementById('loginMessage');
     msg.textContent = 'Sign up is disabled. Contact admin.';
     msg.style.color = '#f39c12';
   });
-
   document.getElementById('appleLogin').addEventListener('click', () => {
     const msg = document.getElementById('loginMessage');
     msg.textContent = 'Apple login not available.';
@@ -319,15 +287,11 @@
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
     document.querySelectorAll('.sidebar-nav a').forEach(a => {
-      if (a.dataset.section) {
-        a.classList.toggle('active', a.dataset.section === name);
-      } else {
-        a.classList.remove('active');
-      }
+      if (a.dataset.section) a.classList.toggle('active', a.dataset.section === name);
+      else a.classList.remove('active');
     });
     if (window.innerWidth <= 900) closeSidebarMobile();
   }
-
   document.querySelectorAll('.sidebar-nav a[data-section]').forEach(a => {
     a.addEventListener('click', () => showSection(a.dataset.section));
   });
@@ -338,33 +302,24 @@
     const btn = document.getElementById('toggleBtn');
     const overlay = document.getElementById('overlay');
     if (window.innerWidth <= 900) {
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('active');
+      sidebar.classList.toggle('open'); overlay.classList.toggle('active');
     } else {
-      sidebar.classList.toggle('hidden');
-      main.classList.toggle('full');
-      btn.classList.toggle('shifted');
+      sidebar.classList.toggle('hidden'); main.classList.toggle('full'); btn.classList.toggle('shifted');
     }
   }
-
   function closeSidebarMobile() {
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('overlay').classList.remove('active');
   }
-
   window.addEventListener('resize', () => {
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('mainContent');
     const btn = document.getElementById('toggleBtn');
     const overlay = document.getElementById('overlay');
     if (window.innerWidth <= 900) {
-      sidebar.classList.remove('hidden');
-      main.classList.remove('full');
-      btn.classList.remove('shifted');
-      overlay.classList.remove('active');
+      sidebar.classList.remove('hidden'); main.classList.remove('full'); btn.classList.remove('shifted'); overlay.classList.remove('active');
     } else {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
+      sidebar.classList.remove('open'); overlay.classList.remove('active');
     }
   });
 
@@ -377,17 +332,12 @@
     }
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
-    toast.innerHTML = `
-      <span class="toast-icon">${type === 'success' ? '✅' : '⚠️'}</span>
-      <span class="toast-msg">${message}</span>
-    `;
+    toast.innerHTML = `<span class="toast-icon">${type === 'success' ? '✅' : '⚠️'}</span><span class="toast-msg">${message}</span>`;
     container.appendChild(toast);
     setTimeout(() => toast.classList.add('show'), 10);
-    setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => toast.remove(), 400);
-    }, 3000);
+    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
   }
+  window.showToast = showToast;
 
   const logoutBtn = document.getElementById('logout');
   if (logoutBtn) {
@@ -422,16 +372,10 @@
       dstBody.innerHTML = '<tr><td colspan="3" style="color:#6b6c72; padding:20px;">No data available</td></tr>';
       return;
     }
-    const html = buyerList.map(([name, data]) => `
-      <tr>
-        <td>${name}</td>
-        <td>${data.entries}</td>
-        <td class="qty-cell">${data.qty}</td>
-      </tr>
-    `).join('');
+    const html = buyerList.map(([name, data]) => `<tr><td>${name}</td><td>${data.entries}</td><td class="qty-cell">${data.qty}</td></tr>`).join('');
     if (dstBody.innerHTML !== html) dstBody.innerHTML = html;
   }, 1000);
 </script>
 
 </body>
-                                          </html>
+</html>
