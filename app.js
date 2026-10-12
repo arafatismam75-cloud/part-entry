@@ -103,7 +103,7 @@ document.getElementById("savePart").onclick = async () => {
         await updateDoc(doc(db, "parts", editingId), data);
         showToast("Updated Successfully", "success");
         editingId = null;
-        document.getElementById("savePart").innerHTML = "💾 Save Part";
+        document.getElementById("savePart").innerHTML = " Save Part";
         document.getElementById("cancelEdit").style.display = "none";
     } else {
         data.createdAt = serverTimestamp();
@@ -197,7 +197,7 @@ window.deletePart = async (id) => {
 document.getElementById("cancelEdit").onclick = () => {
     editingId = null;
     clearForm();
-    document.getElementById("savePart").innerHTML = "💾 Save Part";
+    document.getElementById("savePart").innerHTML = " Save Part";
     document.getElementById("cancelEdit").style.display = "none";
 };
 
