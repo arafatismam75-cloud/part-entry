@@ -43,39 +43,37 @@
   #loginMessage { width: 100%; min-height: 20px; margin-bottom: 10px; text-align: center; font-size: 13px; color: #ff6b6b; }
 
   /* ===== MULTI-SELECT DROPDOWN ===== */
-  .multi-select {
-    position: relative;
-    width: 100%;
-  }
   .multi-select-display {
-    width: 100%;
-    padding: 12px 40px 12px 14px;
-    background: #121316;
-    border: 1px solid #2a2b30;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 14px;
-    font-family: inherit;
-    cursor: pointer;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .multi-select-display:hover {
-    border-color: #3b75d4;
-  }
-  .multi-select-display.open {
-    border-color: #4d8aea;
-    box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
-  }
-  .multi-select-display .placeholder {
-    color: #6b6c72;
-  }
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 14px;
+  background: #121316;
+  border: 1px solid #2a2b30;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+.multi-select-display > * {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.multi-select-display .placeholder {
+  color: #6b6c72;
+}
   .multi-select-display::after {
     content: "";
     position: absolute;
