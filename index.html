@@ -42,26 +42,149 @@
   .oauth-links button { color: #fff; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; background: none; border: none; font-size: 13px; font-family: inherit; padding: 0; }
   #loginMessage { width: 100%; min-height: 20px; margin-bottom: 10px; text-align: center; font-size: 13px; color: #ff6b6b; }
 
-  /* ===== CHECKBOX BUTTON STYLE ===== */
-  .checkbox-grid {
-    display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 0;
+  /* ===== MULTI-SELECT DROPDOWN ===== */
+  .multi-select {
+    position: relative;
+    width: 100%;
   }
-  .checkbox-grid label {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 8px 14px; background: #121316;
-    border: 1px solid #2a2b30; border-radius: 20px;
-    color: #b8b8d0; font-size: 13px; font-weight: 500;
-    cursor: pointer; transition: all 0.2s;
-    user-select: none; text-transform: none;
-    letter-spacing: 0; margin: 0;
+  .multi-select-display {
+    width: 100%;
+    padding: 12px 40px 12px 14px;
+    background: #121316;
+    border: 1px solid #2a2b30;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .checkbox-grid label:hover {
-    background: #232429; border-color: #3b75d4; color: #fff;
+  .multi-select-display:hover {
+    border-color: #3b75d4;
   }
-  .checkbox-grid input[type="checkbox"] { display: none; }
-  .checkbox-grid label:has(input[type="checkbox"]:checked) {
-    background: #2ecc71; border-color: #2ecc71; color: #fff;
-    font-weight: 600; box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+  .multi-select-display.open {
+    border-color: #4d8aea;
+    box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
+  }
+  .multi-select-display .placeholder {
+    color: #6b6c72;
+  }
+  .multi-select-display::after {
+    content: "";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8f96' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: transform 0.2s;
+  }
+  .multi-select-display.open::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .multi-select-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: #1a1b1f;
+    border: 1px solid #2a2b30;
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 500;
+    max-height: 280px;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .multi-select-panel.open {
+    display: block;
+  }
+  .multi-select-panel label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    color: #d1d1d6;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin: 0;
+  }
+  .multi-select-panel label:hover {
+    background: #232429;
+    color: #fff;
+  }
+  .multi-select-panel input[type="checkbox"] {
+    display: none;
+  }
+  .multi-select-panel .cb-box {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #3a3b40;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .multi-select-panel input[type="checkbox"]:checked ~ .cb-box {
+    background: #2ecc71;
+    border-color: #2ecc71;
+  }
+  .multi-select-panel input[type="checkbox"]:checked ~ .cb-box::after {
+    content: "✓";
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .multi-select-panel input[type="checkbox"]:checked ~ .cb-text {
+    color: #2ecc71;
+    font-weight: 600;
+  }
+  .multi-select-panel .panel-footer {
+    display: flex;
+    gap: 8px;
+    padding: 10px 4px 4px;
+    border-top: 1px solid #2a2b30;
+    margin-top: 8px;
+  }
+  .multi-select-panel .panel-footer button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .multi-select-panel .panel-footer .btn-clear {
+    background: #2a2b30;
+    color: #b8b8d0;
+  }
+  .multi-select-panel .panel-footer .btn-clear:hover {
+    background: #3a3b40;
+  }
+  .multi-select-panel .panel-footer .btn-done {
+    background: #4d8aea;
+    color: #fff;
+  }
+  .multi-select-panel .panel-footer .btn-done:hover {
+    background: #3b75d4;
   }
 </style>
 </head>
@@ -165,8 +288,8 @@
           </div>
 
           <div class="form-group">
-            <label>PO No</label>
-            <input id="poNo" placeholder="Enter PO no">
+            <label>Style name</label>
+            <input id="poNo" placeholder="Enter style name">
           </div>
 
           <div class="form-group">
@@ -198,39 +321,57 @@
 
         </div>
 
-        <!-- PRINT CHECKBOXES -->
+        <!-- PRINT MULTI-SELECT -->
         <div class="form-group" style="margin-top:15px;">
           <label>Print (select multiple)</label>
-          <div class="checkbox-grid" id="printGroup">
-            <label><input type="checkbox" class="print-cb" value="Solid"><span>Solid</span></label>
-            <label><input type="checkbox" class="print-cb" value="Back"><span>Back</span></label>
-            <label><input type="checkbox" class="print-cb" value="Front"><span>Front</span></label>
-            <label><input type="checkbox" class="print-cb" value="Sleeve Left"><span>Sleeve Left</span></label>
-            <label><input type="checkbox" class="print-cb" value="Sleeve Right"><span>Sleeve Right</span></label>
-            <label><input type="checkbox" class="print-cb" value="Sleeve Pnl"><span>Sleeve Pnl</span></label>
-            <label><input type="checkbox" class="print-cb" value="Pocket"><span>Pocket</span></label>
-            <label><input type="checkbox" class="print-cb" value="Front Left"><span>Front Left</span></label>
-            <label><input type="checkbox" class="print-cb" value="Front Right"><span>Front Right</span></label>
+          <div class="multi-select" id="printMulti">
+            <div class="multi-select-display" id="printDisplay" onclick="toggleMultiSelect('print')">
+              <span class="placeholder">Select Print options...</span>
+            </div>
+            <div class="multi-select-panel" id="printPanel">
+              <label><input type="checkbox" class="print-cb" value="Solid"><span class="cb-box"></span><span class="cb-text">Solid</span></label>
+              <label><input type="checkbox" class="print-cb" value="Back"><span class="cb-box"></span><span class="cb-text">Back</span></label>
+              <label><input type="checkbox" class="print-cb" value="Front"><span class="cb-box"></span><span class="cb-text">Front</span></label>
+              <label><input type="checkbox" class="print-cb" value="Sleeve Left"><span class="cb-box"></span><span class="cb-text">Sleeve Left</span></label>
+              <label><input type="checkbox" class="print-cb" value="Sleeve Right"><span class="cb-box"></span><span class="cb-text">Sleeve Right</span></label>
+              <label><input type="checkbox" class="print-cb" value="Sleeve Pnl"><span class="cb-box"></span><span class="cb-text">Sleeve Pnl</span></label>
+              <label><input type="checkbox" class="print-cb" value="Pocket"><span class="cb-box"></span><span class="cb-text">Pocket</span></label>
+              <label><input type="checkbox" class="print-cb" value="Front Left"><span class="cb-box"></span><span class="cb-text">Front Left</span></label>
+              <label><input type="checkbox" class="print-cb" value="Front Right"><span class="cb-box"></span><span class="cb-text">Front Right</span></label>
+              <div class="panel-footer">
+                <button type="button" class="btn-clear" onclick="clearMultiSelect('print', event)">Clear All</button>
+                <button type="button" class="btn-done" onclick="closeMultiSelect('print', event)">Done</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- EMBROIDERY CHECKBOXES -->
+        <!-- EMBROIDERY MULTI-SELECT -->
         <div class="form-group" style="margin-top:15px;">
           <label>Embroidery (select multiple)</label>
-          <div class="checkbox-grid" id="embroideryGroup">
-            <label><input type="checkbox" class="embroidery-cb" value="Solid"><span>Solid</span></label>
-            <label><input type="checkbox" class="embroidery-cb" value="Back"><span>Back</span></label>
-            <label><input type="checkbox" class="embroidery-cb" value="Front"><span>Front</span></label>
-            <label><input type="checkbox" class="embroidery-cb" value="Sleeve Left"><span>Sleeve Left</span></label>
-            <label><input type="checkbox" class="embroidery-cb" value="Sleeve Right"><span>Sleeve Right</span></label>
-            <label><input type="checkbox" class="embroidery-cb" value="Sleeve Pnl"><span>Sleeve Pnl</span></label>
-            <label><input type="checkbox" class="embroidery-cb" value="Pocket"><span>Pocket</span></label>
-            <label><input type="checkbox" class="embroidery-cb" value="Front Left"><span>Front Left</span></label>
-            <label><input type="checkbox" class="embroidery-cb" value="Front Right"><span>Front Right</span></label>
+          <div class="multi-select" id="embroideryMulti">
+            <div class="multi-select-display" id="embroideryDisplay" onclick="toggleMultiSelect('embroidery')">
+              <span class="placeholder">Select Embroidery options...</span>
+            </div>
+            <div class="multi-select-panel" id="embroideryPanel">
+              <label><input type="checkbox" class="embroidery-cb" value="Solid"><span class="cb-box"></span><span class="cb-text">Solid</span></label>
+              <label><input type="checkbox" class="embroidery-cb" value="Back"><span class="cb-box"></span><span class="cb-text">Back</span></label>
+              <label><input type="checkbox" class="embroidery-cb" value="Front"><span class="cb-box"></span><span class="cb-text">Front</span></label>
+              <label><input type="checkbox" class="embroidery-cb" value="Sleeve Left"><span class="cb-box"></span><span class="cb-text">Sleeve Left</span></label>
+              <label><input type="checkbox" class="embroidery-cb" value="Sleeve Right"><span class="cb-box"></span><span class="cb-text">Sleeve Right</span></label>
+              <label><input type="checkbox" class="embroidery-cb" value="Sleeve Pnl"><span class="cb-box"></span><span class="cb-text">Sleeve Pnl</span></label>
+              <label><input type="checkbox" class="embroidery-cb" value="Pocket"><span class="cb-box"></span><span class="cb-text">Pocket</span></label>
+              <label><input type="checkbox" class="embroidery-cb" value="Front Left"><span class="cb-box"></span><span class="cb-text">Front Left</span></label>
+              <label><input type="checkbox" class="embroidery-cb" value="Front Right"><span class="cb-box"></span><span class="cb-text">Front Right</span></label>
+              <div class="panel-footer">
+                <button type="button" class="btn-clear" onclick="clearMultiSelect('embroidery', event)">Clear All</button>
+                <button type="button" class="btn-done" onclick="closeMultiSelect('embroidery', event)">Done</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <button id="savePart"> Save Part</button>
+        <button id="savePart">💾 Save Part</button>
         <button id="cancelEdit" style="display:none;">Cancel Edit</button>
       </div>
     </section>
@@ -263,6 +404,7 @@
 <script type="module" src="app.js"></script>
 
 <script>
+  // ===== LOGIN HELPERS =====
   document.getElementById('togglePassword').addEventListener('click', () => {
     const pwd = document.getElementById('loginPassword');
     pwd.type = pwd.type === 'password' ? 'text' : 'password';
@@ -283,6 +425,73 @@
     msg.style.color = '#f39c12';
   });
 
+  // ===== MULTI-SELECT DROPDOWN =====
+  window.toggleMultiSelect = function (type) {
+    const panel = document.getElementById(type + "Panel");
+    const display = document.getElementById(type + "Display");
+    const isOpen = panel.classList.contains("open");
+
+    // অন্য সব প্যানেল বন্ধ করুন
+    document.querySelectorAll(".multi-select-panel").forEach(p => p.classList.remove("open"));
+    document.querySelectorAll(".multi-select-display").forEach(d => d.classList.remove("open"));
+
+    if (!isOpen) {
+      panel.classList.add("open");
+      display.classList.add("open");
+    }
+  };
+
+  window.closeMultiSelect = function (type, e) {
+    if (e) e.stopPropagation();
+    document.getElementById(type + "Panel").classList.remove("open");
+    document.getElementById(type + "Display").classList.remove("open");
+  };
+
+  window.clearMultiSelect = function (type, e) {
+    if (e) e.stopPropagation();
+    document.querySelectorAll("." + type + "-cb").forEach(cb => cb.checked = false);
+    updateMultiSelectDisplay(type);
+  };
+
+  window.updateMultiSelectDisplay = function (type) {
+    const checked = document.querySelectorAll("." + type + "-cb:checked");
+    const values = [];
+    checked.forEach(cb => values.push(cb.value));
+    const display = document.getElementById(type + "Display");
+
+    if (values.length === 0) {
+      display.innerHTML = `<span class="placeholder">Select ${type === "print" ? "Print" : "Embroidery"} options...</span>`;
+    } else {
+      display.innerHTML = values.join(", ");
+    }
+  };
+
+  // লেবেলে ক্লিক করলে প্যানেল বন্ধ হবে না
+  document.querySelectorAll(".multi-select-panel label").forEach(label => {
+    label.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  });
+
+  // ডকুমেন্টে বাইরে ক্লিক করলে সব প্যানেল বন্ধ
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".multi-select")) {
+      document.querySelectorAll(".multi-select-panel").forEach(p => p.classList.remove("open"));
+      document.querySelectorAll(".multi-select-display").forEach(d => d.classList.remove("open"));
+    }
+  });
+
+  // চেকবক্স পরিবর্তন হলে ডিসপ্লে আপডেট
+  document.querySelectorAll(".print-cb").forEach(cb => {
+    cb.addEventListener("change", () => updateMultiSelectDisplay("print"));
+  });
+  document.querySelectorAll(".embroidery-cb").forEach(cb => {
+    cb.addEventListener("change", () => updateMultiSelectDisplay("embroidery"));
+  });
+
+  window.updateMultiSelectDisplay = updateMultiSelectDisplay;
+
+  // ===== SECTION SWITCH =====
   function showSection(name) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
@@ -292,10 +501,13 @@
     });
     if (window.innerWidth <= 900) closeSidebarMobile();
   }
+  window.showSection = showSection;
+
   document.querySelectorAll('.sidebar-nav a[data-section]').forEach(a => {
     a.addEventListener('click', () => showSection(a.dataset.section));
   });
 
+  // ===== SIDEBAR =====
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('mainContent');
@@ -307,10 +519,14 @@
       sidebar.classList.toggle('hidden'); main.classList.toggle('full'); btn.classList.toggle('shifted');
     }
   }
+  window.toggleSidebar = toggleSidebar;
+
   function closeSidebarMobile() {
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('overlay').classList.remove('active');
   }
+  window.closeSidebarMobile = closeSidebarMobile;
+
   window.addEventListener('resize', () => {
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('mainContent');
@@ -323,6 +539,7 @@
     }
   });
 
+  // ===== TOAST =====
   function showToast(message, type = 'success') {
     let container = document.getElementById('toastContainer');
     if (!container) {
@@ -339,6 +556,7 @@
   }
   window.showToast = showToast;
 
+  // ===== LOGOUT REDIRECT =====
   const logoutBtn = document.getElementById('logout');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -346,12 +564,14 @@
     }, true);
   }
 
+  // ===== USER ROLE SYNC =====
   setInterval(() => {
     const src = document.getElementById('userRole');
     const dst = document.getElementById('userRole2');
     if (src && dst && dst.innerText !== src.innerText) dst.innerText = src.innerText;
   }, 500);
 
+  // ===== BUYER SUMMARY =====
   setInterval(() => {
     const srcBody = document.getElementById('partTable');
     const dstBody = document.getElementById('buyerSummary');
