@@ -42,38 +42,47 @@
   .oauth-links button { color: #fff; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; background: none; border: none; font-size: 13px; font-family: inherit; padding: 0; }
   #loginMessage { width: 100%; min-height: 20px; margin-bottom: 10px; text-align: center; font-size: 13px; color: #ff6b6b; }
 
-  /* ===== MULTI-SELECT DROPDOWN ===== */
+  /* ===== MULTI-SELECT DROPDOWN (TAG STYLE) ===== */
+  .multi-select {
+    position: relative;
+    width: 100%;
+  }
+
   .multi-select-display {
-  width: 100%;
-  height: 44px;
-  padding: 0 40px 0 14px;
-  background: #121316;
-  border: 1px solid #2a2b30;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 14px;
-  font-family: inherit;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: all 0.2s;
-  position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  box-sizing: border-box;
-}
+    width: 100%;
+    height: 44px;
+    padding: 0 40px 0 12px;
+    background: #121316;
+    border: 1px solid #2a2b30;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    user-select: none;
+  }
 
-.multi-select-display > * {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
+  .multi-select-display:hover {
+    border-color: #3b75d4;
+  }
 
-.multi-select-display .placeholder {
-  color: #6b6c72;
-}
+  .multi-select-display.open {
+    border-color: #4d8aea;
+    box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
+  }
+
+  .multi-select-display .placeholder {
+    color: #6b6c72;
+    font-size: 13px;
+  }
+
   .multi-select-display::after {
     content: "";
     position: absolute;
@@ -86,11 +95,41 @@
     background-repeat: no-repeat;
     background-size: contain;
     transition: transform 0.2s;
+    flex-shrink: 0;
   }
+
   .multi-select-display.open::after {
     transform: translateY(-50%) rotate(180deg);
   }
 
+  /* Tag style chips */
+  .multi-select-display .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    background: #2ecc71;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .multi-select-display .chip-count {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    background: #3a3b40;
+    color: #b8b8d0;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Dropdown Panel */
   .multi-select-panel {
     display: none;
     position: absolute;
@@ -286,7 +325,7 @@
           </div>
 
           <div class="form-group">
-            <label>Style name</label>
+            <label>Style Name</label>
             <input id="poNo" placeholder="Enter style name">
           </div>
 
@@ -369,7 +408,7 @@
           </div>
         </div>
 
-        <button id="savePart">💾 Save Part</button>
+        <button id="savePart">Save Part</button>
         <button id="cancelEdit" style="display:none;">Cancel Edit</button>
       </div>
     </section>
@@ -386,7 +425,7 @@
         <table>
           <thead>
             <tr>
-              <th>Part</th><th>Buyer</th><th>Style</th><th>PO No</th><th>Table No</th>
+              <th>Part</th><th>Buyer</th><th>Style</th><th>Style name</th><th>Table No</th>
               <th>Color</th><th>Print</th><th>Embroidery</th>
               <th>Delivery</th><th>Action</th>
             </tr>
@@ -429,7 +468,6 @@
     const display = document.getElementById(type + "Display");
     const isOpen = panel.classList.contains("open");
 
-    // অন্য সব প্যানেল বন্ধ করুন
     document.querySelectorAll(".multi-select-panel").forEach(p => p.classList.remove("open"));
     document.querySelectorAll(".multi-select-display").forEach(d => d.classList.remove("open"));
 
@@ -451,17 +489,33 @@
     updateMultiSelectDisplay(type);
   };
 
+  // ===== TAG STYLE DISPLAY =====
   window.updateMultiSelectDisplay = function (type) {
     const checked = document.querySelectorAll("." + type + "-cb:checked");
     const values = [];
     checked.forEach(cb => values.push(cb.value));
     const display = document.getElementById(type + "Display");
+    const label = type === "print" ? "Print" : "Embroidery";
 
     if (values.length === 0) {
-      display.innerHTML = `<span class="placeholder">Select ${type === "print" ? "Print" : "Embroidery"} options...</span>`;
-    } else {
-      display.innerHTML = values.join(", ");
+      display.innerHTML = `<span class="placeholder">Select ${label} options...</span>`;
+      return;
     }
+
+    // সর্বোচ্চ ২টি ট্যাগ দেখাব, বাকিগুলো +N
+    let html = "";
+    const maxShow = 2;
+
+    if (values.length <= maxShow) {
+      html = values.map(v => `<span class="chip">${v}</span>`).join("");
+    } else {
+      const shown = values.slice(0, maxShow);
+      const remaining = values.length - maxShow;
+      html = shown.map(v => `<span class="chip">${v}</span>`).join("") +
+             `<span class="chip-count">+${remaining}</span>`;
+    }
+
+    display.innerHTML = html;
   };
 
   // লেবেলে ক্লিক করলে প্যানেল বন্ধ হবে না
@@ -486,8 +540,6 @@
   document.querySelectorAll(".embroidery-cb").forEach(cb => {
     cb.addEventListener("change", () => updateMultiSelectDisplay("embroidery"));
   });
-
-  window.updateMultiSelectDisplay = updateMultiSelectDisplay;
 
   // ===== SECTION SWITCH =====
   function showSection(name) {
@@ -554,7 +606,6 @@
   }
   window.showToast = showToast;
 
-  // ===== LOGOUT REDIRECT =====
   const logoutBtn = document.getElementById('logout');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -562,14 +613,12 @@
     }, true);
   }
 
-  // ===== USER ROLE SYNC =====
   setInterval(() => {
     const src = document.getElementById('userRole');
     const dst = document.getElementById('userRole2');
     if (src && dst && dst.innerText !== src.innerText) dst.innerText = src.innerText;
   }, 500);
 
-  // ===== BUYER SUMMARY =====
   setInterval(() => {
     const srcBody = document.getElementById('partTable');
     const dstBody = document.getElementById('buyerSummary');
