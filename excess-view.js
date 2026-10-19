@@ -31,9 +31,7 @@ document.getElementById("logout").onclick = async () => {
 // ================= LOAD DATA =================
 async function loadExcess() {
     const table = document.getElementById("excessTable");
-    
-    // শুরুতে টেবিল ফাঁকা করে লোডিং দেখানো
-    table.innerHTML = '<tr><td colspan="11" class="empty" style="padding:40px;">Loading data...</td></tr>';
+    table.innerHTML = '<tr><td colspan="12" class="empty" style="padding:40px;">Loading data...</td></tr>';
     document.getElementById("paginationInfo").innerHTML = "Loading...";
     document.getElementById("paginationControls").innerHTML = "";
 
@@ -49,7 +47,6 @@ async function loadExcess() {
 
         filteredExcessData = [...allExcessData];
 
-        // URL থেকে পেজ নম্বর চেক করুন
         const urlParams = new URLSearchParams(window.location.search);
         const pageParam = parseInt(urlParams.get('page'));
         
@@ -62,7 +59,7 @@ async function loadExcess() {
         renderPage();
     } catch (err) {
         console.error(err);
-        table.innerHTML = '<tr><td colspan="11" class="empty">Error loading data</td></tr>';
+        table.innerHTML = '<tr><td colspan="12" class="empty">Error loading data</td></tr>';
     }
 }
 
@@ -73,7 +70,7 @@ function renderPage() {
     table.innerHTML = "";
 
     if (filteredExcessData.length === 0) {
-        table.innerHTML = '<tr><td colspan="11" class="empty">No data available</td></tr>';
+        table.innerHTML = '<tr><td colspan="12" class="empty">No data available</td></tr>';
         renderPagination();
         return;
     }
@@ -86,9 +83,12 @@ function renderPage() {
     const end = start + ITEMS_PER_PAGE;
     const pageItems = filteredExcessData.slice(start, end);
 
-    pageItems.forEach((p) => {
+    // SL No গ্লোবালি হবে (প্রতি পেজে ১ থেকে শুরু হবে না)
+    pageItems.forEach((p, index) => {
+        const slNo = start + index + 1;
         table.innerHTML += `
             <tr>
+                <td>${slNo}</td>
                 <td>${p.srNo || ""}</td>
                 <td>${p.floor || ""}</td>
                 <td>${p.buyerName || ""}</td>
@@ -165,7 +165,7 @@ function getPageNumbers(current, total) {
 }
 
 
-// ================= CHANGE PAGE (URL Reload) =================
+// ================= CHANGE PAGE =================
 window.changePage = function (page, event) {
     if (event) { 
         event.preventDefault(); 
@@ -175,9 +175,8 @@ window.changePage = function (page, event) {
     const totalPages = Math.ceil(filteredExcessData.length / ITEMS_PER_PAGE);
     if (page < 1 || page > totalPages) return;
 
-    // 🔥 ক্লিক করার সাথে সাথেই টেবিল ফাঁকা করে লোডিং দেখান
     const table = document.getElementById("excessTable");
-    table.innerHTML = '<tr><td colspan="11" class="empty" style="padding:40px;">Loading...</td></tr>';
+    table.innerHTML = '<tr><td colspan="12" class="empty" style="padding:40px;">Loading...</td></tr>';
     document.getElementById("paginationInfo").innerHTML = "Loading...";
     document.getElementById("paginationControls").innerHTML = "";
 
@@ -188,12 +187,11 @@ window.changePage = function (page, event) {
         url.searchParams.set('page', page);
     }
 
-    // পেজ রিলোড হবে
     window.location.href = url.toString();
 };
 
 
-// ================= EDIT (Redirect to Entry Page) =================
+// ================= EDIT (Redirect) =================
 window.editExcess = (id) => {
     window.location.href = `excess.html?edit=${id}`;
 };
@@ -205,7 +203,6 @@ window.deleteExcess = async (id) => {
         await deleteDoc(doc(db, "excessCutting", id));
         showToast("Deleted Successfully", "success");
         
-        // ডিলিটের পর ১ম পেজে ফিরে যাবে
         const url = new URL(window.location.href);
         url.searchParams.delete('page');
         window.location.href = url.toString();
@@ -213,9 +210,9 @@ window.deleteExcess = async (id) => {
 };
 
 
-// ================= SEARCH =================
-document.getElementById("excessSearchBox").addEventListener("keyup", () => {
-    let value = document.getElementById("excessSearchBox").value.toLowerCase().trim();
+// ================= SEARCH (BUTTON) =================
+window.applySearch = function () {
+    const value = document.getElementById("excessSearchBox").value.toLowerCase().trim();
 
     if (!value) {
         filteredExcessData = [...allExcessData];
@@ -236,7 +233,21 @@ document.getElementById("excessSearchBox").addEventListener("keyup", () => {
     window.history.replaceState({}, '', url);
 
     renderPage();
-});
+};
+
+
+// ================= CLEAR SEARCH =================
+window.clearSearch = function () {
+    document.getElementById("excessSearchBox").value = "";
+    filteredExcessData = [...allExcessData];
+    currentPage = 1;
+    
+    const url = new URL(window.location.href);
+    url.searchParams.delete('page');
+    window.history.replaceState({}, '', url);
+
+    renderPage();
+};
 
 
 // ================= EXPORT PDF =================
@@ -250,20 +261,32 @@ window.exportExcessPDF = function () {
     doc.setFontSize(18); doc.setTextColor(77, 138, 234); doc.text("EXCESS CUTTING REPORT", 14, 20);
     doc.setFontSize(10); doc.setTextColor(120, 120, 120); doc.text("Generated: " + new Date().toLocaleString("en-US"), 14, 27);
 
-    const data = allExcessData.map(p => [
-        p.srNo || "", p.floor || "", p.buyerName || "", p.styleNo || "", p.tableNo || "", p.cutQty || 0, p.excessQty || 0, p.color || ""
+    const data = allExcessData.map((p, i) => [
+        i + 1,
+        p.srNo || "", 
+        p.floor || "", 
+        p.buyerName || "", 
+        p.styleNo || "", 
+        p.tableNo || "", 
+        p.cutQty || 0, 
+        p.excessQty || 0, 
+        p.color || ""
     ]);
 
     doc.autoTable({ 
-        head: [["SR No", "Floor", "Buyer", "Style", "Table No", "Cut Qty", "Excess Qty", "Color"]], 
-        body: data, startY: 33, styles: { fontSize: 9, cellPadding: 3 }, 
+        head: [["SL No", "SR No", "Floor", "Buyer", "Style", "Table No", "Cut Qty", "Excess Qty", "Color"]], 
+        body: data, 
+        startY: 33, 
+        styles: { fontSize: 9, cellPadding: 3 }, 
         headStyles: { fillColor: [77, 138, 234], textColor: 255, fontStyle: "bold" }, 
         alternateRowStyles: { fillColor: [245, 245, 245] } 
     });
 
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) { 
-        doc.setPage(i); doc.setFontSize(9); doc.setTextColor(150, 150, 150); 
+        doc.setPage(i); 
+        doc.setFontSize(9); 
+        doc.setTextColor(150, 150, 150); 
         doc.text(`Page ${i} of ${pageCount}`, 14, doc.internal.pageSize.height - 10); 
     }
     doc.save(`excess-cutting-${new Date().toISOString().split("T")[0]}.pdf`);
