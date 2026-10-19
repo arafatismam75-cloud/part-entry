@@ -52,7 +52,7 @@ async function initReport() {
     document.getElementById("reportArea").innerHTML = `
         <div class="entry">
             <div class="empty" style="padding:40px; text-align:center; color:#8e8f96;">
-                🔍 Select filters above and click <strong style="color:#4d8aea;">Apply Filters</strong> to see the report.
+                Select filters above and click <strong style="color:#4d8aea;">Apply Filters</strong> to see the report.
             </div>
         </div>
     `;
@@ -232,7 +232,7 @@ window.clearFilters = function () {
     document.getElementById("reportArea").innerHTML = `
         <div class="entry">
             <div class="empty" style="padding:40px; text-align:center; color:#8e8f96;">
-                🔍 Select filters above and click <strong style="color:#4d8aea;">Apply Filters</strong> to see the report.
+                 Select filters above and click <strong style="color:#4d8aea;">Apply Filters</strong> to see the report.
             </div>
         </div>
     `;
