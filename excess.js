@@ -177,10 +177,10 @@ function renderPagination() {
 
     let html = "";
 
-    // Previous
+    // Previous বাটন
     html += `<button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? "disabled" : ""}>◀</button>`;
 
-    // Page numbers (smart)
+    // পেজ নম্বরসমূহ
     const pages = getPageNumbers(currentPage, totalPages);
 
     pages.forEach(p => {
@@ -191,7 +191,7 @@ function renderPagination() {
         }
     });
 
-    // Next
+    // Next বাটন
     html += `<button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? "disabled" : ""}>▶</button>`;
 
     controls.innerHTML = html;
@@ -221,39 +221,22 @@ function getPageNumbers(current, total) {
 }
 
 
-// ================= CHANGE PAGE (URL Update) =================
+// ================= CHANGE PAGE (Full Reload) =================
 window.changePage = function (page) {
     const totalPages = Math.ceil(filteredExcessData.length / ITEMS_PER_PAGE);
     if (page < 1 || page > totalPages) return;
 
-    currentPage = page;
-
-    // 🔥 URL আপডেট করুন (History API)
+    // 🔥 এখানে পরিবর্তন করা হয়েছে: URL এডিট করে সরাসরি পেজ রিলোড হবে
     const url = new URL(window.location);
     if (page === 1) {
-        url.searchParams.delete('page'); // ১ম পেজে লিংক পরিষ্কার
+        url.searchParams.delete('page');
     } else {
         url.searchParams.set('page', page);
     }
-    window.history.pushState({ page: page }, '', url);
 
-    renderPage();
-
-    const table = document.getElementById("excessTable");
-    if (table) table.scrollIntoView({ behavior: "smooth", block: "start" });
+    // নতুন লিংকে রিডাইরেক্ট (পেজ রিলোড হবে)
+    window.location.href = url.toString();
 };
-
-
-// ================= BROWSER BACK/FORWARD =================
-window.addEventListener('popstate', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const pageParam = parseInt(urlParams.get('page')) || 1;
-
-    if (currentPage !== pageParam) {
-        currentPage = pageParam;
-        renderPage();
-    }
-});
 
 
 // ================= EDIT =================
@@ -319,12 +302,11 @@ document.getElementById("excessSearchBox").addEventListener("keyup", () => {
         });
     }
 
+    // সার্চ করলে URL থেকে পেজ নম্বর মুছে ফেলুন
     currentPage = 1;
-
-    // Search করলে URL থেকে page সরিয়ে দিন
     const url = new URL(window.location);
     url.searchParams.delete('page');
-    window.history.pushState({ page: 1 }, '', url);
+    window.history.replaceState({}, '', url);
 
     renderPage();
 });
