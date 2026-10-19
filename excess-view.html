@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Data - Excess Cutting</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ===== PAGINATION ===== */
+  .pagination-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; flex-wrap: wrap; gap: 12px; padding: 10px 0; }
+  .pagination-info { font-size: 13px; color: #8e8f96; }
+  .pagination-info strong { color: #fff; }
+  .pagination-controls { display: flex; gap: 4px; flex-wrap: wrap; background: #1a1b1f; padding: 6px; border-radius: 8px; border: 1px solid #2a2b30; }
+  .page-btn { min-width: 34px; height: 34px; padding: 0 10px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: #b8b8d0; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; }
+  .page-btn:hover:not(:disabled):not(.active) { background: #232429; color: #fff; border-color: #3a3b40; }
+  .page-btn.active { background: #2ecc71; border-color: #2ecc71; color: #fff; box-shadow: 0 0 10px rgba(46, 204, 113, 0.3); }
+  .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .page-btn.dots { cursor: default; border: none; background: transparent; letter-spacing: 2px; }
+  .page-btn.dots:hover { background: transparent; border: none; }
+  @media (max-width: 600px) { .pagination-bar { flex-direction: column; align-items: stretch; } .pagination-controls { justify-content: center; } .page-btn { min-width: 34px; height: 34px; font-size: 13px; padding: 0 8px; } }
+</style>
+</head>
+<body>
+
+<div id="dashboard">
+  <div class="overlay" id="overlay" onclick="closeSidebarMobile()"></div>
+  <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">PART <span>ENTRY</span></div>
+    <nav class="sidebar-nav">
+      <a href="index.html"> Dashboard</a>
+      <a href="index.html">➕ New Entry</a>
+      <a href="index.html"> Part List</a>
+
+      <a class="has-submenu open" onclick="toggleSubmenu(this)">
+        ✂️ Excess Cutting
+        <span class="arrow">▶</span>
+      </a>
+      <div class="submenu open" id="excessSubmenu">
+        <a href="excess.html">➕ Excess Cut Entry</a>
+        <a href="excess-view.html" class="active"> View Data</a>
+        <a href="report.html"> Reports</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">👤 <span id="userRole">Operator</span></div>
+      <button id="logout">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="mainContent">
+    <div class="topbar">
+      <h1>Excess Cutting — View Data</h1>
+      <button class="btn-primary" onclick="exportExcessPDF()" style="margin:0; padding:10px 22px; font-size:14px;"> Export PDF</button>
+    </div>
+    
+    <div class="entry">
+      <div class="list-toolbar">
+        <div class="search-wrap">
+          <input id="excessSearchBox" placeholder="Search SR / Buyer / Style / Floor...">
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>SR No</th>
+            <th>Floor</th>
+            <th>Buyer</th>
+            <th>Style</th>
+            <th>Table No</th>
+            <th>Cut Qty</th>
+            <th>Excess Qty</th>
+            <th>Color</th>
+            <th>Delivery</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="excessTable"></tbody>
+      </table>
+
+      <!-- PAGINATION -->
+      <div class="pagination-bar">
+        <div class="pagination-info" id="paginationInfo">Showing 0 of 0</div>
+        <div class="pagination-controls" id="paginationControls"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="module" src="excess-view.js"></script>
+<script>
+  function toggleSubmenu(el) {
+    el.classList.toggle('open');
+    document.getElementById('excessSubmenu').classList.toggle('open');
+  }
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    const btn = document.getElementById('toggleBtn');
+    const overlay = document.getElementById('overlay');
+    if (window.innerWidth <= 900) { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); } 
+    else { sidebar.classList.toggle('hidden'); main.classList.toggle('full'); btn.classList.toggle('shifted'); }
+  }
+  function closeSidebarMobile() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+  }
+  window.addEventListener('resize', () => {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    const btn = document.getElementById('toggleBtn');
+    const overlay = document.getElementById('overlay');
+    if (window.innerWidth <= 900) {
+      sidebar.classList.remove('hidden'); main.classList.remove('full'); btn.classList.remove('shifted'); overlay.classList.remove('active');
+    } else {
+      sidebar.classList.remove('open'); overlay.classList.remove('active');
+    }
+  });
+  function showToast(message, type = 'success') {
+    let container = document.getElementById('toastContainer');
+    if (!container) { container = document.createElement('div'); container.id = 'toastContainer'; document.body.appendChild(container); }
+    const toast = document.createElement('div');
+    toast.className = 'toast ' + type;
+    toast.innerHTML = `<span class="toast-icon">${type === 'success' ? '✅' : '⚠️'}</span><span class="toast-msg">${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
+  }
+  window.showToast = showToast;
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</body>
+</html>
