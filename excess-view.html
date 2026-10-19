@@ -6,18 +6,155 @@
 <title>View Data - Excess Cutting</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  /* ===== PAGINATION ===== */
-  .pagination-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; flex-wrap: wrap; gap: 12px; padding: 10px 0; }
-  .pagination-info { font-size: 13px; color: #8e8f96; }
+  /* ===== SEARCH BAR + BUTTON ===== */
+  .search-with-btn {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .search-with-btn .search-wrap {
+    flex: 1;
+    min-width: 240px;
+    position: relative;
+  }
+  .search-with-btn .search-wrap::before {
+    content: "🔍";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 0.6;
+  }
+  .search-with-btn input {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    background: #121316;
+    border: 1px solid #2a2b30;
+    border-radius: 24px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .search-with-btn input::placeholder { color: #6b6c72; }
+  .search-with-btn input:focus {
+    border-color: #4d8aea;
+    box-shadow: 0 0 0 3px rgba(77, 138, 234, 0.15);
+  }
+  .search-with-btn .search-btn {
+    padding: 12px 28px;
+    background: #4d8aea;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .search-with-btn .search-btn:hover {
+    background: #3b75d4;
+    transform: translateY(-1px);
+  }
+  .search-with-btn .clear-btn {
+    padding: 12px 20px;
+    background: #2a2b30;
+    color: #b8b8d0;
+    border: none;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .search-with-btn .clear-btn:hover {
+    background: #3a3b40;
+    color: #fff;
+  }
+
+  /* ===== PAGINATION (CENTERED) ===== */
+  .pagination-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+    padding: 15px 0;
+  }
+  .pagination-info {
+    font-size: 13px;
+    color: #8e8f96;
+    text-align: center;
+  }
   .pagination-info strong { color: #fff; }
-  .pagination-controls { display: flex; gap: 4px; flex-wrap: wrap; background: #1a1b1f; padding: 6px; border-radius: 8px; border: 1px solid #2a2b30; }
-  .page-btn { min-width: 34px; height: 34px; padding: 0 10px; background: transparent; border: 1px solid transparent; border-radius: 6px; color: #b8b8d0; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; }
-  .page-btn:hover:not(:disabled):not(.active) { background: #232429; color: #fff; border-color: #3a3b40; }
-  .page-btn.active { background: #2ecc71; border-color: #2ecc71; color: #fff; box-shadow: 0 0 10px rgba(46, 204, 113, 0.3); }
-  .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-  .page-btn.dots { cursor: default; border: none; background: transparent; letter-spacing: 2px; }
+  .pagination-controls {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    background: #1a1b1f;
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #2a2b30;
+    justify-content: center;
+  }
+  .page-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: #b8b8d0;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .page-btn:hover:not(:disabled):not(.active) {
+    background: #232429;
+    color: #fff;
+    border-color: #3a3b40;
+  }
+  .page-btn.active {
+    background: #2ecc71;
+    border-color: #2ecc71;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+  }
+  .page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .page-btn.dots {
+    cursor: default;
+    border: none;
+    background: transparent;
+    letter-spacing: 2px;
+  }
   .page-btn.dots:hover { background: transparent; border: none; }
-  @media (max-width: 600px) { .pagination-bar { flex-direction: column; align-items: stretch; } .pagination-controls { justify-content: center; } .page-btn { min-width: 34px; height: 34px; font-size: 13px; padding: 0 8px; } }
+
+  /* ===== SL NO COLUMN ===== */
+  table th:first-child,
+  table td:first-child {
+    width: 60px;
+    text-align: center;
+    color: #8e8f96;
+    font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .search-with-btn { flex-direction: column; }
+    .search-with-btn .search-btn,
+    .search-with-btn .clear-btn { width: 100%; }
+    .pagination-controls { flex-wrap: wrap; }
+  }
 </style>
 </head>
 <body>
@@ -31,7 +168,7 @@
     <nav class="sidebar-nav">
       <a href="index.html"> Dashboard</a>
       <a href="index.html">➕ New Entry</a>
-      <a href="index.html"> Part List</a>
+      <a href="index.html">Part List</a>
 
       <a class="has-submenu open" onclick="toggleSubmenu(this)">
         ✂️ Excess Cutting
@@ -40,7 +177,7 @@
       <div class="submenu open" id="excessSubmenu">
         <a href="excess.html">➕ Excess Cut Entry</a>
         <a href="excess-view.html" class="active"> View Data</a>
-        <a href="report.html"> Reports</a>
+        <a href="report.html">Reports</a>
       </div>
     </nav>
     <div class="sidebar-footer">
@@ -52,18 +189,23 @@
   <main class="main-content" id="mainContent">
     <div class="topbar">
       <h1>Excess Cutting — View Data</h1>
-      <button class="btn-primary" onclick="exportExcessPDF()" style="margin:0; padding:10px 22px; font-size:14px;">📄 Export PDF</button>
+      <button class="btn-primary" onclick="exportExcessPDF()" style="margin:0; padding:10px 22px; font-size:14px;"> Export PDF</button>
     </div>
     
     <div class="entry">
-      <div class="list-toolbar">
+      <!-- SEARCH BAR + BUTTON -->
+      <div class="search-with-btn">
         <div class="search-wrap">
-          <input id="excessSearchBox" placeholder="Search SR / Buyer / Style / Floor...">
+          <input id="excessSearchBox" placeholder="Search SR / Buyer / Style / Floor..." onkeypress="if(event.key==='Enter') applySearch()">
         </div>
+        <button class="search-btn" onclick="applySearch()">🔍 Search</button>
+        <button class="clear-btn" onclick="clearSearch()">Clear</button>
       </div>
+
       <table>
         <thead>
           <tr>
+            <th>SL No</th>
             <th>SR No</th>
             <th>Floor</th>
             <th>Buyer</th>
@@ -80,9 +222,10 @@
         <tbody id="excessTable"></tbody>
       </table>
 
+      <!-- PAGINATION (CENTERED) -->
       <div class="pagination-bar">
-        <div class="pagination-info" id="paginationInfo">Showing 0 of 0</div>
         <div class="pagination-controls" id="paginationControls"></div>
+        <div class="pagination-info" id="paginationInfo">Showing 0 of 0</div>
       </div>
     </div>
   </main>
