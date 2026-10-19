@@ -65,7 +65,7 @@ document.getElementById("saveExcess").onclick = async () => {
         await updateDoc(doc(db, "excessCutting", editingExcessId), data);
         showToast("Updated Successfully", "success");
         editingExcessId = null;
-        document.getElementById("saveExcess").innerHTML = "💾 Save Entry";
+        document.getElementById("saveExcess").innerHTML = " Save Entry";
         document.getElementById("cancelExcessEdit").style.display = "none";
     } else {
         data.createdAt = serverTimestamp();
@@ -297,7 +297,7 @@ window.deleteExcess = async (id) => {
 document.getElementById("cancelExcessEdit").onclick = () => {
     editingExcessId = null;
     clearExcessForm();
-    document.getElementById("saveExcess").innerHTML = "💾 Save Entry";
+    document.getElementById("saveExcess").innerHTML = " Save Entry";
     document.getElementById("cancelExcessEdit").style.display = "none";
 };
 
