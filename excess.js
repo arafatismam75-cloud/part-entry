@@ -65,7 +65,7 @@ document.getElementById("saveExcess").onclick = async () => {
         await updateDoc(doc(db, "excessCutting", editingExcessId), data);
         showToast("Updated Successfully", "success");
         editingExcessId = null;
-        document.getElementById("saveExcess").innerHTML = " Save Entry";
+        document.getElementById("saveExcess").innerHTML = "💾 Save Entry";
         document.getElementById("cancelExcessEdit").style.display = "none";
     } else {
         data.createdAt = serverTimestamp();
@@ -93,7 +93,16 @@ async function loadExcess() {
         });
 
         filteredExcessData = [...allExcessData];
-        currentPage = 1;
+
+        // URL থেকে পেজ নম্বর চেক করুন
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageParam = parseInt(urlParams.get('page'));
+
+        if (pageParam && pageParam > 0) {
+            currentPage = pageParam;
+        } else {
+            currentPage = 1;
+        }
 
         renderPage();
     } catch (err) {
@@ -168,10 +177,10 @@ function renderPagination() {
 
     let html = "";
 
-    // Previous button
+    // Previous
     html += `<button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? "disabled" : ""}>◀</button>`;
 
-    // Page numbers (smart pagination)
+    // Page numbers (smart)
     const pages = getPageNumbers(currentPage, totalPages);
 
     pages.forEach(p => {
@@ -182,14 +191,14 @@ function renderPagination() {
         }
     });
 
-    // Next button
+    // Next
     html += `<button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? "disabled" : ""}>▶</button>`;
 
     controls.innerHTML = html;
 }
 
 
-// ================= GET PAGE NUMBERS (SMART) =================
+// ================= GET PAGE NUMBERS =================
 function getPageNumbers(current, total) {
     const pages = [];
 
@@ -198,38 +207,53 @@ function getPageNumbers(current, total) {
         return pages;
     }
 
-    // প্রথম পেজ
     pages.push(1);
-
     if (current > 3) pages.push("...");
 
-    // বর্তমান পেজের আশেপাশে
     const start = Math.max(2, current - 1);
     const end = Math.min(total - 1, current + 1);
-
     for (let i = start; i <= end; i++) pages.push(i);
 
     if (current < total - 2) pages.push("...");
-
-    // শেষ পেজ
     pages.push(total);
 
     return pages;
 }
 
 
-// ================= CHANGE PAGE =================
+// ================= CHANGE PAGE (URL Update) =================
 window.changePage = function (page) {
     const totalPages = Math.ceil(filteredExcessData.length / ITEMS_PER_PAGE);
     if (page < 1 || page > totalPages) return;
 
     currentPage = page;
+
+    // 🔥 URL আপডেট করুন (History API)
+    const url = new URL(window.location);
+    if (page === 1) {
+        url.searchParams.delete('page'); // ১ম পেজে লিংক পরিষ্কার
+    } else {
+        url.searchParams.set('page', page);
+    }
+    window.history.pushState({ page: page }, '', url);
+
     renderPage();
 
-    // টেবিলের উপরে স্ক্রল
     const table = document.getElementById("excessTable");
     if (table) table.scrollIntoView({ behavior: "smooth", block: "start" });
 };
+
+
+// ================= BROWSER BACK/FORWARD =================
+window.addEventListener('popstate', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageParam = parseInt(urlParams.get('page')) || 1;
+
+    if (currentPage !== pageParam) {
+        currentPage = pageParam;
+        renderPage();
+    }
+});
 
 
 // ================= EDIT =================
@@ -273,7 +297,7 @@ window.deleteExcess = async (id) => {
 document.getElementById("cancelExcessEdit").onclick = () => {
     editingExcessId = null;
     clearExcessForm();
-    document.getElementById("saveExcess").innerHTML = " Save Entry";
+    document.getElementById("saveExcess").innerHTML = "💾 Save Entry";
     document.getElementById("cancelExcessEdit").style.display = "none";
 };
 
@@ -296,6 +320,12 @@ document.getElementById("excessSearchBox").addEventListener("keyup", () => {
     }
 
     currentPage = 1;
+
+    // Search করলে URL থেকে page সরিয়ে দিন
+    const url = new URL(window.location);
+    url.searchParams.delete('page');
+    window.history.pushState({ page: 1 }, '', url);
+
     renderPage();
 });
 
