@@ -31,7 +31,11 @@ document.getElementById("logout").onclick = async () => {
 // ================= LOAD DATA =================
 async function loadExcess() {
     const table = document.getElementById("excessTable");
-    table.innerHTML = '<tr><td colspan="11" class="empty">Loading...</td></tr>';
+    
+    // শুরুতে টেবিল ফাঁকা করে লোডিং দেখানো
+    table.innerHTML = '<tr><td colspan="11" class="empty" style="padding:40px;">Loading data...</td></tr>';
+    document.getElementById("paginationInfo").innerHTML = "Loading...";
+    document.getElementById("paginationControls").innerHTML = "";
 
     try {
         const snapshot = await getDocs(
@@ -126,11 +130,8 @@ function renderPagination() {
     info.innerHTML = `Showing <strong>${start}-${end}</strong> of <strong>${totalItems}</strong>`;
 
     let html = "";
-
-    // Previous Button
     html += `<button type="button" class="page-btn" onclick="changePage(${currentPage - 1}, event)" ${currentPage === 1 ? "disabled" : ""}>◀</button>`;
 
-    // Page Numbers
     const pages = getPageNumbers(currentPage, totalPages);
     pages.forEach(p => {
         if (p === "...") {
@@ -140,32 +141,26 @@ function renderPagination() {
         }
     });
 
-    // Next Button
     html += `<button type="button" class="page-btn" onclick="changePage(${currentPage + 1}, event)" ${currentPage === totalPages ? "disabled" : ""}>▶</button>`;
 
     controls.innerHTML = html;
 }
 
 
-// ================= SMART PAGINATION LOGIC =================
+// ================= SMART PAGINATION =================
 function getPageNumbers(current, total) {
     const pages = [];
-    
     if (total <= 7) {
         for (let i = 1; i <= total; i++) pages.push(i);
         return pages;
     }
-
     pages.push(1);
     if (current > 3) pages.push("...");
-
     const start = Math.max(2, current - 1);
     const end = Math.min(total - 1, current + 1);
     for (let i = start; i <= end; i++) pages.push(i);
-
     if (current < total - 2) pages.push("...");
     pages.push(total);
-
     return pages;
 }
 
@@ -180,6 +175,12 @@ window.changePage = function (page, event) {
     const totalPages = Math.ceil(filteredExcessData.length / ITEMS_PER_PAGE);
     if (page < 1 || page > totalPages) return;
 
+    // 🔥 ক্লিক করার সাথে সাথেই টেবিল ফাঁকা করে লোডিং দেখান
+    const table = document.getElementById("excessTable");
+    table.innerHTML = '<tr><td colspan="11" class="empty" style="padding:40px;">Loading...</td></tr>';
+    document.getElementById("paginationInfo").innerHTML = "Loading...";
+    document.getElementById("paginationControls").innerHTML = "";
+
     const url = new URL(window.location.href);
     if (page === 1) {
         url.searchParams.delete('page');
@@ -187,6 +188,7 @@ window.changePage = function (page, event) {
         url.searchParams.set('page', page);
     }
 
+    // পেজ রিলোড হবে
     window.location.href = url.toString();
 };
 
@@ -228,7 +230,6 @@ document.getElementById("excessSearchBox").addEventListener("keyup", () => {
         });
     }
 
-    // সার্চ করলে ১ম পেজে ফিরে যাবে এবং URL রিসেট হবে
     currentPage = 1;
     const url = new URL(window.location.href);
     url.searchParams.delete('page');
@@ -240,54 +241,31 @@ document.getElementById("excessSearchBox").addEventListener("keyup", () => {
 
 // ================= EXPORT PDF =================
 window.exportExcessPDF = function () {
-    if (allExcessData.length === 0) { 
-        showToast("No data to export", "error"); 
-        return; 
-    }
-    if (typeof window.jspdf === "undefined") { 
-        showToast("PDF library loading...", "error"); 
-        return; 
-    }
+    if (allExcessData.length === 0) { showToast("No data to export", "error"); return; }
+    if (typeof window.jspdf === "undefined") { showToast("PDF library loading...", "error"); return; }
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: "landscape" });
 
-    doc.setFontSize(18); 
-    doc.setTextColor(77, 138, 234); 
-    doc.text("EXCESS CUTTING REPORT", 14, 20);
-
-    doc.setFontSize(10); 
-    doc.setTextColor(120, 120, 120); 
-    doc.text("Generated: " + new Date().toLocaleString("en-US"), 14, 27);
+    doc.setFontSize(18); doc.setTextColor(77, 138, 234); doc.text("EXCESS CUTTING REPORT", 14, 20);
+    doc.setFontSize(10); doc.setTextColor(120, 120, 120); doc.text("Generated: " + new Date().toLocaleString("en-US"), 14, 27);
 
     const data = allExcessData.map(p => [
-        p.srNo || "", 
-        p.floor || "", 
-        p.buyerName || "", 
-        p.styleNo || "", 
-        p.tableNo || "", 
-        p.cutQty || 0, 
-        p.excessQty || 0, 
-        p.color || ""
+        p.srNo || "", p.floor || "", p.buyerName || "", p.styleNo || "", p.tableNo || "", p.cutQty || 0, p.excessQty || 0, p.color || ""
     ]);
 
     doc.autoTable({ 
         head: [["SR No", "Floor", "Buyer", "Style", "Table No", "Cut Qty", "Excess Qty", "Color"]], 
-        body: data, 
-        startY: 33, 
-        styles: { fontSize: 9, cellPadding: 3 }, 
+        body: data, startY: 33, styles: { fontSize: 9, cellPadding: 3 }, 
         headStyles: { fillColor: [77, 138, 234], textColor: 255, fontStyle: "bold" }, 
         alternateRowStyles: { fillColor: [245, 245, 245] } 
     });
 
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) { 
-        doc.setPage(i); 
-        doc.setFontSize(9); 
-        doc.setTextColor(150, 150, 150); 
+        doc.setPage(i); doc.setFontSize(9); doc.setTextColor(150, 150, 150); 
         doc.text(`Page ${i} of ${pageCount}`, 14, doc.internal.pageSize.height - 10); 
     }
-    
     doc.save(`excess-cutting-${new Date().toISOString().split("T")[0]}.pdf`);
 };
 
