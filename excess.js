@@ -22,6 +22,13 @@ import {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         document.getElementById("userRole").innerText = user.displayName || "Operator";
+        
+        // URL-এ যদি সরাসরি excess.html?page=2 থাকে, তবে সরাসরি View Data সেকশন ওপেন হবে
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('page')) {
+            if (typeof showExcessSection === 'function') showExcessSection('view');
+        }
+        
         loadExcess();
     } else {
         window.location.href = "index.html";
@@ -177,22 +184,22 @@ function renderPagination() {
 
     let html = "";
 
-    // Previous বাটন
-    html += `<button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? "disabled" : ""}>◀</button>`;
+    // Previous
+    html += `<button type="button" class="page-btn" onclick="changePage(${currentPage - 1}, event)" ${currentPage === 1 ? "disabled" : ""}>◀</button>`;
 
-    // পেজ নম্বরসমূহ
+    // Page numbers
     const pages = getPageNumbers(currentPage, totalPages);
 
     pages.forEach(p => {
         if (p === "...") {
-            html += `<button class="page-btn dots" disabled>...</button>`;
+            html += `<button type="button" class="page-btn dots" disabled>...</button>`;
         } else {
-            html += `<button class="page-btn ${p === currentPage ? "active" : ""}" onclick="changePage(${p})">${p}</button>`;
+            html += `<button type="button" class="page-btn ${p === currentPage ? "active" : ""}" onclick="changePage(${p}, event)">${p}</button>`;
         }
     });
 
-    // Next বাটন
-    html += `<button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? "disabled" : ""}>▶</button>`;
+    // Next
+    html += `<button type="button" class="page-btn" onclick="changePage(${currentPage + 1}, event)" ${currentPage === totalPages ? "disabled" : ""}>▶</button>`;
 
     controls.innerHTML = html;
 }
@@ -221,20 +228,26 @@ function getPageNumbers(current, total) {
 }
 
 
-// ================= CHANGE PAGE (Full Reload) =================
-window.changePage = function (page) {
+// ================= CHANGE PAGE (Full Page Reload) =================
+window.changePage = function (page, event) {
+    // 🔥 ডিফল্ট ব্রাউজার অ্যাকশন বন্ধ করুন
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
     const totalPages = Math.ceil(filteredExcessData.length / ITEMS_PER_PAGE);
     if (page < 1 || page > totalPages) return;
 
-    // 🔥 এখানে পরিবর্তন করা হয়েছে: URL এডিট করে সরাসরি পেজ রিলোড হবে
-    const url = new URL(window.location);
+    // URL আপডেট করুন
+    const url = new URL(window.location.href);
     if (page === 1) {
         url.searchParams.delete('page');
     } else {
         url.searchParams.set('page', page);
     }
 
-    // নতুন লিংকে রিডাইরেক্ট (পেজ রিলোড হবে)
+    // 🔥 পেজ রিলোড হবে (কোনো ইন্টারফেয়ারেন্স ছাড়াই)
     window.location.href = url.toString();
 };
 
@@ -260,6 +273,7 @@ window.editExcess = async (id) => {
             document.getElementById("saveExcess").innerHTML = "✏️ Update";
             document.getElementById("cancelExcessEdit").style.display = "inline-block";
 
+            // Entry সেকশনে যান
             if (typeof showExcessSection === 'function') showExcessSection('entry');
         }
     });
@@ -271,7 +285,11 @@ window.deleteExcess = async (id) => {
     if (confirm("Delete this entry?")) {
         await deleteDoc(doc(db, "excessCutting", id));
         showToast("Deleted Successfully", "success");
-        loadExcess();
+        
+        // ডিলিট করার পর URL এ page থাকলে সেটা রিসেট হয়ে পেজ ১-এ ফিরে যাবে
+        const url = new URL(window.location.href);
+        url.searchParams.delete('page');
+        window.location.href = url.toString();
     }
 };
 
@@ -302,9 +320,9 @@ document.getElementById("excessSearchBox").addEventListener("keyup", () => {
         });
     }
 
-    // সার্চ করলে URL থেকে পেজ নম্বর মুছে ফেলুন
+    // সার্চ করলে ১ম পেজে ফিরে যাবে এবং URL থেকে page মুছে যাবে
     currentPage = 1;
-    const url = new URL(window.location);
+    const url = new URL(window.location.href);
     url.searchParams.delete('page');
     window.history.replaceState({}, '', url);
 
